@@ -29,8 +29,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', index.home);
-
 // serialize and deserialize
 passport.serializeUser(function (user, done) {
     done(null, user._id);
@@ -42,6 +40,8 @@ passport.deserializeUser(function (id, done) {
     else done(err, null);
   });
 });
+
+app.get('/', index.home);
 
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
