@@ -4,6 +4,11 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var index = require("./routes/index");
 
+var Schema = require('./models/Schema.js');
+var User = Schema.userModel;
+var Survey = Schema.surveyModel;
+var Response = Schema.responseModel;
+
 var app = express();
 
 var MONGOURI = process.env.MONGOURI || "mongodb://localhost/CrowdData";
@@ -37,7 +42,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-app.post('/login', 
+app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
