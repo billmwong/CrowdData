@@ -1,10 +1,19 @@
 var app = angular.module('crowddata', ['ngRoute']);
 
 app.config(function ($routeProvider, $locationProvider) {
-  $routeProvider.when('/', {
-    templateUrl: '../views/template.html',
-    controller: 'mainController',
-  });
+  $routeProvider
+	.when('/', {
+  templateUrl: '../views/landing.html',
+  controller: 'mainController',
+	})
+	.when('/login', {
+  templateUrl: '../views/login.html',
+  controller: 'mainController',
+	})
+	.when('/signup', {
+  templateUrl: '../views/signup.html',
+  controller: 'mainController',
+	});
   $locationProvider.html5Mode(true);
 });
 

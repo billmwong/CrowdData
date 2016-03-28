@@ -50,6 +50,8 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
+app.get('/', index.home);
+
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function (req, res) {
