@@ -1,5 +1,9 @@
 var app = angular.module('crowddata', ['ngRoute']);
 
+var handleError = function(err) {
+  console.log("Error: "+ err);
+};
+
 app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
   .when('/', {
@@ -19,13 +23,17 @@ app.config(function ($routeProvider, $locationProvider) {
 
 app.controller('mainController', function ($scope, $http, $location) {
   $scope.contentPath = 'views/landing.html';
+  $scope.loggedIn = false;
+
+  // TODO Check if the user is logged in:
+
+  console.log("loaded controller");
 
   $scope.gotoSignUp = function () {
-    $scope.contentPath = 'views/signup.html';
+    $location.path('/signup');
   };
 
   $scope.gotoLogIn = function () {
-    $scope.contentPath = 'views/login.html';
-    // $location.path('/login');
+    $location.path('/login');
   };
 });
