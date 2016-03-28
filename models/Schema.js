@@ -12,6 +12,7 @@ var userSchema = mongoose.Schema({
   },
   Age: Number,
   timeCreated: Date,
+  loggedin: Boolean,
 });
 
 var surveySchema = mongoose.Schema({

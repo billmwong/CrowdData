@@ -41,11 +41,11 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-app.get('/', index.home);
-app.get('/more', index.moreSurveys);
-app.post('/survey/submit', index.submitSurvey);
-app.post('/survey/new', index.newSurvey);
-app.post('/newuser', index.newUser);
+app.get('/', index.home); // homepage needing logged-in user and initial batch of surveys
+app.get('/more', index.moreSurvey); // a request for more surveys
+app.post('/survey/submit', index.submitSurvey); // new survey response needing to be added to db.
+app.post('/survey/new', index.newSurvey); // new survey object needing to be added to db.
+app.post('/newuser', index.newUser); // new user details needing to be added to db.
 
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
