@@ -42,12 +42,20 @@ passport.deserializeUser(function (id, done) {
 });
 
 app.get('/', index.home);
+app.get('/more', index.moreSurveys);
+app.post('/survey/submit', index.submitSurvey);
+app.post('/survey/new', index.newSurvey);
+app.post('/newuser', index.newUser);
 
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function (req, res) {
     res.redirect('/');
   });
+
+app.get('*', function (req, res) {
+  res.sendFile('main.html', { root: path.join(__dirname, '../public') });
+});
 
 app.listen(PORT, function () {
   console.log('Application running on port:', PORT);
