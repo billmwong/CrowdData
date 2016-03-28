@@ -8,7 +8,7 @@ app.config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 });
 
-app.controller('mainController', function ($scope, $http) {
+app.controller('mainController', function ($scope, $http, $location) {
   $scope.contentPath = 'views/landing.html';
 
   $scope.gotoSignUp = function () {
@@ -17,5 +17,6 @@ app.controller('mainController', function ($scope, $http) {
 
   $scope.gotoLogIn = function () {
     $scope.contentPath = 'views/login.html';
+    // $location.path('/login');
   };
 });

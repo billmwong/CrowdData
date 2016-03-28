@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 // Create a Schema
 var userSchema = mongoose.Schema({
@@ -13,6 +14,8 @@ var userSchema = mongoose.Schema({
   Age: Number,
   timeCreated: Date,
 });
+
+userSchema.plugin(passportLocalMongoose);
 
 var surveySchema = mongoose.Schema({
   author: String,  // containing user _id
@@ -37,7 +40,7 @@ var responseSchema = mongoose.Schema({
 });
 
 module.exports = {
-  usermodel:mongoose.model('user', userSchema),
+  userModel:mongoose.model('user', userSchema),
   surveyModel: mongoose.model('survey', surveySchema),
   responseModel: mongoose.model('response', responseSchema),
 };

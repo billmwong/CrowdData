@@ -3,7 +3,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
-
+var passport = require('passport');
+var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
 var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
 var Survey = Schema.surveyModel;
@@ -31,6 +33,11 @@ app.use(passport.session());
 
 app.get('/', index.home);
 
+
+//////////////// PASSPORT STUFF ////////////////
+
+passport.use(new LocalStrategy(User.authenticate()));
+
 // serialize and deserialize
 passport.serializeUser(function (user, done) {
     done(null, user._id);
@@ -47,7 +54,39 @@ app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function (req, res) {
     res.redirect('/');
-  });
+  }
+);
+
+app.get('/register', function(req, res) {
+    res.render('register', { });
+});
+
+app.post('/register', function(req, res) {
+    User.register(new User({ username : req.body.username, name : req.body.username}), req.body.password, function(err, account) {
+        if (err) {
+            // return res.render('register', {info: "Sorry. That username already exists. Try again."});
+            return res.status(500).send(err.message);
+        }
+
+        passport.authenticate('local')(req, res, function () {
+            res.redirect('/');
+        });
+    });
+});
+
+app.get('/login', function(req, res) {
+    res.render('login', { user : req.user });
+});
+
+app.post('/login', passport.authenticate('local'), function(req, res) {
+    res.redirect('/');
+});
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
 
 app.listen(PORT, function () {
   console.log('Application running on port:', PORT);
