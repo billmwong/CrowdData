@@ -3,15 +3,18 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
-
+var passport = require('passport');
+var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
 var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
+var oauth = require('./oauth.js')
 
 var app = express();
 
-var MONGOURI = process.env.MONGOURI || 'mongodb://localhost/CrowdData';
+var MONGOURI = process.env.MONGOURI || oauth.mongodbURI;
 var PORT = process.env.PORT || 3000;
 
 mongoose.connect(MONGOURI);
