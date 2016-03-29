@@ -26,8 +26,17 @@ app.controller('mainController', function ($scope, $http, $location) {
   $scope.loggedIn = false;
 
   // TODO Check if the user is logged in:
-
-  console.log("loaded controller");
+  $http.get('/api/getUser')
+    .success(function(data) {
+      if (data.user._id) {
+        console.log("logged in!");
+        $scope.loggedIn = true;
+        console.log(data.user);
+      } else {
+        console.log("not logged in");
+      }
+    })
+    .error(handleError);
 
   $scope.gotoSignUp = function () {
     $location.path('/signup');

@@ -55,6 +55,7 @@ app.get('/more', index.moreSurvey); // a request for more surveys
 app.post('/survey/submit', index.submitSurvey); // new survey response needing to be added to db.
 app.post('/survey/new', index.newSurvey); // new survey object needing to be added to db.
 app.post('/newuser', index.newUser); // new user details needing to be added to db.
+app.get('/api/getUser', index.getUser);
 
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
@@ -80,9 +81,9 @@ app.post('/register', function(req, res) {
     });
 });
 
-app.get('/login', function(req, res) {
-    res.render('login', { user : req.user });
-});
+// app.get('/login', function(req, res) {
+//     res.render('login', { user : req.user });
+// });
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
     res.redirect('/');
@@ -93,9 +94,8 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-
-app.get('*', function (req, res) {
-  res.sendFile('main.html', { root: path.join(__dirname, '../public') });
+app.get('*', function(req, res) {
+    res.sendFile('main.html', { root: path.join(__dirname, 'public') });
 });
 
 app.listen(PORT, function () {
