@@ -6,11 +6,12 @@ var index = require('./routes/index');
 var passport = require('passport');
 var session = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
+
 var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
-var oauth = require('./oauth.js')
+var oauth = require('./oauth.js');
 
 var app = express();
 
@@ -33,7 +34,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', index.home);
-
 
 //////////////// PASSPORT STUFF ////////////////
 
@@ -69,34 +69,34 @@ app.post('/login',
 //     res.render('register', { });
 // });
 
-app.post('/register', function(req, res) {
-    User.register(new User({ username : req.body.username, name : req.body.username}), req.body.password, function(err, account) {
-        if (err) {
-            // return res.render('register', {info: "Sorry. That username already exists. Try again."});
-            return res.status(500).send(err.message);
-        }
+app.post('/register', function (req, res) {
+  User.register(new User({ username: req.body.username, name: req.body.username }), req.body.password, function (err, account) {
+    if (err) {
+      // return res.render('register', {info: "Sorry. That username already exists. Try again."});
+      return res.status(500).send(err.message);
+    }
 
-        passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
-        });
+    passport.authenticate('local')(req, res, function () {
+      res.redirect('/');
     });
+  });
 });
 
 // app.get('/login', function(req, res) {
 //     res.render('login', { user : req.user });
 // });
 
-app.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
+app.post('/login', passport.authenticate('local'), function (req, res) {
+  res.redirect('/');
 });
 
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/');
 });
 
-app.get('*', function(req, res) {
-    res.sendFile('main.html', { root: path.join(__dirname, 'public') });
+app.get('*', function (req, res) {
+  res.sendFile('main.html', { root: path.join(__dirname, 'public') });
 });
 
 app.listen(PORT, function () {

@@ -13,7 +13,6 @@ var userSchema = mongoose.Schema({
   },
   Age: Number,
   timeCreated: Date,
-  loggedin: Boolean,
 });
 
 userSchema.plugin(passportLocalMongoose);
