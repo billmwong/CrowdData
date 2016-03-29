@@ -25,13 +25,12 @@ app.controller('mainController', function ($scope, $http, $location) {
   $scope.contentPath = 'views/landing.html';
   $scope.loggedIn = false;
 
-  // TODO Check if the user is logged in:
+  // Check if the user is logged in:
   $http.get('/api/getUser')
     .success(function(data) {
-      if (data.user._id) {
+      if (data.user) {
         console.log("logged in!");
         $scope.loggedIn = true;
-        console.log(data.user);
       } else {
         console.log("not logged in");
       }

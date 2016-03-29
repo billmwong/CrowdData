@@ -17,17 +17,17 @@ routes.getUser = function (req, res) {
   User.find({}, function (err, users) {
     loggedInUser = {};
     users.forEach(function (element, index, array) {
-      console.log(element.username, element.loggedin);
+      // console.log(element.username, element.loggedin);
       if (element.loggedin) {
         loggedInUser = element;
-        console.log(loggedInUser);
       }
     });
 
     Survey.find({ usersTaken: { $in: [loggedInUser._id] } }, function (err, surveys) {
       // chooses a random survey to send to the user.
       randomIndex = Math.floor((Math.random() * surveys.length));
-      res.json({ user: loggedInUser, surveys:surveys[randomIndex] });
+      // res.json({ user: loggedInUser, surveys: surveys[randomIndex] });
+      res.json({ user: req.user, surveys: surveys[randomIndex] });
     });
   });
 };
