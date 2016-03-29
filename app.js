@@ -3,6 +3,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
+var passport = require('passport');
+var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
 
 var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
