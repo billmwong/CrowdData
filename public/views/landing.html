@@ -1,2 +1,7 @@
-<button class="btn btn-lg" ng-click="gotoLogIn()">Login</button></br>
-<button class="btn btn-lg" ng-click="gotoSignUp()">Sign Up</button></br>
+<div ng-show="!loggedIn">
+  <button class="btn btn-lg" ng-click="gotoLogIn()">Login</button></br>
+  <button class="btn btn-lg" ng-click="gotoSignUp()">Sign Up</button></br>
+</div>
+<div ng-show="loggedIn">
+  <h1>You are logged in!</h1>
+</div>
