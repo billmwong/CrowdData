@@ -11,14 +11,16 @@ var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
-var oauth = require('./oauth.js');
+
+// var oauth = require('./oauth.js');
+require('dotenv').config({ silent: true });
 
 var app = express();
 
 var MONGOURI = process.env.MONGOURI || oauth.mongodbURI;
 var PORT = process.env.PORT || 3000;
 
-mongoose.connect(MONGOURI);
+mongoose.connect(MONGOURI, function (err) { if (err) {console.log(err);}});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
