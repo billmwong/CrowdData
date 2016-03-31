@@ -17,7 +17,7 @@ require('dotenv').config({ silent: true });
 
 var app = express();
 
-var MONGOURI = process.env.MONGOURI || oauth.mongodbURI;
+var MONGOURI = process.env.MONGOURI;
 var PORT = process.env.PORT || 3000;
 
 mongoose.connect(MONGOURI, function (err) { if (err) {console.log(err);}});
