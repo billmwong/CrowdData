@@ -4,4 +4,13 @@
 </div>
 <div ng-show="loggedIn">
   <h1>You are logged in!</h1>
+  {{survey}}<br>
+  <div class = "questions" ng-repeat = "question in questions">
+  	<li>{{question}}
+  </div>
+<form>
+	
+</form>
+
+  <button ng-click = "logout()"> Log Out </button>
 </div>

@@ -20,14 +20,15 @@ userSchema.plugin(passportLocalMongoose);
 var surveySchema = mongoose.Schema({
   author: String,  // containing user _id
   timeCreated: Date,
-  questions: [{  // Short list of questions, max of 3 or 5
-      id: Number,
-      type: String,
-      content: String,
-      Answers: Array, // of strings
-    },
-  ],
-  usersTaken: Array,  // of user _ids
+  questions: Array,
+  // questions: [{  // Short list of questions, max of 3 or 5
+  //     id: Number,
+  //     type: String,
+  //     content: String,
+  //     Answers: Array // of strings
+  //   }
+  // ],
+  usersTaken: Array  // of user _ids
 });
 
 var responseSchema = mongoose.Schema({

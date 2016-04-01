@@ -25,17 +25,38 @@ app.controller('mainController', function ($scope, $http, $location) {
   $scope.contentPath = 'views/landing.html';
   $scope.loggedIn = false;
 
-  // Check if the user is logged in:
   $http.get('/api/getUser')
-    .success(function(data) {
-      if (data.user) {
-        console.log("logged in!");
+    .success(function(data){
+      if(data.user){
+        console.log ('logged in');
         $scope.loggedIn = true;
-      } else {
-        console.log("not logged in");
+        $http.get('/api/getSurvey')
+          .success(function(data) {
+            console.log("Current survey: ");
+            console.log(data.survey);
+            $scope.survey = data.survey;
+            $scope.survey.questions = [{  // Short list of questions, max of 3 or 5
+      id: 1,
+      type: "mc",
+      content: "Are you?",
+      Answers: ["yeah totally", "sure"] // of strings
+    },
+    {
+      id: 2,
+      type: "mc",
+      content: "How about now?",
+      Answers: ["nope", "maybe a little"] // of strings
+    }
+  ];
+            $scope.questions = data.survey.questions;
+          })
+          .error(handleError);
+      }else{
+        console.log('not logged in');
+        console.log(data.user);
+        // $location.path('/login');
       }
-    })
-    .error(handleError);
+    });
 
   $scope.gotoSignUp = function () {
     $location.path('/signup');
@@ -43,5 +64,10 @@ app.controller('mainController', function ($scope, $http, $location) {
 
   $scope.gotoLogIn = function () {
     $location.path('/login');
+  };
+
+  $scope.logout = function () {
+    $http.get('/logout');
+    $location.path('/');
   };
 });
