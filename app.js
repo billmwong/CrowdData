@@ -71,7 +71,8 @@ app.post('/register', function (req, res) {
   User.register(
     new User({
       username: req.body.username,
-      name: req.body.username
+      name: req.body.username,
+      age: req.body.age
     }),
     req.body.password,
     function (err, account) {
