@@ -36,19 +36,18 @@ app.controller('mainController', function ($scope, $http, $location) {
             console.log(data.survey);
             $scope.survey = data.survey;
             $scope.survey.questions = [{  // Short list of questions, max of 3 or 5
-      id: 1,
-      type: "mc",
-      content: "Are you?",
-      Answers: ["yeah totally", "sure"] // of strings
-    },
-    {
-      id: 2,
-      type: "mc",
-      content: "How about now?",
-      Answers: ["nope", "maybe a little"] // of strings
-    }
-  ];
-            $scope.questions = data.survey.questions;
+              id: 1,
+              type: "mc",
+              content: "Are you?",
+              Answers: ["yeah totally", "sure"] // of strings
+            },
+            {
+              id: 2,
+              type: "mc",
+              content: "How about now?",
+              Answers: ["nope", "maybe a little"] // of strings
+            }
+            ];
           })
           .error(handleError);
       }else{
@@ -57,6 +56,28 @@ app.controller('mainController', function ($scope, $http, $location) {
         // $location.path('/login');
       }
     });
+  $scope.submitAnswers = function () {
+    //This assumes two questions with radio responses, TODO: scalability
+    //also, this function does not currently have access to "data"
+    var responseData = {
+      user_id:data.user._id,
+      survey_id:survey._id,
+      response:{
+        survey:survey._id,
+        data:[
+          {
+            questionid:0,
+            response: $scope.q0
+          },
+          {
+            questionid:1,
+            response:$scope.q1
+          }
+        ]
+      }
+    };
+    $http.post('/api/survey/submit', responseData);
+  };
 
   $scope.gotoSignUp = function () {
     $location.path('/signup');
@@ -67,7 +88,9 @@ app.controller('mainController', function ($scope, $http, $location) {
   };
 
   $scope.logout = function () {
-    $http.get('/logout');
-    $location.path('/');
+    $http.get('/logout')
+    .success(function (data) {
+      $location.path('/');
+    });
   };
 });

@@ -35,7 +35,7 @@ var responseSchema = mongoose.Schema({
   survey: String,  //containing survey _id
   data: [{
     questionid: Number,
-    response: Boolean,
+    response: String,
   },
 ],
 });
