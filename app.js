@@ -72,7 +72,13 @@ app.post('/register', function (req, res) {
     new User({
       username: req.body.username,
       name: req.body.username,
-      age: req.body.age
+      age: req.body.age,
+      countryOfResidence: req.body.country,
+      dateOfBirth: {
+        year: req.body.DOB_year,
+        month: req.body.DOB_month,
+        day: req.body.DOB_day
+      }
     }),
     req.body.password,
     function (err, account) {
