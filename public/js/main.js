@@ -28,6 +28,7 @@ app.controller('mainController', function ($scope, $http, $location) {
   $http.get('/api/getUser')
     .success(function(data){
       if(data.user){
+        // The user is logged in
         console.log ('logged in');
         $scope.loggedIn = true;
         $http.get('/api/getSurvey')
@@ -35,26 +36,23 @@ app.controller('mainController', function ($scope, $http, $location) {
             console.log("Current survey: ");
             console.log(data.survey);
             $scope.survey = data.survey;
-            $scope.survey.questions = [{  // Short list of questions, max of 3 or 5
-      id: 1,
-      type: "mc",
-      content: "Are you?",
-      Answers: ["yeah totally", "sure"] // of strings
-    },
-    {
-      id: 2,
-      type: "mc",
-      content: "How about now?",
-      Answers: ["nope", "maybe a little"] // of strings
-    }
-  ];
+            $scope.survey.questions = [
+              {  // Short list of questions, max of 3 or 5
+                id: 1,
+                type: "mc",
+                content: "Are you?",
+                Answers: ["yeah totally", "sure"] // of strings
+              },
+              {
+                id: 2,
+                type: "mc",
+                content: "How about now?",
+                Answers: ["nope", "maybe a little"] // of strings
+              }
+            ];
             $scope.questions = data.survey.questions;
           })
           .error(handleError);
-      }else{
-        console.log('not logged in');
-        console.log(data.user);
-        // $location.path('/login');
       }
     });
 
