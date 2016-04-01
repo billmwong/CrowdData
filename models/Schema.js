@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
     month: Number,
     day: Number,
   },
-  Age: Number,
+  age: Number,
   timeCreated: Date,
 });
 

@@ -67,29 +67,31 @@ app.post('/login',
   }
 );
 
-// app.get('/register', function(req, res) {
-//     res.render('register', { });
-// });
-
 app.post('/register', function (req, res) {
-  User.register(new User({ username: req.body.username, name: req.body.username }), req.body.password, function (err, account) {
-    if (err) {
-      // return res.render('register', {info: "Sorry. That username already exists. Try again."});
-      return res.status(500).send(err.message);
+  User.register(
+    new User({
+      username: req.body.username,
+      name: req.body.username,
+      age: req.body.age,
+      countryOfResidence: req.body.country,
+      dateOfBirth: {
+        year: req.body.DOB_year,
+        month: req.body.DOB_month,
+        day: req.body.DOB_day
+      }
+    }),
+    req.body.password,
+    function (err, account) {
+      if (err) {
+        // Probably username already exists
+        return res.status(500).send(err.message);
+      }
+
+      passport.authenticate('local')(req, res, function () {
+        res.redirect('/');
+      });
     }
-
-    passport.authenticate('local')(req, res, function () {
-      res.redirect('/');
-    });
-  });
-});
-
-// app.get('/login', function(req, res) {
-//     res.render('login', { user : req.user });
-// });
-
-app.post('/login', passport.authenticate('local'), function (req, res) {
-  res.redirect('/');
+  );
 });
 
 app.get('/logout', function (req, res) {
