@@ -11,11 +11,10 @@ var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
-var oauth = require('./oauth.js');
-
+require('dotenv').config({ silent: true });
 var app = express();
 
-var MONGOURI = process.env.MONGOURI || oauth.mongodbURI;
+var MONGOURI = process.env.MONGOURI;
 var PORT = process.env.PORT || 3000;
 
 mongoose.connect(MONGOURI);
@@ -54,6 +53,7 @@ passport.deserializeUser(function (id, done) {
 app.get('/', index.home); // homepage needing logged-in user and initial batch of surveys
 app.post('/api/survey/submit', index.submitSurvey); // new survey response needing to be added to db.
 app.post('/api/survey/new', index.newSurvey); // new survey object needing to be added to db.
+app.get('/api/survey/dummy', index.dummySurvey); //REMOVE THIS BEFORE PUSHING
 app.post('/api/newuser', index.newUser); // new user details needing to be added to db.
 app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken

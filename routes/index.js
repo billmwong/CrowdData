@@ -31,7 +31,9 @@ routes.submitSurvey = function (req, res) {
   // The response should be added to the response collection and the survey
   // should be added to the user object as a completed survey.
   // res contains response object.
-  Survey.findOneandUpdate({ _id:req.body.survey._id }, { $push: { usersTaken: req.body.user._id },
+  console.log("what is survey response data? :");
+  console.log(req.body.response.data);
+  Survey.findOneAndUpdate({ _id:req.body.survey_id}, { $push: { usersTaken: req.body.user_id },
 
   });
   Response.create(req.body.response, function (err, response) {
@@ -42,6 +44,31 @@ routes.submitSurvey = function (req, res) {
 routes.newSurvey = function (req, res) {
   // Post request containing a survey object to be added to the survey collection.
   Survey.create(req.body.survey, function (err, survey) {
+    res.json(survey);
+  });
+};
+
+routes.dummySurvey = function (req, res) {
+  // Post request containing a survey object to be added to the survey collection.
+  var dummySurvey = {
+  author: "Mimo",  // containing user _id
+  timeCreated: Date(),
+  questions: [{  // Short list of questions, max of 3 or 5
+              id: 1,
+              type: "mc",
+              content: "Are you?",
+              Answers: ["yeah totally", "sure"] // of strings
+            },
+            {
+              id: 2,
+              type: "mc",
+              content: "How about now?",
+              Answers: ["nope", "maybe a little"] // of strings
+            }
+            ],
+  usersTaken: []  // of user _ids
+};
+  Survey.create(dummySurvey, function (err, survey) {
     res.json(survey);
   });
 };
