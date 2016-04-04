@@ -27,7 +27,7 @@ app.controller('mainController', function ($scope, $http, $location) {
 
   $http.get('/api/getUser')
     .success(function (data) {
-      $scope.user = '';
+      $scope.user = data.user;
       if (data.user) {
         // The user is logged in
         console.log('logged in');
@@ -38,47 +38,33 @@ app.controller('mainController', function ($scope, $http, $location) {
             console.log('Current survey: ');
             console.log(data.survey);
             $scope.survey = data.survey;
-            $scope.survey.questions = [
-              {  // Short list of questions, max of 3 or 5
-                id: 1,
-                type: 'mc',
-                content: 'Are you?',
-                Answers: ['yeah totally', 'sure'] // of strings
-              },
-              {
-                id: 2,
-                type: 'mc',
-                content: 'How about now?',
-                Answers: ['nope', 'maybe a little'] // of strings
-              },
-            ];
-            $scope.questions = data.survey.questions;
           })
           .error(handleError);
       }
     });
 
   $scope.submitAnswers = function () {
-    //This assumes two questions with radio responses, TODO: scalability
-    //also, this function does not currently have access to "data"
+    //This assumes two questions with radio responses
+    var selectedResponses = $scope.survey.questions.map(function (question) {
+      return { questionid: question.id, response: question.response };
+    });
+
+    console.log('selectedResponses:');
+    console.log(selectedResponses);
+
     var responseData = {
       user_id:$scope.user._id,
       survey_id:$scope.survey._id,
       response:{
         survey:$scope.survey._id,
-        data:[
-          {
-            questionid:0,
-            response: $scope.q0,
-          },
-          {
-            questionid:1,
-            response:$scope.q1,
-          },
-        ],
+        data:selectedResponses,
       },
     };
-    $http.post('/api/survey/submit', responseData);
+    $http.post('/api/survey/submit', responseData)
+    .success(function (data) {
+      console.log("here's the data");
+      console.log(data);
+    });
   };
 
   $scope.gotoSignUp = function () {
