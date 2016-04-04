@@ -48,31 +48,6 @@ routes.newSurvey = function (req, res) {
   });
 };
 
-routes.dummySurvey = function (req, res) {
-  // Post request containing a survey object to be added to the survey collection.
-  var dummySurvey = {
-  author: "Mimo",  // containing user _id
-  timeCreated: Date(),
-  questions: [{  // Short list of questions, max of 3 or 5
-              id: 1,
-              type: "mc",
-              content: "Are you?",
-              Answers: ["yeah totally", "sure"] // of strings
-            },
-            {
-              id: 2,
-              type: "mc",
-              content: "How about now?",
-              Answers: ["nope", "maybe a little"] // of strings
-            }
-            ],
-  usersTaken: []  // of user _ids
-};
-  Survey.create(dummySurvey, function (err, survey) {
-    res.json(survey);
-  });
-};
-
 routes.newUser = function (req, res) {
   // Post request containing a user object to be added to the user collection.
   User.create(req.body.response, function (err, user) {

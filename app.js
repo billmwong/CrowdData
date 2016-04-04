@@ -53,7 +53,6 @@ passport.deserializeUser(function (id, done) {
 app.get('/', index.home); // homepage needing logged-in user and initial batch of surveys
 app.post('/api/survey/submit', index.submitSurvey); // new survey response needing to be added to db.
 app.post('/api/survey/new', index.newSurvey); // new survey object needing to be added to db.
-app.get('/api/survey/dummy', index.dummySurvey); //REMOVE THIS BEFORE PUSHING
 app.post('/api/newuser', index.newUser); // new user details needing to be added to db.
 app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken

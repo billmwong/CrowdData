@@ -45,8 +45,7 @@ app.controller('mainController', function ($scope, $http, $location) {
       }
     });
   $scope.submitAnswers = function () {
-    //This assumes two questions with radio responses, TODO: scalability
-    //also, this function does not currently have access to "data"
+    //This assumes two questions with radio responses
     var selectedResponses = $scope.survey.questions.map(function(question){
       return {questionid: question.id, response: question.response};
     });
