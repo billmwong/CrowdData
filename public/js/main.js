@@ -29,6 +29,7 @@ app.controller('mainController', function ($scope, $http, $location) {
     .success(function(data){
       $scope.user = data.user;
       if(data.user){
+        // The user is logged in
         console.log ('logged in');
         $scope.loggedIn = true;
         $http.get('/api/getSurvey')
@@ -38,10 +39,6 @@ app.controller('mainController', function ($scope, $http, $location) {
             $scope.survey = data.survey;
           })
           .error(handleError);
-      }else{
-        console.log('not logged in');
-        console.log(data.user);
-        // $location.path('/login');
       }
     });
   $scope.submitAnswers = function () {

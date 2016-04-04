@@ -11,13 +11,15 @@ var Schema = require('./models/Schema.js');
 var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
+
 require('dotenv').config({ silent: true });
+
 var app = express();
 
 var MONGOURI = process.env.MONGOURI;
 var PORT = process.env.PORT || 3000;
 
-mongoose.connect(MONGOURI);
+mongoose.connect(MONGOURI, function (err) { if (err) {console.log(err);}});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -64,29 +66,31 @@ app.post('/login',
   }
 );
 
-// app.get('/register', function(req, res) {
-//     res.render('register', { });
-// });
-
 app.post('/register', function (req, res) {
-  User.register(new User({ username: req.body.username, name: req.body.username }), req.body.password, function (err, account) {
-    if (err) {
-      // return res.render('register', {info: "Sorry. That username already exists. Try again."});
-      return res.status(500).send(err.message);
+  User.register(
+    new User({
+      username: req.body.username,
+      name: req.body.username,
+      age: req.body.age,
+      countryOfResidence: req.body.country,
+      dateOfBirth: {
+        year: req.body.DOB_year,
+        month: req.body.DOB_month,
+        day: req.body.DOB_day
+      }
+    }),
+    req.body.password,
+    function (err, account) {
+      if (err) {
+        // Probably username already exists
+        return res.status(500).send(err.message);
+      }
+
+      passport.authenticate('local')(req, res, function () {
+        res.redirect('/');
+      });
     }
-
-    passport.authenticate('local')(req, res, function () {
-      res.redirect('/');
-    });
-  });
-});
-
-// app.get('/login', function(req, res) {
-//     res.render('login', { user : req.user });
-// });
-
-app.post('/login', passport.authenticate('local'), function (req, res) {
-  res.redirect('/');
+  );
 });
 
 app.get('/logout', function (req, res) {
