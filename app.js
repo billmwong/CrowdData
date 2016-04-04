@@ -12,7 +12,6 @@ var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
 
-// var oauth = require('./oauth.js');
 require('dotenv').config({ silent: true });
 
 var app = express();
