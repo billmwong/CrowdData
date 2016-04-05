@@ -4,11 +4,13 @@
   <div class="center">
     <h3>Log In To CrowdData</h3>
     <form role="form" action="/login" method="post">
-      <div class="form-group">
-        <input type="text" name="username" placeholder="Enter Username" class="form-control"/>
+      <div class="form-group label-floating">
+        <label class="control-label" for="username-input">Username</label>
+        <input type="text" name="username" id="username-input" class="form-control"/>
       </div>
-      <div class="form-group">
-        <input type="password" name="password" placeholder="Password" class="form-control"/>
+      <div class="form-group label-floating">
+        <label class="control-label" for="password-input">Password</label>
+        <input type="password" name="password" id="password-input" class="form-control"/>
       </div>
       <button type="submit" class="btn btn-raised btn-lg btn-primary btn-block">Login</button>
     </form>
