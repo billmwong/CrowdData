@@ -1,17 +1,19 @@
-<div ng-show="!loggedIn" class="center">
-  <h1>Log In To CrowdData</h1>
-  <form role="form" action="/login" method="post">
-    <div class="form-group">
-      <input type="text" name="username" placeholder="Enter Username" class="form-control"/>
-    </div>
-    <div class="form-group">
-      <input type="password" name="password" placeholder="Password" class="form-control"/>
-    </div>
-    <!-- <button type="submit" class="btn btn-default">Log In</button> -->
-    <!-- <a href="/"><button type="button" class="btn btn-primary">Cancel</button></a> -->
-    <button type="submit" class="btn btn-raised btn-lg btn-primary btn-block">Login</button>
-  </form>
-  <button class="btn btn-raised btn-lg btn-primary btn-block" ng-click="gotoSignUp()">Sign Up</button>
+<div ng-show="!loggedIn">
+  <h1 style="text-align: center">CrowdData lets you access the knowledge of everyone in the world</h1>
+  <br>
+  <div class="center">
+    <h3>Log In To CrowdData</h3>
+    <form role="form" action="/login" method="post">
+      <div class="form-group">
+        <input type="text" name="username" placeholder="Enter Username" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <input type="password" name="password" placeholder="Password" class="form-control"/>
+      </div>
+      <button type="submit" class="btn btn-raised btn-lg btn-primary btn-block">Login</button>
+    </form>
+    <button class="btn btn-raised btn-lg btn-primary btn-block" ng-click="gotoSignUp()">Sign Up</button>
+  </div>
 </div>
 <div ng-show="loggedIn">
   <h1>You are logged in!</h1>
