@@ -17,15 +17,18 @@
     <button class="btn btn-raised btn-lg btn-primary btn-block" ng-click="gotoSignUp()">Sign Up</button>
   </div>
 </div>
-<div ng-show="loggedIn">
-  <h1>You are logged in!</h1>
-  {{survey}}<br>
-  <div class = "questions" ng-repeat = "question in questions">
-  	<li>{{question}}
-  </div>
-<form>
-	
-</form>
 
-  <button ng-click = "logout()"> Log Out </button>
+<div ng-show="loggedIn">
+  <h1>Here's a survey!</h1>
+	<form>
+		<div class = "questions" ng-repeat = "q in survey.questions">
+	  	<h4>{{q.content}}</h4>
+	  	<div class = "answers" ng-repeat = "a in q.Answers">
+	  		<input type = "radio" name = "{{q.id}}" value = "{{a}}" ng-model="q.response"/>{{a}}
+	  	</div>
+	  </div>
+	  <input type="submit" value = "Submit" ng-click = "submitAnswers()"/>
+	</form>
+	<button ng-click = "logout()"> Log Out </button>
 </div>
+  
