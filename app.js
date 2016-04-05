@@ -12,7 +12,6 @@ var User = Schema.userModel;
 var Survey = Schema.surveyModel;
 var Response = Schema.responseModel;
 
-// var oauth = require('./oauth.js');
 require('dotenv').config({ silent: true });
 
 var app = express();
@@ -77,8 +76,8 @@ app.post('/register', function (req, res) {
       dateOfBirth: {
         year: req.body.DOB_year,
         month: req.body.DOB_month,
-        day: req.body.DOB_day
-      }
+        day: req.body.DOB_day,
+      },
     }),
     req.body.password,
     function (err, account) {

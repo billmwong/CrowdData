@@ -9,8 +9,8 @@ routes.home = function (req, res) {
   res.sendFile('main.html', { root: path.join(__dirname, '../public') });
 };
 
-routes.getUser = function(req, res){
-  res.json({user: req.user, msg:'here is your user'});
+routes.getUser = function (req, res) {
+  res.json({ user: req.user, msg:'here is your user' });
 };
 
 routes.getSurvey = function (req, res) {
@@ -30,7 +30,9 @@ routes.submitSurvey = function (req, res) {
   // The response should be added to the response collection and the survey
   // should be added to the user object as a completed survey.
   // res contains response object.
-  Survey.findOneandUpdate({ _id:req.body.survey._id }, { $push: { usersTaken: req.body.user._id },
+  console.log('what is survey response data? :');
+  console.log(req.body.response.data);
+  Survey.findOneAndUpdate({ _id:req.body.survey_id }, { $push: { usersTaken: req.body.user_id },
 
   });
   Response.create(req.body.response, function (err, response) {
