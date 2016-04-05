@@ -1,23 +1,27 @@
-<h1>sign up here</h1>
-<form role="form" action="/register" method="post" style="max-width: 300px;">
-  <div class="form-group">
-    <input type="text" name="username" placeholder="Enter Username" class="form-control"/>
-  </div>
-  <div class="form-group">
-    <input type="password" name="password" placeholder="Password" class="form-control"/>
-  </div>
-  <div class="form-group">
-    <input type="number" name="age" placeholder="Age" class="form-control"/>
-  </div>
-  <div class="form-group">
-    <input type="text" name="country" placeholder="Country of Residence" class="form-control"/>
-  </div>
-  <div class="form-group">
-    <p>Date of Birth</p>
-    <input type="number" name="DOB_month" placeholder="Month" class="form-control"/>
-    <input type="number" name="DOB_day" placeholder="Day" class="form-control"/>
-    <input type="number" name="DOB_year" placeholder="Year" class="form-control"/>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>&nbsp;
-  <a href="/"><button type="button" class="btn btn-primary">Cancel</button></a>
-</form>
+<div class="center">
+  <h1>Sign Up for CrowdData</h1>
+  <form role="form" action="/register" method="post">
+    <div class="form-group label-floating">
+      <label class="control-label" for="focusedInput1">Username</label>
+      <input class="form-control" id="focusedInput1" type="text">
+      <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" placeholder="Password" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <input type="number" name="age" placeholder="Age" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <input type="text" name="country" placeholder="Country of Residence" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <p>Date of Birth</p>
+      <input type="number" name="DOB_month" placeholder="Month" class="form-control"/>
+      <input type="number" name="DOB_day" placeholder="Day" class="form-control"/>
+      <input type="number" name="DOB_year" placeholder="Year" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>&nbsp;
+    <a href="/"><button type="button" class="btn btn-primary">Cancel</button></a>
+  </form>
+</div>
