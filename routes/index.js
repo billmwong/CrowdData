@@ -10,7 +10,6 @@ routes.home = function (req, res) {
 };
 
 routes.getUser = function(req, res){
-  console.log(req.user);
   res.json({user: req.user, msg:'here is your user'});
 };
 

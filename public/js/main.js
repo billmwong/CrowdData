@@ -1,5 +1,7 @@
 var app = angular.module('crowddata', ['ngRoute']);
 
+$.material.init();
+
 var handleError = function(err) {
   console.log("Error: "+ err);
 };
