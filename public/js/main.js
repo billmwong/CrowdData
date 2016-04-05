@@ -10,6 +10,10 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: '../views/landing.html',
     controller: 'mainController',
   })
+  .when('/newSurvey', {
+    templateUrl: '../views/newSurvey.html',
+    controller: 'mainController',
+  })
   .when('/login', {
     templateUrl: '../views/login.html',
     controller: 'mainController',
