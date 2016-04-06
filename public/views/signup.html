@@ -2,26 +2,43 @@
   <h1>Sign Up for CrowdData</h1>
   <form role="form" action="/register" method="post">
     <div class="form-group label-floating">
-      <label class="control-label" for="focusedInput1">Username</label>
-      <input class="form-control" id="focusedInput1" type="text">
-      <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
+      <label class="control-label" for="username-input">Username</label>
+      <input type="text" class="form-control" name="username" id="username-input">
     </div>
-    <div class="form-group">
-      <input type="password" name="password" placeholder="Password" class="form-control"/>
+    <div class="form-group label-floating">
+      <label class="control-label" for="password-input">Password</label>
+      <input type="password" class="form-control" name="password" id="password-input"/>
     </div>
-    <div class="form-group">
-      <input type="number" name="age" placeholder="Age" class="form-control"/>
+    <div class="form-group label-floating">
+      <label class="control-label" for="age-input">Age</label>
+      <input type="number" class="form-control" name="age" id="age-input"/>
     </div>
-    <div class="form-group">
-      <input type="text" name="country" placeholder="Country of Residence" class="form-control"/>
+    <div class="form-group label-floating">
+      <label class="control-label" for="country-input">Country of Residence</label>
+      <input type="text" class="form-control" name="country" id="country-input"/>
     </div>
-    <div class="form-group">
-      <p>Date of Birth</p>
-      <input type="number" name="DOB_month" placeholder="Month" class="form-control"/>
-      <input type="number" name="DOB_day" placeholder="Day" class="form-control"/>
-      <input type="number" name="DOB_year" placeholder="Year" class="form-control"/>
+    <p>Date of Birth</p>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input type="number" name="DOB_month" placeholder="MM" class="form-control"/>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input type="number" name="DOB_day" placeholder="DD" class="form-control"/>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input type="number" name="DOB_year" placeholder="YYYY" class="form-control"/>
+        </div>
+      </div>
+      <div class="col-sm-3"></div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>&nbsp;
-    <a href="/"><button type="button" class="btn btn-primary">Cancel</button></a>
+    <div class="row">
+      <button type="submit" class="btn btn-default btn-raised">Sign Up</button>&nbsp;
+      <a href="/"><button type="button" class="btn btn-primary btn-raised">Cancel</button></a>
+    </div>
   </form>
 </div>
