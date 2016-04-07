@@ -1,8 +1,12 @@
 <div class="tooltips-group center">
   <h2> Let's make a survey! </h2>
 
+  <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right">Right<div class="ripple-container"></div></button>
 
   <div class="form-group label-floating">
+
+    <!-- tooltips work in jsfiddle: http://jsfiddle.net/8dfwcL98/ -->
+
     <label class="control-label" for="surveyTitle">Title</label>
     <input class="form-control" id="surveyTitle" type="text" data-toggle="tooltip"
       data-placement="right" title data-original-title="This won't be shown to users. It is for your reference only.">
@@ -32,9 +36,12 @@
     </form>
     <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
   </div>
-  <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Username</label>
-    <input class="form-control" id="focusedInput1" type="text">
-    <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
+  <div class="btn-toolbar">
+    <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+  Single toggle </button>
+  <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+  Single toggle </button>
+<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+  Single toggle </button>
   </div>
 <div>
