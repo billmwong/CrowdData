@@ -46,14 +46,14 @@ app.controller('mainController', function ($scope, $http, $location) {
     });
 
   $scope.submitAnswers = function () {
-    //This assumes two questions with radio responses
     var selectedResponses = $scope.survey.questions.map(function (question) {
       return { questionid: question.id, response: question.response };
     });
 
     console.log('selectedResponses:');
     console.log(selectedResponses);
-
+    
+    //create the response db entry
     var responseData = {
       user_id:$scope.user._id,
       survey_id:$scope.survey._id,

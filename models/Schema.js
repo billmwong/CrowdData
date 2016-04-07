@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var passportLocalMongoose = require('passport-local-mongoose');
 
+var Schema = mongoose.Schema, 
+    ObjectId = Schema.ObjectId;
+
 // Create a Schema
 var userSchema = mongoose.Schema({
   name: String,
@@ -13,6 +16,7 @@ var userSchema = mongoose.Schema({
   },
   age: Number,
   timeCreated: Date,
+  surveysTaken: [{type: ObjectId, ref: 'Survey'}],
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -29,7 +33,7 @@ var surveySchema = mongoose.Schema({
   //     Answers: Array // of strings
   //   }
   // ],
-  usersTaken: Array,  // of user _ids
+  usersTaken: [{type: ObjectId, ref: 'User'}],  // of user _ids
 });
 
 var responseSchema = mongoose.Schema({
