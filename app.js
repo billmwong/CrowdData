@@ -62,7 +62,7 @@ app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
 
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login' }),
+  passport.authenticate('local', { failureRedirect: '/' }),
   function (req, res) {
     res.redirect('/');
   }
