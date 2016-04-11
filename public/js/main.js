@@ -23,9 +23,10 @@ app.config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 });
 
-app.controller('mainController', function ($scope, $http, $location) {
-  $scope.contentPath = 'views/landing.html';
+app.controller('mainController', function ($scope, $http, $location, $route) {
   $scope.loggedIn = false;
+  $scope.loading = false;
+  $scope.loadingText = "";
 
   $http.get('/api/getUser')
     .success(function (data) {
@@ -78,9 +79,16 @@ app.controller('mainController', function ($scope, $http, $location) {
   };
 
   $scope.logout = function () {
+    $scope.loading = true;
+    $scope.loadingText = "Logging Out";
+    console.log('logging out...');
     $http.get('/logout')
     .success(function (data) {
+      $scope.loading = false;
       $location.path('/');
+      $route.reload();
     });
+    // setTimeout(function() {
+    // }, 1000);
   };
 });
