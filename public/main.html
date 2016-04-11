@@ -33,14 +33,13 @@
   </head>
   <body>
     <div class="container">
-    	<div class="row">
+    	<div class="row header">
     		<h1>HEADER</h1>
     	</div>
-    	<div class="row">
-    		<div ng-include="contentPath"></div>
-    	</div>
-    </div>
-    <div ng-view>
+    	<div class="row pageContent">
+            <div ng-view>
+            </div>
+        </div>
     </div>
   </body>
 </html>
