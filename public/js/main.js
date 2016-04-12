@@ -12,12 +12,12 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: '../views/landing.html',
     controller: 'mainController',
   })
-  .when('/login', {
-    templateUrl: '../views/login.html',
-    controller: 'mainController',
-  })
   .when('/signup', {
     templateUrl: '../views/signup.html',
+    controller: 'mainController',
+  })
+  .when('/about', {
+    templateUrl: '../views/about.html',
     controller: 'mainController',
   });
   $locationProvider.html5Mode(true);
@@ -78,6 +78,10 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
     $location.path('/login');
   };
 
+  $scope.gotoAbout = function () {
+    $location.path('/about');
+  };
+
   $scope.logout = function () {
     $scope.loading = true;
     $scope.loadingText = "Logging Out";
@@ -85,6 +89,7 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
     $http.get('/logout')
     .success(function (data) {
       $scope.loading = false;
+      $scope.loggedIn = false;
       $location.path('/');
       $route.reload();
     });

@@ -4,6 +4,10 @@
   margin-right: auto ;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 /* Below is taken from http://codepen.io/jczimm/pen/vEBpoL*/
 body {
   background-color: #eee;
