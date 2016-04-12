@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var logger = require('morgan');
 var index = require('./routes/index');
 var passport = require('passport');
 var session = require('express-session');
@@ -22,6 +23,7 @@ var PORT = process.env.PORT || 3000;
 mongoose.connect(MONGOURI, function (err) { if (err) {console.log(err);}});
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -60,7 +62,7 @@ app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
 
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login' }),
+  passport.authenticate('local', { failureRedirect: '/' }),
   function (req, res) {
     res.redirect('/');
   }

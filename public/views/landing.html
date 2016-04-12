@@ -1,34 +1,48 @@
-<div ng-show="!loggedIn">
-  <h1 style="text-align: center">CrowdData lets you access the knowledge of everyone in the world</h1>
-  <br>
-  <div class="center">
-    <h3>Log In To CrowdData</h3>
-    <form role="form" action="/login" method="post">
-      <div class="form-group label-floating">
-        <label class="control-label" for="username-input">Username</label>
-        <input type="text" name="username" id="username-input" class="form-control"/>
-      </div>
-      <div class="form-group label-floating">
-        <label class="control-label" for="password-input">Password</label>
-        <input type="password" name="password" id="password-input" class="form-control"/>
-      </div>
-      <button type="submit" class="btn btn-raised btn-lg btn-primary btn-block">Login</button>
-    </form>
-    <button class="btn btn-raised btn-lg btn-primary btn-block" ng-click="gotoSignUp()">Sign Up</button>
+<div ng-show="!loading">
+  <div ng-show="!loggedIn">
+    <h1 style="text-align: center">CrowdData lets you access the knowledge of everyone in the world</h1>
+    <br>
+    <div class="center">
+      <h3>Log In To CrowdData</h3>
+      <form role="form" action="/login" method="post">
+        <div class="form-group label-floating">
+          <label class="control-label" for="username-input">Username</label>
+          <input type="text" name="username" id="username-input" class="form-control"/>
+        </div>
+        <div class="form-group label-floating">
+          <label class="control-label" for="password-input">Password</label>
+          <input type="password" name="password" id="password-input" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-raised btn-lg btn-default btn-block">Login</button>
+      </form>
+      <button class="btn btn-raised btn-lg btn-primary btn-block" ng-click="gotoSignUp()">Sign Up</button>
+    </div>
+  </div>
+
+  <div ng-show="loggedIn">
+    <div class="card">
+      <h3 class="card-title"> Here's a survey!</h3>
+    	<form class="card-body">
+    		<div class = "questions" ng-repeat = "q in survey.questions">
+    	  	<h4>{{q.content}}</h4>
+    	  	<div class = "answers" ng-repeat = "a in q.Answers">
+    	  		<input type = "radio" name = "{{q.id}}" class="with-gap" value = "{{a}}" id = "{{a}}" ng-model="q.response"/>
+            <label for="{{a}}">{{a}}</label>
+    	  	</div>
+    	  </div>
+    	  <input type="submit" value = "Submit" class="btn btn-primary" ng-click = "submitAnswers()"/>
+    	</form>
+    </div>
   </div>
 </div>
-
-<div ng-show="loggedIn">
-  <h1>Here's a survey!</h1>
-	<form>
-		<div class = "questions" ng-repeat = "q in survey.questions">
-	  	<h4>{{q.content}}</h4>
-	  	<div class = "answers" ng-repeat = "a in q.Answers">
-	  		<input type = "radio" name = "{{q.id}}" value = "{{a}}" ng-model="q.response"/>{{a}}
-	  	</div>
-	  </div>
-	  <input type="submit" value = "Submit" ng-click = "submitAnswers()"/>
-	</form>
-	<button ng-click = "logout()"> Log Out </button>
-</div>
   
+<div ng-show="loading">
+  <h1>{{loadingText}}</h1>
+  <div class="showbox">
+      <div class="loader">
+          <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+          </svg>
+      </div>
+  </div>
+</div>

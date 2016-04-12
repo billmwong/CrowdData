@@ -18,20 +18,21 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: '../views/newSurvey.html',
     controller: 'newSurveyController',
   })
-  .when('/login', {
-    templateUrl: '../views/login.html',
-    controller: 'mainController',
-  })
   .when('/signup', {
     templateUrl: '../views/signup.html',
+    controller: 'mainController',
+  })
+  .when('/about', {
+    templateUrl: '../views/about.html',
     controller: 'mainController',
   });
   $locationProvider.html5Mode(true);
 });
 
-app.controller('mainController', function ($scope, $http, $location) {
-  $scope.contentPath = 'views/landing.html';
+app.controller('mainController', function ($scope, $http, $location, $route) {
   $scope.loggedIn = false;
+  $scope.loading = false;
+  $scope.loadingText = '';
 
   $http.get('/api/getUser')
     .success(function (data) {
@@ -52,7 +53,6 @@ app.controller('mainController', function ($scope, $http, $location) {
     });
 
   $scope.submitAnswers = function () {
-    //This assumes two questions with radio responses
     var selectedResponses = $scope.survey.questions.map(function (question) {
       return { questionid: question.id, response: question.response };
     });
@@ -60,6 +60,7 @@ app.controller('mainController', function ($scope, $http, $location) {
     console.log('selectedResponses:');
     console.log(selectedResponses);
 
+    //create the response db entry
     var responseData = {
       user_id:$scope.user._id,
       survey_id:$scope.survey._id,
@@ -83,11 +84,24 @@ app.controller('mainController', function ($scope, $http, $location) {
     $location.path('/login');
   };
 
+  $scope.gotoAbout = function () {
+    $location.path('/about');
+  };
+
   $scope.logout = function () {
+    $scope.loading = true;
+    $scope.loadingText = 'Logging Out';
+    console.log('logging out...');
     $http.get('/logout')
     .success(function (data) {
+      $scope.loading = false;
+      $scope.loggedIn = false;
       $location.path('/');
+      $route.reload();
     });
+
+    // setTimeout(function() {
+    // }, 1000);
   };
 });
 
