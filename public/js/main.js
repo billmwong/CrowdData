@@ -14,8 +14,20 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: '../views/landing.html',
     controller: 'mainController',
   })
-  .when('/newsurvey', {
-    templateUrl: '../views/newSurvey.html',
+  .when('/newsurvey/getting_started', {
+    templateUrl: '../views/newSurveyIntro.html',
+    controller: 'newSurveyController',
+  })
+  .when('/newsurvey/setting_up', {
+    templateUrl: '../views/newSurveySetup.html',
+    controller: 'newSurveyController',
+  })
+  .when('/newsurvey/creating_qs', {
+    templateUrl: '../views/newSurveyQuestion.html',
+    controller: 'newSurveyController',
+  })
+  .when('/newsurvey/preview', {
+    templateUrl: '../views/newSurveyPreview.html',
     controller: 'newSurveyController',
   })
   .when('/signup', {
