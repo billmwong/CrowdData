@@ -14,9 +14,21 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: '../views/landing.html',
     controller: 'mainController',
   })
-  .when('/newsurvey', {
-    templateUrl: '../views/newSurvey.html',
-    controller: 'mainController',
+  .when('/newsurvey/getting_started', {
+    templateUrl: '../views/newSurveyIntro.html',
+    controller: 'newSurveyController',
+  })
+  .when('/newsurvey/setting_up', {
+    templateUrl: '../views/newSurveySetup.html',
+    controller: 'newSurveyController',
+  })
+  .when('/newsurvey/creating_qs', {
+    templateUrl: '../views/newSurveyQuestion.html',
+    controller: 'newSurveyController',
+  })
+  .when('/newsurvey/preview', {
+    templateUrl: '../views/newSurveyPreview.html',
+    controller: 'newSurveyController',
   })
   .when('/signup', {
     templateUrl: '../views/signup.html',
@@ -32,7 +44,7 @@ app.config(function ($routeProvider, $locationProvider) {
 app.controller('mainController', function ($scope, $http, $location, $route) {
   $scope.loggedIn = false;
   $scope.loading = false;
-  $scope.loadingText = "";
+  $scope.loadingText = '';
 
   $http.get('/api/getUser')
     .success(function (data) {
@@ -59,7 +71,7 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
 
     console.log('selectedResponses:');
     console.log(selectedResponses);
-    
+
     //create the response db entry
     var responseData = {
       user_id:$scope.user._id,
@@ -90,7 +102,7 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
 
   $scope.logout = function () {
     $scope.loading = true;
-    $scope.loadingText = "Logging Out";
+    $scope.loadingText = 'Logging Out';
     console.log('logging out...');
     $http.get('/logout')
     .success(function (data) {
@@ -99,7 +111,31 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
       $location.path('/');
       $route.reload();
     });
+
     // setTimeout(function() {
     // }, 1000);
+  };
+});
+
+app.controller('newSurveyController', function ($scope, $http, $location) {
+  $scope.numOfQuestions = 0;
+  $scope.canRemoveQ = false;
+  $scope.tooManyQ = false;
+  console.log('using newSurveyController');
+
+  $scope.addQ = function () {
+    $scope.numOfQuestions += 1;
+    $scope.canRemoveQ = true;
+    if ($scope.numOfQuestions > 5) {
+      $scope.numOfQuestions = 5;
+      $scope.tooManyQ = true;
+    }
+  };
+
+  $scope.removeQ = function () {
+    if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
+    } else {
+      $scope.canRemoveQ = false;
+    };
   };
 });
