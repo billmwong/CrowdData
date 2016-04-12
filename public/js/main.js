@@ -1,6 +1,8 @@
 var app = angular.module('crowddata', ['ngRoute']);
 
+// Material Design initializations
 $.material.init();
+$(function () { $("[data-toggle='tooltip']").tooltip(); });
 
 var handleError = function (err) {
   console.log('Error: ' + err);
@@ -10,6 +12,10 @@ app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
   .when('/', {
     templateUrl: '../views/landing.html',
+    controller: 'mainController',
+  })
+  .when('/newsurvey', {
+    templateUrl: '../views/newSurvey.html',
     controller: 'mainController',
   })
   .when('/signup', {
