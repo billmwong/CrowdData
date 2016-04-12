@@ -16,7 +16,7 @@ app.config(function ($routeProvider, $locationProvider) {
   })
   .when('/newsurvey', {
     templateUrl: '../views/newSurvey.html',
-    controller: 'mainController',
+    controller: 'newSurveyController',
   })
   .when('/login', {
     templateUrl: '../views/login.html',
@@ -88,5 +88,28 @@ app.controller('mainController', function ($scope, $http, $location) {
     .success(function (data) {
       $location.path('/');
     });
+  };
+});
+
+app.controller('newSurveyController', function ($scope, $http, $location) {
+  $scope.numOfQuestions = 0;
+  $scope.canRemoveQ = false;
+  $scope.tooManyQ = false;
+  console.log('using newSurveyController');
+
+  $scope.addQ = function () {
+    $scope.numOfQuestions += 1;
+    $scope.canRemoveQ = true;
+    if ($scope.numOfQuestions > 5) {
+      $scope.numOfQuestions = 5;
+      $scope.tooManyQ = true;
+    }
+  };
+
+  $scope.removeQ = function () {
+    if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
+    } else {
+      $scope.canRemoveQ = false;
+    };
   };
 });
