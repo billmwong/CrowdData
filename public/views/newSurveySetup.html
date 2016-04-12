@@ -1,0 +1,108 @@
+<!-- <div class="row">
+  <div class="col-sm-6"> -->
+  <div class="card form-horizontal">
+    <div class="card-body">
+      <h2 class="card-title"> Let's make a survey! </h2>
+
+      <!-- <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right">Right<div class="ripple-container"></div></button> -->
+
+      <div class="form-group label-floating">
+
+        <!-- tooltips work in jsfiddle: http://jsfiddle.net/8dfwcL98/ -->
+
+        <label class="control-label" for="surveyTitle">Title</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle">This won't be shown to users. It is for your reference only.</small>
+        <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
+      </div>
+      <br>
+      <div class="input-field form-group label-floating">
+        <label class="control-label" for="surveyHypothesis">Hypothesis</label>
+        <textarea class="form-control" id="surveyHypothesis" length="120" ng-focus="typingHypo=true" ng-blur="typingHypo=false"></textarea>
+        <span class="character-counter" style="float: right; font-size: 12px; height: 1px;"></span>
+        <small class="text-muted" ng-show="typingHypo">We will show you this along with your data to help you remember what you want to find out.</small>
+        <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
+      </div>
+      <div class="form-group label-floating">
+        <h3>What category do you think your survey falls into?</h3>
+        <form>
+          <br>
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input name = "surveyType" class="with-gap" type="radio" value="Health">
+                Health
+              </label>
+            </div>
+            <br>
+            <div class="radio">
+              <label>
+                <input name = "surveyType" class="with-gap" type="radio" value="Ethnography">
+                Ethnography
+              </label>
+            </div>
+            <br>
+            <div class="radio">
+              <label>
+                <input name = "surveyType" class="with-gap" type="radio" value="Opinion">
+                Opinion
+              </label>
+            </div>
+          </div>
+        </form>
+        <!-- <input type="text" name="username" placeholder="Enter Username" class="form-control"/> -->
+      </div>
+
+      <h3>What aspects of your user do you think are needed to test your hypothesis?</h3>
+      <form>
+        <br>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"><span class="checkbox-material"></span> Age</input>
+            </label>
+          </div>
+          <p class="help-block">For example: 13 years old, 56 years old</p>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"><span class="checkbox-material"></span> Area of Residence</input>
+            </label>
+          </div>
+          <p class="help-block">For example: Boston, MA</p>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"><span class="checkbox-material"></span> Gender</input>
+            </label>
+          </div>
+          <p class="help-block">For example: cis female, demiguy</p>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"><span class="checkbox-material"></span> Nationality</input>
+            </label>
+          </div>
+          <p class="help-block">For example: Egyptian, Cantonese</p>
+        </div>
+
+      <h3 class="text-danger" ng-show="tooManyQ">*</h3><h3>How many questions will your survey have?</h3>
+      <span class="btn-group" role="group" aria-label="plusMinus">
+        <h2>
+          &emsp; <span> {{numOfQuestions}} </span> &emsp; &emsp;
+          <button type="button" class="btn btn-secondary" ng-click="addQ()"><i class="material-icons">add</i></button>
+          <button type="button" class="btn btn-secondary" ng-click="removeQ()" ng-disabled="!numOfQuestions"><i class="material-icons">remove</i></button>
+      </h2></span>
+      <p>
+        <small class="text-danger" ng-show="tooManyQ"> We recommend using five or less questions.
+          If you feel like you need more, we suggest simplifying your hypothesis. </small>
+      </p>
+  <div>
+    <a href="javascript:void(0)" class="btn btn-raised btn-secondary">cancel<div class="ripple-container"></div></a>
+    <button type="submit" class="btn btn-raised btn-primary">Submit<div class="ripple-container"></div></button>
+  </div>
+</div>
+</div>
