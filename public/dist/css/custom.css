@@ -4,3 +4,7 @@
   margin-right: 10%;
   min-width: 500px;
 }
+
+.card-content {
+  padding: 25px;
+}

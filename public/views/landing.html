@@ -20,14 +20,16 @@
   </div>
 
   <div ng-show="loggedIn">
-    <div class="card">
+    <div class="card card-content">
       <h3 class="card-title"> Here's a survey!</h3>
-    	<form class="card-body">
+    	<form class="card-body form-group label-floating">
     		<div class = "questions" ng-repeat = "q in survey.questions">
     	  	<h4>{{q.content}}</h4>
-    	  	<div class = "answers" ng-repeat = "a in q.Answers">
+    	  	<div class = "answers radio" ng-repeat = "a in q.Answers">
+            <label for="{{a}}">
     	  		<input type = "radio" name = "{{q.id}}" class="with-gap" value = "{{a}}" id = "{{a}}" ng-model="q.response"/>
-            <label for="{{a}}">{{a}}</label>
+            {{a}}
+            </label>
     	  	</div>
     	  </div>
     	  <input type="submit" value = "Submit" class="btn btn-primary" ng-click = "submitAnswers()"/>
