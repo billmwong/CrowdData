@@ -3,38 +3,17 @@
 https://www.google.com/design/spec/style/color.html#color-color-palette
 
 Deep Orange
-50  #FBE9E7
-100 #FFCCBC
-200 #FFAB91
-*300 #FF8A65*
-400 #FF7043
 500 #FF5722
-600 #F4511E
-700 #E64A19
-800 #D84315
-900 #BF360C
-
-A100 #FF9E80
-A200 #FF6E40
-A400 #FF3D00
-A700 #DD2C00y
+rgb (255,87,34)
 
 Blue Grey
 500 #607D8B
-50 #ECEFF1
-100 #CFD8DC
-200 #B0BEC5
-300 #90A4AE
-400 #78909C
-500 #607D8B
-600 #546E7A
-700 #455A64
-800 #37474F
-900 #263238
+rgb (96,125,139)
+
 
 ## logo
+/media/crowdataLogoSmoothed.png
 
-WIP
 
 ### Language
 
