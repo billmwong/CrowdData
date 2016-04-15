@@ -142,4 +142,8 @@ app.controller('headerController', function ($scope, $rootScope, $location, $htt
   $scope.gotoAbout = function () {
     $location.path('/about');
   };
+
+  $scope.gotoGettingStarted = function () {
+    $location.path('/newsurvey/getting_started');
+  };
 });
