@@ -42,7 +42,6 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 app.controller('mainController', function ($scope, $http, $location, $route, $rootScope) {
-  console.log('loaded a mainController');
   $rootScope.loggedIn = false;
   $rootScope.loading = false;
   $rootScope.loadingText = '';
@@ -114,7 +113,6 @@ app.controller('newSurveyController', function ($scope, $http, $location) {
 });
 
 app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
-  console.log('loaded a headerController');
   $scope.logout = function () {
     $rootScope.loading = true;
     $rootScope.loadingText = 'Logging Out';
@@ -131,7 +129,7 @@ app.controller('headerController', function ($scope, $rootScope, $location, $htt
     // }, 1000);
   };
 
-  $scope.gotoSignUp = function () {
+  $rootScope.gotoSignUp = function () {
     $location.path('/signup');
   };
 
