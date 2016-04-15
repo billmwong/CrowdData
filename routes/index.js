@@ -58,7 +58,8 @@ routes.submitSurvey = function (req, res) {
 
 routes.newSurvey = function (req, res) {
   // Post request containing a survey object to be added to the survey collection.
-  Survey.create(req.body.survey, function (err, survey) {
+  Survey.create(req.body, function (err, survey) {
+    console.log(survey);
     res.json(survey);
   });
 };

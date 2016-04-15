@@ -11,7 +11,7 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name = "questionType" type="radio" ng-model="q.{{questionNumber}}.type" value="MC"><span class="radio-material"></span> MC</input>
+            <input name = "questionType" type="radio" ng-model="q.type" value="MC"><span class="radio-material"></span> MC</input>
           </label>
         </div>
         <p class="help-block">Multiple Choice</p>
@@ -19,7 +19,7 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name="questionType" type="radio" ng-model="q.{{questionNumber}}.type" value="IO"><span class="radio-material"></span> I/O</input>
+            <input name="questionType" type="radio" ng-model="q.type" value="IO"><span class="radio-material"></span> I/O</input>
           </label>
         </div>
         <p class="help-block"> Boolean: it doesn't have to be true or false!</p>
@@ -27,68 +27,82 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name="questionType" type="radio" ng-model="q.{{questionNumber}}.type" value="FR"><span class="radio-material"></span> FR</input>
+            <input name="questionType" type="radio" ng-model="q.type" value="FR"><span class="radio-material"></span> FR</input>
           </label>
         </div>
         <p class="help-block"> Free response: short or long answer</p>
       </div>
     </form>
-    <div class="form-group" ng-show="q.{{questionNumber}}.type === 'MC'">
+    <div class="form-group" ng-show="q.type === 'MC'">
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.content">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.content">
           <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
       </div>
 
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Option 1</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.response.1">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Option 2</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.response.2">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.2">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
-      <div class="btn-group">
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Option 3</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.3">
+          <small class="text-muted" ng-show="typingTitle"> </small>
+      </div>
+
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Option 4</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.4">
+          <small class="text-muted" ng-show="typingTitle"> </small>
+      </div>
+
+      <!-- <div class="btn-group">
         <button type="button" class="btn btn-secondary" id = "addOptionBtn"ng-click="addOption()">add option</button>
-      </div>
+      </div>  -->
     </div>
 
-    <div class="form-group" ng-show="q.{{questionNumber}}.type === 'IO'">
+    <div class="form-group" ng-show="q.type === 'IO'">
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.content">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.content">
           <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
       </div>
 
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Option 1</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.response.1">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Option 2</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.response.2">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.2">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
     </div>
 
-    <div class="form-group" ng-show="q.{{questionNumber}}.type === 'FR'">
+    <div class="form-group" ng-show="q.type === 'FR'">
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.{{questionNumber}}.content">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.content">
           <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
       </div>
 
@@ -97,7 +111,7 @@
         <div class="form-group">
           <div class="radio">
             <label>
-              <input name = "freeResponseType" type="radio" value="SA" ng-model="q.{{questionNumber}}.response.1"><span class="radio-material"></span> Short</input>
+              <input name = "freeResponseType" type="radio" value="SA" ng-model="q.response.1"><span class="radio-material"></span> Short</input>
             </label>
           </div>
           <p class="help-block">e.g. "Optometrist"</p>
@@ -106,7 +120,7 @@
         <div class="form-group">
           <div class="radio">
             <label>
-              <input name="freeResponseType" type="radio" value="LA" ng-model="q.{{questionNumber}}.response.1"><span class="radio-material"></span> Long</input>
+              <input name="freeResponseType" type="radio" value="LA" ng-model="q.response.1"><span class="radio-material"></span> Long</input>
             </label>
           </div>
           <p class="help-block">e.g. "I was cleaning my room after my mom told me
@@ -120,7 +134,6 @@
       <a href="javascript:void(0)" class="btn btn-raised btn-secondary" ng-click = "go('/newsurvey/setting_up')"> Return to survey setup <div class="ripple-container"></div></a>
       <button type="submit" class="btn btn-raised btn-primary" ng-click = "qProgress()">Next<div class="ripple-container"></div></button>
     </div>
-
-    {{Q}}
+    {{allq}}
   </div>
 </div>

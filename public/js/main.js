@@ -97,8 +97,8 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 app.controller('newSurveyController', function ($scope, $rootScope, $http, $location) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
+  $scope.allq = [];
   var numOfOptions = 2;
-  console.log('using newSurveyController');
 
   $scope.addQ = function () {
     $rootScope.Setup.numOfQuestions += 1;
@@ -114,21 +114,48 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   };
 
   $scope.qProgress = function () {
-    console.log('Setup.numOfQuestions' + $rootScope.Setup.numOfQuestions);
     if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
       $rootScope.questionNumber += 1;
+      $scope.allq.push($scope.q);
+      $scope.q = {};
       $location.path('/newsurvey/creating_qs');
-      console.log('qProgress just did its thing');
     } else {
+      $scope.allq.push($scope.q);
+      $rootScope.newSurvey = {
+        author: $rootScope.user._id,  // containing user _id
+        timeCreated: Date(),
+        category: $scope.Setup.category,
+        demographics: $scope.Setup.demographics,
+        title: $scope.Setup.title,
+        hypothesis: $scope.Setup.hypothesis,
+        questions: $scope.allq,
+
+        // questions: [{  // Short list of questions, max of 3 or 5
+        //     id: Number,
+        //     type: String,
+        //     content: String,
+        //     Answers: Array // of strings
+        //   }
+        // ],
+        options: {},
+        usersTaken: [],
+      };
       $location.path('/newsurvey/preview');
     }
   };
 
-  $scope.addOption = function () {
-    numOfOptions += 1;
-    $('#addOptionBtn').before("<div class='form-group label-floating'><br><label class='control-label' for='surveyTitle'>Option " + Setup.numOfOptions + "</label><input class='form-control' id='surveyTitle' type='text' ng-focus='typingTitle=true' ng-blur='typingTitle=false' ng-model='q.{{questionNumber}}.response." + Setup.numOfOptions + "'><small class='text-muted' ng-show='typingTitle'> </small></div>");
-
+  $scope.postNewSurvey = function () {
+    $http.post('/api/survey/new', $rootScope.newSurvey)
+    .success(function (data) {
+      $rootScope.newSurvey = {};
+    });
   };
+
+  // $scope.addOption = function () {
+  //   numOfOptions += 1;
+  //   $('#addOptionBtn').before("<div class='form-group label-floating'><br><label class='control-label' for='surveyTitle'>Option " + numOfOptions + "</label><input class='form-control' id='surveyTitle' type='text' ng-focus='typingTitle=true' ng-blur='typingTitle=false' ng-model='q.questionNumber.response." + numOfOptions + "'><small class='text-muted' ng-show='typingTitle'> </small></div>");
+  //
+  // };
 
   $scope.removeQ = function () {
     if ($rootScope.Setup.numOfQuestions > 0) {$rootScope.Setup.numOfQuestions -= 1;
