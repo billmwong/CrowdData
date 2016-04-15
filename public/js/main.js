@@ -1,4 +1,8 @@
-var app = angular.module('crowddata', ['ngRoute']);
+var app = angular.module('crowddata', ['ngRoute'])
+  .run(function($rootScope){
+    $rootScope.Setup.numOfQuestions = 0;
+    $rootScope.questionNumber = 1;
+  });
 
 // Material Design initializations
 $.material.init();
@@ -87,17 +91,49 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
       console.log(data);
     });
   };
+});
 
-  $scope.gotoSignUp = function () {
-    $location.path('/signup');
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location) {
+  $scope.canRemoveQ = false;
+  $scope.tooManyQ = false;
+  var numOfOptions = 2;
+  console.log('using newSurveyController');
+
+  $scope.addQ = function () {
+    $rootScope.Setup.numOfQuestions += 1;
+    $scope.canRemoveQ = true;
+    if ($rootScope.Setup.numOfQuestions > 5) {
+      $rootScope.Setup.numOfQuestions = 5;
+      $scope.tooManyQ = true;
+    }
   };
 
-  $scope.gotoLogIn = function () {
-    $location.path('/login');
+  $scope.go = function (path) {
+    $location.path(path);
   };
 
-  $scope.gotoAbout = function () {
-    $location.path('/about');
+  $scope.qProgress = function () {
+    console.log('Setup.numOfQuestions' + $rootScope.Setup.numOfQuestions);
+    if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber){
+      $rootScope.questionNumber += 1;
+      $location.path('/newsurvey/creating_qs');
+      console.log('qProgress just did its thing');
+    } else {
+      $location.path('/newsurvey/preview');
+    }
+  };
+
+  $scope.addOption = function(){
+    numOfOptions += 1;
+    $('#addOptionBtn').before("<div class='form-group label-floating'><br><label class='control-label' for='surveyTitle'>Option " + Setup.numOfOptions + "</label><input class='form-control' id='surveyTitle' type='text' ng-focus='typingTitle=true' ng-blur='typingTitle=false' ng-model='q.{{questionNumber}}.response." + Setup.numOfOptions + "'><small class='text-muted' ng-show='typingTitle'> </small></div>");
+
+  };
+
+  $scope.removeQ = function () {
+    if ($rootScope.Setup.numOfQuestions > 0) {$rootScope.Setup.numOfQuestions -= 1;
+    } else {
+      $scope.canRemoveQ = false;
+    }
   };
 
   $scope.logout = function () {
