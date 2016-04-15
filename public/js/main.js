@@ -1,4 +1,9 @@
-var app = angular.module('crowddata', ['ngRoute']);
+var app = angular.module('crowddata', ['ngRoute'])
+  .run(function($rootScope){
+    $rootScope.numOfQuestions = 0;
+    $rootScope.questionNumber = 1;
+  });
+
 
 // Material Design initializations
 $.material.init();
@@ -117,26 +122,39 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
   };
 });
 
-app.controller('newSurveyController', function ($scope, $http, $location) {
-  $scope.numOfQuestions = 0;
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
-  $scope.questionNumber = 1;
   console.log('using newSurveyController');
 
   $scope.addQ = function () {
-    $scope.numOfQuestions += 1;
+    $rootScope.numOfQuestions += 1;
     $scope.canRemoveQ = true;
-    if ($scope.numOfQuestions > 5) {
-      $scope.numOfQuestions = 5;
+    if ($rootScope.numOfQuestions > 5) {
+      $rootScope.numOfQuestions = 5;
       $scope.tooManyQ = true;
     }
   };
 
+  $scope.go = function (path) {
+    $location.path(path);
+  };
+
+  $scope.qProgress = function () {
+    console.log('numofQuestions' + $rootScope.numOfQuestions);
+    if ($rootScope.numOfQuestions > $rootScope.questionNumber){
+      $rootScope.questionNumber += 1;
+      $location.path('/newsurvey/creating_qs');
+      console.log('qProgress just did its thing');
+    } else {
+      $location.path('/newsurvey/preview');
+    }
+  };
+
   $scope.removeQ = function () {
-    if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
+    if ($rootScope.numOfQuestions > 0) {$rootScope.numOfQuestions -= 1;
     } else {
       $scope.canRemoveQ = false;
-    };
+    }
   };
 });
