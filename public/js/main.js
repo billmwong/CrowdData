@@ -41,19 +41,19 @@ app.config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 });
 
-app.controller('mainController', function ($scope, $http, $location, $route) {
-  $scope.loggedIn = false;
-  $scope.loading = false;
-  $scope.loadingText = '';
+app.controller('mainController', function ($scope, $http, $location, $route, $rootScope) {
+  $rootScope.loggedIn = false;
+  $rootScope.loading = false;
+  $rootScope.loadingText = '';
 
   $http.get('/api/getUser')
     .success(function (data) {
-      $scope.user = data.user;
+      $rootScope.user = data.user;
       if (data.user) {
         // The user is logged in
         console.log('logged in');
-        $scope.user = data.user;
-        $scope.loggedIn = true;
+        $rootScope.user = data.user;
+        $rootScope.loggedIn = true;
         $http.get('/api/getSurvey')
           .success(function (data) {
             console.log('Current survey: ');
@@ -87,34 +87,6 @@ app.controller('mainController', function ($scope, $http, $location, $route) {
       console.log(data);
     });
   };
-
-  $scope.gotoSignUp = function () {
-    $location.path('/signup');
-  };
-
-  $scope.gotoLogIn = function () {
-    $location.path('/login');
-  };
-
-  $scope.gotoAbout = function () {
-    $location.path('/about');
-  };
-
-  $scope.logout = function () {
-    $scope.loading = true;
-    $scope.loadingText = 'Logging Out';
-    console.log('logging out...');
-    $http.get('/logout')
-    .success(function (data) {
-      $scope.loading = false;
-      $scope.loggedIn = false;
-      $location.path('/');
-      $route.reload();
-    });
-
-    // setTimeout(function() {
-    // }, 1000);
-  };
 });
 
 app.controller('newSurveyController', function ($scope, $http, $location) {
@@ -136,6 +108,40 @@ app.controller('newSurveyController', function ($scope, $http, $location) {
     if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
     } else {
       $scope.canRemoveQ = false;
-    };
+    }
+  };
+});
+
+app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
+  $scope.logout = function () {
+    $rootScope.loading = true;
+    $rootScope.loadingText = 'Logging Out';
+    console.log('logging out...');
+    $http.get('/logout')
+    .success(function (data) {
+      $rootScope.loading = false;
+      $rootScope.loggedIn = false;
+      $location.path('/');
+      $route.reload();
+    });
+
+    // setTimeout(function() {
+    // }, 1000);
+  };
+
+  $rootScope.gotoSignUp = function () {
+    $location.path('/signup');
+  };
+
+  $scope.gotoLogIn = function () {
+    $location.path('/login');
+  };
+
+  $scope.gotoAbout = function () {
+    $location.path('/about');
+  };
+
+  $scope.gotoGettingStarted = function () {
+    $location.path('/newsurvey/getting_started');
   };
 });
