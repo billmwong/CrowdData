@@ -154,29 +154,30 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   };
 });
 
-app.controller('newSurveyController', function ($scope, $http, $location) {
-  $scope.numOfQuestions = 0;
-  $scope.canRemoveQ = false;
-  $scope.tooManyQ = false;
-  $scope.questionNumber = 1;
-  console.log('using newSurveyController');
-
-  $scope.addQ = function () {
-    $scope.numOfQuestions += 1;
-    $scope.canRemoveQ = true;
-    if ($scope.numOfQuestions > 5) {
-      $scope.numOfQuestions = 5;
-      $scope.tooManyQ = true;
-    }
-  };
-
-  $scope.removeQ = function () {
-    if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
-    } else {
-      $scope.canRemoveQ = false;
-    }
-  };
-});
+//
+// app.controller('newSurveyController', function ($scope, $http, $location) {
+//   $scope.numOfQuestions = 0;
+//   $scope.canRemoveQ = false;
+//   $scope.tooManyQ = false;
+//   $scope.questionNumber = 1;
+//   console.log('using newSurveyController');
+//
+//   $scope.addQ = function () {
+//     $scope.numOfQuestions += 1;
+//     $scope.canRemoveQ = true;
+//     if ($scope.numOfQuestions > 5) {
+//       $scope.numOfQuestions = 5;
+//       $scope.tooManyQ = true;
+//     }
+//   };
+//
+//   $scope.removeQ = function () {
+//     if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
+//     } else {
+//       $scope.canRemoveQ = false;
+//     }
+//   };
+// });
 
 app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
   $scope.logout = function () {
