@@ -33,9 +33,9 @@
     <script type="text/javascript" src="js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
-  <body ng-controller="mainController">
+  <body>
     <div class="container">
-    	<div class="row header">
+    	<div class="row header" ng-controller="headerController">
             <div class="navbar navbar-inverse">
               <div class="container-fluid">
                 <div class="navbar-header">
@@ -44,16 +44,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="/">
+                  <a class="navbar-brand clickable" ng-click="gotoRoot()">
                       <img src="../media/crowdataLogoSmoothed.png" width = "50vw">
                   </a>
                 </div>
                 <div class="navbar-collapse collapse navbar-responsive-collapse">
                   <ul class="nav navbar-nav">
-                    <li><a href="javascript:void(0)">Take a Survey</a></li>
-                    <li><a href="javascript:void(0)">Create a Survey</a></li>
-                    <li><a href="javascript:void(0)">My Data</a></li>
                     <li><a class="clickable" ng-click="gotoAbout()">About CrowData</a></li>
+                    <li><a class="clickable" ng-click="gotoRoot()" ng-show="loggedIn">Take a Survey</a></li>
+                    <li><a class="clickable" ng-click="gotoGettingStarted()" ng-show="loggedIn">Create a Survey</a></li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                     <li><a href="javascript:void(0)" ng-show="loggedIn">{{user.name}}</a></li>
