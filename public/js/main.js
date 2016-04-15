@@ -133,6 +133,10 @@ app.controller('headerController', function ($scope, $rootScope, $location, $htt
     $location.path('/signup');
   };
 
+  $rootScope.gotoRoot = function () {
+    $location.path('/');
+  };
+
   $scope.gotoLogIn = function () {
     $location.path('/login');
   };
