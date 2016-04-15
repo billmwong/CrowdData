@@ -1,4 +1,9 @@
-var app = angular.module('crowddata', ['ngRoute']);
+var app = angular.module('crowddata', ['ngRoute'])
+  .run(function ($rootScope) {
+    $rootScope.Setup = {};
+    $rootScope.Setup.numOfQuestions = 0;
+    $rootScope.questionNumber = 1;
+  });
 
 // Material Design initializations
 $.material.init();
@@ -89,28 +94,117 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 });
 
-app.controller('newSurveyController', function ($scope, $http, $location) {
-  $scope.numOfQuestions = 0;
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
-  console.log('using newSurveyController');
+  $scope.allq = [];
+  var numOfOptions = 2;
 
   $scope.addQ = function () {
-    $scope.numOfQuestions += 1;
+    $rootScope.Setup.numOfQuestions += 1;
     $scope.canRemoveQ = true;
-    if ($scope.numOfQuestions > 5) {
-      $scope.numOfQuestions = 5;
+    if ($rootScope.Setup.numOfQuestions > 5) {
+      $rootScope.Setup.numOfQuestions = 5;
       $scope.tooManyQ = true;
     }
   };
 
+  $scope.go = function (path) {
+    $location.path(path);
+  };
+
+  $scope.qProgress = function () {
+    if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
+      $rootScope.questionNumber += 1;
+      $scope.allq.push($scope.q);
+      $scope.q = {};
+      $location.path('/newsurvey/creating_qs');
+    } else {
+      $scope.allq.push($scope.q);
+      $rootScope.newSurvey = {
+        author: $rootScope.user._id,  // containing user _id
+        timeCreated: Date(),
+        category: $scope.Setup.category,
+        demographics: $scope.Setup.demographics,
+        title: $scope.Setup.title,
+        hypothesis: $scope.Setup.hypothesis,
+        questions: $scope.allq,
+
+        // questions: [{  // Short list of questions, max of 3 or 5
+        //     id: Number,
+        //     type: String,
+        //     content: String,
+        //     Answers: Array // of strings
+        //   }
+        // ],
+        options: {},
+        usersTaken: [],
+      };
+      $location.path('/newsurvey/preview');
+    }
+  };
+
+  $scope.postNewSurvey = function () {
+    $http.post('/api/survey/new', $rootScope.newSurvey)
+    .success(function (data) {
+      $rootScope.newSurvey = {};
+    });
+  };
+
+  // $scope.addOption = function () {
+  //   numOfOptions += 1;
+  //   $('#addOptionBtn').before("<div class='form-group label-floating'><br><label class='control-label' for='surveyTitle'>Option " + numOfOptions + "</label><input class='form-control' id='surveyTitle' type='text' ng-focus='typingTitle=true' ng-blur='typingTitle=false' ng-model='q.questionNumber.response." + numOfOptions + "'><small class='text-muted' ng-show='typingTitle'> </small></div>");
+  //
+  // };
+
   $scope.removeQ = function () {
-    if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
+    if ($rootScope.Setup.numOfQuestions > 0) {$rootScope.Setup.numOfQuestions -= 1;
     } else {
       $scope.canRemoveQ = false;
     }
   };
+
+  $scope.logout = function () {
+    $scope.loading = true;
+    $scope.loadingText = 'Logging Out';
+    console.log('logging out...');
+    $http.get('/logout')
+    .success(function (data) {
+      $scope.loading = false;
+      $scope.loggedIn = false;
+      $location.path('/');
+      $route.reload();
+    });
+
+    // setTimeout(function() {
+    // }, 1000);
+  };
 });
+
+//
+// app.controller('newSurveyController', function ($scope, $http, $location) {
+//   $scope.numOfQuestions = 0;
+//   $scope.canRemoveQ = false;
+//   $scope.tooManyQ = false;
+//   $scope.questionNumber = 1;
+//   console.log('using newSurveyController');
+//
+//   $scope.addQ = function () {
+//     $scope.numOfQuestions += 1;
+//     $scope.canRemoveQ = true;
+//     if ($scope.numOfQuestions > 5) {
+//       $scope.numOfQuestions = 5;
+//       $scope.tooManyQ = true;
+//     }
+//   };
+//
+//   $scope.removeQ = function () {
+//     if ($scope.numOfQuestions > 0) {$scope.numOfQuestions -= 1;
+//     } else {
+//       $scope.canRemoveQ = false;
+//     }
+//   };
+// });
 
 app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
   $scope.logout = function () {
