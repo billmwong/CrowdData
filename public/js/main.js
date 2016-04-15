@@ -121,6 +121,7 @@ app.controller('newSurveyController', function ($scope, $http, $location) {
   $scope.numOfQuestions = 0;
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
+  $scope.questionNumber = 1;
   console.log('using newSurveyController');
 
   $scope.addQ = function () {

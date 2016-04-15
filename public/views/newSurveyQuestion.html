@@ -1,0 +1,122 @@
+<div class="card card-content form-horizontal">
+  <div class="card-body">
+    <h2 class="card-title"> Now, we can populate our questions! </h2>
+    <br>
+    <br>
+    <h2> Question {{questionNumber}} </h2>
+    <br>
+    <h3> What type of question is question {{questionNumber}}?
+    <br>
+    <form class="form-group">
+      <div class="form-group">
+        <div class="radio">
+          <label>
+            <input name = "questionType" type="radio" ng-model="qShow" value="MC"><span class="radio-material"></span> MC</input>
+          </label>
+        </div>
+        <p class="help-block">Multiple Choice</p>
+      </div>
+      <div class="form-group">
+        <div class="radio">
+          <label>
+            <input name="questionType" type="radio" ng-model="qShow" value="IO"><span class="radio-material"></span> I/O</input>
+          </label>
+        </div>
+        <p class="help-block"> Boolean: it doesn't have to be true or false!</p>
+      </div>
+      <div class="form-group">
+        <div class="radio">
+          <label>
+            <input name="questionType" type="radio" ng-model="qShow" value="FR"><span class="radio-material"></span> FR</input>
+          </label>
+        </div>
+        <p class="help-block"> Free response: short or long answer</p>
+      </div>
+    </form>
+    <div class="form-group" ng-show="qShow === 'MC'">
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Question</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
+      </div>
+
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Option 1</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle"> </small>
+      </div>
+
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Option 2</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle"> </small>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary" ng-click="addOption()">add option</button>
+      </div>
+    </div>
+
+    <div class="form-group" ng-show="qShow === 'IO'">
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Question</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
+      </div>
+
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Option 1</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle"> </small>
+      </div>
+
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Option 2</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle"> </small>
+      </div>
+
+    </div>
+
+    <div class="form-group" ng-show="qShow === 'FR'">
+      <div class="form-group label-floating">
+        <br>
+        <label class="control-label" for="surveyTitle">Question</label>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+          <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
+      </div>
+
+      <h3>What category do you think your survey falls into?</h3>
+      <div class="form-group">
+        <div class="radio">
+          <label>
+            <input name = "questionType" type="radio" ng-model="qShow" value="MC"><span class="radio-material"></span> Short Answer</input>
+          </label>
+        </div>
+        <p class="help-block">e.g. "Optometrist"</p>
+      </div>
+      <div class="form-group">
+        <div class="radio">
+          <label>
+            <input name="questionType" type="radio" ng-model="qShow" value="IO"><span class="radio-material"></span> Long Answer</input>
+          </label>
+        </div>
+        <p class="help-block">e.g. "I was cleaning my room after my mom told me
+          to five or six times. I was picking up clothes on my floor and found
+          this old dish that was making my room smell really bad."</p>
+      </div>
+
+    </div>
+
+    <div>
+      <a href="javascript:void(0)" class="btn btn-raised btn-secondary">cancel<div class="ripple-container"></div></a>
+      <button type="submit" class="btn btn-raised btn-primary">Submit<div class="ripple-container"></div></button>
+    </div>
+  </div>
+</div>;
