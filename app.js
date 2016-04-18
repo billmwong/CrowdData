@@ -61,12 +61,33 @@ app.post('/api/newuser', index.newUser); // new user details needing to be added
 app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
 
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/' }),
-  function (req, res) {
-    res.redirect('/');
-  }
-);
+// app.post(
+//   '/login',
+//   passport.authenticate(
+//     'local',
+//     {
+//       failureRedirect: '/',
+//       failureFlash:  true
+//     }
+//   ),
+//   function (req, res) {
+//     res.redirect('/');
+//   }
+// );
+
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) {
+      console.log('no user');
+      return res.redirect('/');
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
 
 app.post('/register', function (req, res) {
   User.register(
