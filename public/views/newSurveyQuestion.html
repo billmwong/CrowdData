@@ -11,7 +11,7 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name = "questionType" type="radio" ng-model="q.type" value="MC"><span class="radio-material"></span> MC</input>
+            <input name = "questionType" type="radio" ng-model="q.type" value="MC" ng-click="goToElement('bottom')"><span class="radio-material"></span> MC</input>
           </label>
         </div>
         <p class="help-block">Multiple Choice</p>
@@ -19,7 +19,7 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name="questionType" type="radio" ng-model="q.type" value="IO"><span class="radio-material"></span> I/O</input>
+            <input name="questionType" type="radio" ng-model="q.type" value="IO" ng-click="goToElement('bottom')"><span class="radio-material"></span> I/O</input>
           </label>
         </div>
         <p class="help-block"> Boolean: it doesn't have to be true or false!</p>
@@ -27,13 +27,18 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name="questionType" type="radio" ng-model="q.type" value="FR"><span class="radio-material"></span> FR</input>
+            <input name="questionType" type="radio" ng-model="q.type" value="FR" ng-click="goToElement('bottom')"><span class="radio-material"></span> FR</input>
           </label>
         </div>
         <p class="help-block"> Free response: short or long answer</p>
       </div>
     </form>
+
     <div class="form-group" ng-show="q.type === 'MC'">
+      <br>
+      <hr id="questionBreak">
+      <hr>
+      <br>
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
@@ -75,6 +80,10 @@
     </div>
 
     <div class="form-group" ng-show="q.type === 'IO'">
+      <br>
+      <hr id="questionBreak">
+      <hr>
+      <br>
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
@@ -99,6 +108,10 @@
     </div>
 
     <div class="form-group" ng-show="q.type === 'FR'">
+      <br>
+      <hr id="questionBreak">
+      <hr>
+      <br>
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
@@ -130,10 +143,9 @@
       </div>
     </div>
 
-    <div>
+    <div id="bottom">
       <a href="javascript:void(0)" class="btn btn-raised btn-secondary" ng-click = "go('/newsurvey/setting_up')"> Return to survey setup <div class="ripple-container"></div></a>
       <button type="submit" class="btn btn-raised btn-primary" ng-click = "qProgress()">Next<div class="ripple-container"></div></button>
     </div>
-    {{allq}}
   </div>
 </div>

@@ -85,7 +85,7 @@
       <h2>
         &emsp; <span> {{Setup.numOfQuestions}} </span> &emsp; &emsp;
         <button type="button" class="btn btn-secondary" ng-click="addQ()"><i class="material-icons">add</i></button>
-        <button type="button" class="btn btn-secondary" ng-click="removeQ()" ng-disabled="!numOfQuestions"><i class="material-icons">remove</i></button>
+        <button type="button" class="btn btn-secondary" ng-click="removeQ()" ng-disabled="!canRemoveQ"><i class="material-icons">remove</i></button>
     </h2></span>
     <p>
       <small class="text-danger" ng-show="tooManyQ"> We recommend using five or less questions.
