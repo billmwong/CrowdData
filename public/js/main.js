@@ -177,11 +177,13 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
 
   $scope.qProgress = function () {
     if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
+      $scope.q.id = $rootScope.questionNumber;
       $rootScope.questionNumber += 1;
       $scope.allq.push($scope.q);
       $scope.q = {};
       $location.path('/newsurvey/creating_qs');
     } else {
+      $scope.q.id = $rootScope.questionNumber;
       $scope.allq.push($scope.q);
       $rootScope.newSurvey = {
         author: $rootScope.user._id,  // containing user _id

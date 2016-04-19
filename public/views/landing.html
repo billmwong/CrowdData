@@ -25,18 +25,42 @@
   <div ng-show="loggedIn">
     <div class="card card-content">
       <h3 class="card-title"> Here's a survey!</h3>
-    	<form class="card-body form-group label-floating">
-    		<div class = "questions" ng-repeat = "q in survey.questions">
-    	  	<h4>{{q.content}}</h4>
-    	  	<div class = "answers radio" ng-repeat = "a in q.Answers">
-            <label for="{{a}}">
-    	  		<input type = "radio" name = "{{q.id}}" class="with-gap" value = "{{a}}" id = "{{a}}" ng-model="q.response"/>
-            {{a}}
-            </label>
-    	  	</div>
-    	  </div>
-    	  <input type="submit" value = "Submit" class="btn btn-primary" ng-click = "submitAnswers()"/>
-    	</form>
+      	<form class="form-group card-body label-floating">
+      		<div class="questions" ng-repeat="q in survey.questions">
+      	  	<h4>{{q.content}}</h4>
+            <div ng-if='q.type == "MC"'>
+              <div class="answers radio" ng-repeat="(key, value) in q.response">
+                <div class="radio">
+                  <label for="{{value}}">
+                  {{value}}
+                  <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
+                  </label>
+                </div>  
+              </div>            
+            </div>
+
+            <div ng-if='q.type == "IO"'>
+              <div class="answers radio" ng-repeat="(key, value) in q.response"> 
+                <div class="radio">
+                  <label for="{{value}}"> 
+                  {{value}}
+                  <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
+                  </label>
+                </div>
+              </div>            
+            </div>
+
+            <div ng-if='q.type == "FR"'>
+              <div class="answers">
+                <div class="form-group label-floating">
+                  <input class="form-control" id="{{q.id}}" ng-model="question.response" type="text" name="{{q.id}}" value="{{q.id}}">
+                </div>              
+              </div>
+            </div>
+
+      	  </div>
+      	  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
+      	</form>
     </div>
   </div>
 </div>
