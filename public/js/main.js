@@ -46,7 +46,15 @@ app.config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 });
 
-app.controller('mainController', function ($scope, $http, $location, $route, $rootScope) {
+app.service('goToService', function ($location) {
+  return {
+    goTo: function(path) {
+      $location.path(path);
+    }
+  };
+});
+
+app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, goToService) {
   $rootScope.loggedIn = false;
   $rootScope.loading = false;
   $rootScope.loadingText = '';
@@ -70,6 +78,10 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           .error(handleError);
       }
     });
+
+  $scope.goTo = function (path) {
+    goToService.goTo(path);
+  };
 
   $scope.submitLoginForm = function () {
     loginData = $scope.loginForm;
@@ -115,7 +127,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 });
 
-app.controller('newSurveyController', function ($scope, $rootScope, $http, $location) {
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, goToService) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
   $scope.allq = [];
@@ -131,7 +143,7 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   };
 
   $scope.go = function (path) {
-    $location.path(path);
+    goToService.goTo(path);
   };
 
   $scope.qProgress = function () {
@@ -188,7 +200,7 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   };
 });
 
-app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
+app.controller('headerController', function ($scope, $rootScope, $location, $http, $route, goToService) {
   $scope.logout = function () {
     $rootScope.loading = true;
     $rootScope.loadingText = 'Logging Out';
@@ -201,23 +213,7 @@ app.controller('headerController', function ($scope, $rootScope, $location, $htt
     });
   };
 
-  $rootScope.gotoSignUp = function () {
-    $location.path('/signup');
-  };
-
-  $rootScope.gotoRoot = function () {
-    $location.path('/');
-  };
-
-  $scope.gotoLogIn = function () {
-    $location.path('/login');
-  };
-
-  $scope.gotoAbout = function () {
-    $location.path('/about');
-  };
-
-  $scope.gotoGettingStarted = function () {
-    $location.path('/newsurvey/getting_started');
+  $scope.goTo = function (path) {
+    goToService.goTo(path);
   };
 });
