@@ -186,22 +186,6 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
       $scope.canRemoveQ = false;
     }
   };
-
-  $scope.logout = function () {
-    $scope.loading = true;
-    $scope.loadingText = 'Logging Out';
-    console.log('logging out...');
-    $http.get('/logout')
-    .success(function (data) {
-      $scope.loading = false;
-      $scope.loggedIn = false;
-      $location.path('/');
-      $route.reload();
-    });
-
-    // setTimeout(function() {
-    // }, 1000);
-  };
 });
 
 app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
