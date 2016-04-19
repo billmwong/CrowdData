@@ -63,6 +63,16 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     username: "",
     password: ""
   };
+  $scope.invalidUsername = false;
+  $scope.signupForm = {
+    username: "",
+    password: "",
+    age: "",
+    countryOfResidence: "",
+    DOB_year: "",
+    DOB_month: "",
+    DOB_day: ""
+  };
 
   $http.get('/api/getUser')
     .success(function (data) {
@@ -98,6 +108,25 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           // There was an invalid username/password
           $rootScope.loading = false;
           $scope.invalidInputs = true;
+        }
+      });
+  };
+
+  $scope.submitSignupForm = function () {
+    signupData = $scope.signupForm;
+    $rootScope.loading = true;
+    $rootScope.loadingText = 'Signing Up';
+    $http.post('/register', signupData)
+      .success(function (resp) {
+        if (resp.success) {
+          // User successfully signed up
+          $rootScope.loading = false;
+          $location.path('/');
+          $route.reload();
+        } else {
+          // There was an invalid username
+          $rootScope.loading = false;
+          $scope.invalidUsername = true;
         }
       });
   };
