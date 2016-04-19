@@ -80,11 +80,11 @@ app.post('/login', function(req, res, next) {
     if (err) { return next(err); }
     if (!user) {
       console.log('no user');
-      return res.redirect('/');
+      return res.json({ loggedIn:false });
     }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.redirect('/');
+      return res.json({ loggedIn:true });
     });
   })(req, res, next);
 });
