@@ -50,24 +50,45 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   $rootScope.loggedIn = false;
   $rootScope.loading = false;
   $rootScope.loadingText = '';
+  $scope.invalidInputs = false;
+  $scope.loginForm = {
+    username: "",
+    password: ""
+  };
 
   $http.get('/api/getUser')
     .success(function (data) {
       $rootScope.user = data.user;
       if (data.user) {
         // The user is logged in
-        console.log('logged in');
         $rootScope.user = data.user;
         $rootScope.loggedIn = true;
         $http.get('/api/getSurvey')
           .success(function (data) {
-            console.log('Current survey: ');
-            console.log(data.survey);
             $scope.survey = data.survey;
           })
           .error(handleError);
       }
     });
+
+  $scope.submitLoginForm = function () {
+    loginData = $scope.loginForm;
+    $rootScope.loading = true;
+    $rootScope.loadingText = 'Logging In';
+    $http.post('/login', loginData)
+      .success(function (resp) {
+        if (resp.loggedIn) {
+          // User is successfully logged in
+          $rootScope.loading = false;
+          $location.path('/');
+          $route.reload();
+        } else {
+          // There was an invalid username/password
+          $rootScope.loading = false;
+          $scope.invalidInputs = true;
+        }
+      });
+  };
 
   $scope.submitAnswers = function () {
     var selectedResponses = $scope.survey.questions.map(function (question) {
@@ -165,29 +186,12 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
       $scope.canRemoveQ = false;
     }
   };
-
-  $scope.logout = function () {
-    $scope.loading = true;
-    $scope.loadingText = 'Logging Out';
-    console.log('logging out...');
-    $http.get('/logout')
-    .success(function (data) {
-      $scope.loading = false;
-      $scope.loggedIn = false;
-      $location.path('/');
-      $route.reload();
-    });
-
-    // setTimeout(function() {
-    // }, 1000);
-  };
 });
 
 app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
   $scope.logout = function () {
     $rootScope.loading = true;
     $rootScope.loadingText = 'Logging Out';
-    console.log('logging out...');
     $http.get('/logout')
     .success(function (data) {
       $rootScope.loading = false;
@@ -195,9 +199,6 @@ app.controller('headerController', function ($scope, $rootScope, $location, $htt
       $location.path('/');
       $route.reload();
     });
-
-    // setTimeout(function() {
-    // }, 1000);
   };
 
   $rootScope.gotoSignUp = function () {
