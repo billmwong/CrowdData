@@ -1,40 +1,43 @@
 <div class="center">
   <h1>Sign Up for CrowdData</h1>
-  <form role="form" action="/register" method="post">
+  <form role="form" ng-submit="submitSignupForm()">
     <div class="form-group label-floating">
       <label class="control-label" for="username-input">Username</label>
-      <input type="text" class="form-control" name="username" id="username-input">
+      <input type="text" class="form-control" ng-model="signupForm.username" id="username-input">
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="password-input">Password</label>
-      <input type="password" class="form-control" name="password" id="password-input"/>
+      <input type="password" class="form-control" ng-model="signupForm.password" id="password-input"/>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="age-input">Age</label>
-      <input type="number" class="form-control" name="age" id="age-input"/>
+      <input type="number" class="form-control" ng-model="signupForm.age" id="age-input"/>
     </div>
     <div class="form-group label-floating">
       <label class="control-label" for="country-input">Country of Residence</label>
-      <input type="text" class="form-control" name="country" id="country-input"/>
+      <input type="text" class="form-control" ng-model="signupForm.country" id="country-input"/>
     </div>
     <p>Date of Birth</p>
     <div class="row">
       <div class="col-sm-3">
         <div class="form-group">
-          <input type="number" name="DOB_month" placeholder="MM" class="form-control"/>
+          <input type="number" ng-model="signupForm.DOB_month" placeholder="MM" class="form-control"/>
         </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
-          <input type="number" name="DOB_day" placeholder="DD" class="form-control"/>
+          <input type="number" ng-model="signupForm.DOB_day" placeholder="DD" class="form-control"/>
         </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
-          <input type="number" name="DOB_year" placeholder="YYYY" class="form-control"/>
+          <input type="number" ng-model="signupForm.DOB_year" placeholder="YYYY" class="form-control"/>
         </div>
       </div>
       <div class="col-sm-3"></div>
+    </div>
+    <div class="form-group has-error" ng-show="invalidUsername">
+      <label class="control-label">That username already exists!</label>
     </div>
     <div class="row">
       <button type="submit" class="btn btn-default btn-raised">Sign Up</button>&nbsp;

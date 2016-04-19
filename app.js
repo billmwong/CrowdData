@@ -92,11 +92,11 @@ app.post('/register', function (req, res) {
     function (err, account) {
       if (err) {
         // Probably username already exists
-        return res.status(500).send(err.message);
+        return res.json({success:false});
       }
 
       passport.authenticate('local')(req, res, function () {
-        res.redirect('/');
+        res.json({success:true});
       });
     }
   );
