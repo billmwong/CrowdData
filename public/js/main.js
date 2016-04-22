@@ -1,7 +1,7 @@
 var app = angular.module('crowddata', ['ngRoute'])
   .run(function ($rootScope) {
     $rootScope.Setup = {};
-    $rootScope.Setup.numOfQuestions = 0;
+    $rootScope.Setup.numOfQuestions = 1;
     $rootScope.questionNumber = 1;
   });
 
@@ -44,6 +44,63 @@ app.config(function ($routeProvider, $locationProvider) {
     controller: 'mainController',
   });
   $locationProvider.html5Mode(true);
+});
+
+app.service('anchorSmoothScroll', function () {
+
+  this.scrollTo = function (eID) {
+
+    // This scrolling function
+    // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
+
+    var startY = currentYPosition();
+    var stopY = elmYPosition(eID);
+    var distance = stopY > startY ? stopY - startY : startY - stopY;
+    if (distance < 100) {
+      scrollTo(0, stopY); return;
+    }
+
+    var speed = Math.round(distance / 100);
+    if (speed >= 20) speed = 20;
+    var step = Math.round(distance / 25);
+    var leapY = stopY > startY ? startY + step : startY - step;
+    var timer = 0;
+    if (stopY > startY) {
+      for (var i = startY; i < stopY; i += step) {
+        setTimeout('window.scrollTo(0, ' + leapY + ')', timer * speed);
+        leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+      } return;
+    };
+
+    for (var i = startY; i > stopY; i -= step) {
+      setTimeout('window.scrollTo(0, ' + leapY + ')', timer * speed);
+      leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+    }
+
+    function currentYPosition() {
+
+      // Firefox, Chrome, Opera, Safari
+      if (self.pageYOffset) return self.pageYOffset;
+
+      // Internet Explorer 6 - standards mode
+      if (document.documentElement && document.documentElement.scrollTop)
+        return document.documentElement.scrollTop;
+
+      // Internet Explorer 6, 7 and 8
+      if (document.body.scrollTop) return document.body.scrollTop;
+      return 0;
+    };
+
+    function elmYPosition(eID) {
+      var elm = document.getElementById(eID);
+      var y = elm.offsetTop;
+      var node = elm;
+      while (node.offsetParent && node.offsetParent != document.body) {
+        node = node.offsetParent;
+        y += node.offsetTop;
+      } return y;
+    };
+  };
 });
 
 app.service('goToService', function ($location) {
@@ -156,11 +213,27 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 });
 
-app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, goToService) {
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, anchorSmoothScroll,goToService) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
+  $scope.surveyUploaded = false;
   $scope.allq = [];
   var numOfOptions = 2;
+
+  $http.get('/api/getUser')
+    .success(function (data) {
+      $rootScope.user = data.user;
+      if (data.user) {
+        // The user is logged in
+        $rootScope.user = data.user;
+        $rootScope.loggedIn = true;
+        $http.get('/api/getSurvey')
+          .success(function (data) {
+            $scope.survey = data.survey;
+          })
+          .error(handleError);
+      }
+    });
 
   $scope.addQ = function () {
     $rootScope.Setup.numOfQuestions += 1;
@@ -173,6 +246,16 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
 
   $scope.go = function (path) {
     goToService.goTo(path);
+    $scope.surveyUploaded = false;
+  };
+
+  $scope.goToElement = function (eID) {
+    // set the location.hash to the id of
+    // the element you wish to scroll to.
+    $location.hash(eID);
+
+    // call $anchorScroll()
+    anchorSmoothScroll.scrollTo(eID);
   };
 
   $scope.qProgress = function () {
@@ -209,9 +292,10 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   };
 
   $scope.postNewSurvey = function () {
-    if ($rootScope.newSurvey.questions.length) {
+    if ($rootScope.newSurvey) {
       $http.post('/api/survey/new', $rootScope.newSurvey)
       .success(function (data) {
+        $scope.surveyUploaded = true;
         $rootScope.newSurvey = {};
       });
     }
@@ -224,8 +308,9 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   // };
 
   $scope.removeQ = function () {
-    if ($rootScope.Setup.numOfQuestions > 0) {$rootScope.Setup.numOfQuestions -= 1;
+    if ($rootScope.Setup.numOfQuestions > 2) {$rootScope.Setup.numOfQuestions -= 1;
     } else {
+      $rootScope.Setup.numOfQuestions -= 1;
       $scope.canRemoveQ = false;
     }
   };
