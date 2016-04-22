@@ -1,5 +1,5 @@
 <div class="card form-horizontal">
-  <div class="card-body">
+  <div class="card-body" ng-hide="surveyUploaded">
     <h2 class="card-title"> Survey Preview</h2>
 		<div>
     	<form class="form-group card-body label-floating">
@@ -39,6 +39,13 @@
     	  <input type="submit" value="Submit" class="btn btn-primary"/>
     	</form>
       <button type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey()">Looks great!<div class="ripple-container"></div></button>
+    </div>
+  </div>
+  <div class="card-body" ng-show="surveyUploaded">
+    <h2 class="card-title"> Survey Created!</h2>
+	<div>
+      <h3> Your survey was successfully created! You should have some awesome data in no time! </h3>
+      <button type="submit" class="btn btn-raised btn-primary" ng-click="go('/')">Take me home<div class="ripple-container"></div></button>
     </div>
   </div>
 </div>
