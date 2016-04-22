@@ -16,13 +16,41 @@ routes.getUser = function (req, res) {
 routes.getSurvey = function (req, res) {
   // Get request that needs to respond with a json containing logged-in
   // user and a survey object the user has not completed.
-  console.log('req.user:');
-  console.log(req.user);
   Survey.find({ usersTaken: { $nin: [req.user._id] } }, function (err, surveys) {
     // chooses a random survey to send to the user.
     randomIndex = Math.floor((Math.random() * surveys.length));
     res.json({ user: req.user, survey:surveys[randomIndex] });
   });
+};
+
+ /**
+ * Returns all the surveys that a specific user has created.
+ * @param {string} userID - the id of the user
+ * @returns {Array} array of survey objects 
+ */
+var getUsersSurveys = function (userID) {
+  Survey.find({author:userID}, function (err, surveys) {
+    return surveys;
+  });
+};
+
+var handleResponses = function (err, responses) {
+  return function (err, responses) {
+    console.log(JSON.stringify(responses));
+  };
+};
+
+/**
+ * Gets all the responses for all the surveys that this user has created.
+ * 
+ */
+routes.getUsersSurveysResponses = function (req, res) {
+  var thisUsersSurveys = getUsersSurveys(req.user._id);
+  console.log('getting responses...');
+  for (var i=0; i<thisUsersSurveys.length; i++) {
+    Response.find({survey: thisUsersSurveys[i]}, handleResponses);
+  }
+  res.json({success:true});
 };
 
 routes.submitSurvey = function (req, res) {

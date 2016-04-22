@@ -88,6 +88,10 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           .error(handleError);
       }
     });
+  $http.get('/api/getUsersSurveysResponses')
+    .success(function (data) {
+      console.log('success man');
+    });
 
   $scope.goTo = function (path) {
     goToService.goTo(path);
