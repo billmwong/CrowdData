@@ -117,18 +117,18 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   $rootScope.loadingText = '';
   $scope.invalidInputs = false;
   $scope.loginForm = {
-    username: "",
-    password: ""
+    username: '',
+    password: '',
   };
   $scope.invalidUsername = false;
   $scope.signupForm = {
-    username: "",
-    password: "",
-    age: "",
-    countryOfResidence: "",
-    DOB_year: "",
-    DOB_month: "",
-    DOB_day: ""
+    username: '',
+    password: '',
+    age: '',
+    countryOfResidence: '',
+    DOB_year: '',
+    DOB_month: '',
+    DOB_day: '',
   };
 
   $http.get('/api/getUser')
@@ -220,6 +220,21 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   $scope.surveyUploaded = false;
   $scope.allq = [];
   var numOfOptions = 2;
+
+  $http.get('/api/getUser')
+    .success(function (data) {
+      $rootScope.user = data.user;
+      if (data.user) {
+        // The user is logged in
+        $rootScope.user = data.user;
+        $rootScope.loggedIn = true;
+        $http.get('/api/getSurvey')
+          .success(function (data) {
+            $scope.survey = data.survey;
+          })
+          .error(handleError);
+      }
+    });
 
   $scope.addQ = function () {
     $rootScope.Setup.numOfQuestions += 1;

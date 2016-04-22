@@ -405,7 +405,7 @@ body .container-fluid .jumbotron-danger {
 .input-group-btn .btn.btn-raised:not(.btn-link):active.btn-primary,
 .btn-group-raised .btn:not(.btn-link):active.btn-primary,
 .btn-group-raised .input-group-btn .btn:not(.btn-link):active.btn-primary {
-  background-color: #00aa9a;
+  background-color: rgba(255,87,34, 0.4);
 }
 .btn.btn-raised:not(.btn-link):hover.btn-success,
 .input-group-btn .btn.btn-raised:not(.btn-link):hover.btn-success,
@@ -2398,7 +2398,7 @@ fieldset[disabled] .navbar .btn-link:focus {
   color: rgba(255,255,255, 0.84);
 }
 .navbar.navbar-inverse {
-  background-color: #3f51b5;
+  background-color: rgba(96,125,165, .9);
   color: #ffffff;
 }
 .navbar.navbar-inverse .navbar-form .form-group input.form-control::-moz-placeholder,

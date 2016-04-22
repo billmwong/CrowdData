@@ -1,11 +1,46 @@
 <div class="card form-horizontal">
   <div class="card-body" ng-hide="surveyUploaded">
     <h2 class="card-title"> Survey Preview</h2>
-	<div>
+		<div>
+    	<form class="form-group card-body label-floating">
+    		<div class="questions" ng-repeat="q in newSurvey.questions">
+    	  	<h4>{{q.content}}</h4>
+          <div ng-if='q.type == "MC"'>
+            <div class="answers radio" ng-repeat="(key, value) in q.response">
+              <div class="radio">
+                <label for="{{value}}">
+                {{value}}
+                <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
+                </label>
+              </div>  
+            </div>            
+          </div>
+
+          <div ng-if='q.type == "IO"'>
+            <div class="answers radio" ng-repeat="(key, value) in q.response"> 
+              <div class="radio">
+                <label for="{{value}}"> 
+                {{value}}
+                <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
+                </label>
+              </div>
+            </div>            
+          </div>
+
+          <div ng-if='q.type == "FR"'>
+            <div class="answers">
+              <div class="form-group label-floating">
+                <input class="form-control" id="{{q.id}}" ng-model="question.response" type="text" name="{{q.id}}" value="{{q.id}}">
+              </div>              
+            </div>
+          </div>
+
+    	  </div>
+    	  <input type="submit" value="Submit" class="btn btn-primary"/>
+    	</form>
       <button type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey()">Looks great!<div class="ripple-container"></div></button>
     </div>
   </div>
-
   <div class="card-body" ng-show="surveyUploaded">
     <h2 class="card-title"> Survey Created!</h2>
 	<div>
@@ -13,6 +48,4 @@
       <button type="submit" class="btn btn-raised btn-primary" ng-click="go('/')">Take me home<div class="ripple-container"></div></button>
     </div>
   </div>
-
-
-</div>;
+</div>
