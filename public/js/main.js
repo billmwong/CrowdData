@@ -220,6 +220,21 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   $scope.allq = [];
   var numOfOptions = 2;
 
+  $http.get('/api/getUser')
+    .success(function (data) {
+      $rootScope.user = data.user;
+      if (data.user) {
+        // The user is logged in
+        $rootScope.user = data.user;
+        $rootScope.loggedIn = true;
+        $http.get('/api/getSurvey')
+          .success(function (data) {
+            $scope.survey = data.survey;
+          })
+          .error(handleError);
+      }
+    });
+
   $scope.addQ = function () {
     $rootScope.Setup.numOfQuestions += 1;
     $scope.canRemoveQ = true;
