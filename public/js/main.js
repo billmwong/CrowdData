@@ -141,13 +141,13 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
         $http.get('/api/getSurvey')
           .success(function (data) {
             $scope.survey = data.survey;
+            $http.get('/api/getUsersSurveysResponses')
+              .success(function (data) {
+                console.log('successfully got userssruveys');
+              });
           })
           .error(handleError);
       }
-    });
-  $http.get('/api/getUsersSurveysResponses')
-    .success(function (data) {
-      console.log('success man');
     });
 
   $scope.goTo = function (path) {

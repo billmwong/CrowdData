@@ -23,34 +23,35 @@ routes.getSurvey = function (req, res) {
   });
 };
 
- /**
- * Returns all the surveys that a specific user has created.
- * @param {string} userID - the id of the user
- * @returns {Array} array of survey objects 
- */
-var getUsersSurveys = function (userID) {
-  Survey.find({author:userID}, function (err, surveys) {
-    return surveys;
-  });
-};
-
-var handleResponses = function (err, responses) {
-  return function (err, responses) {
-    console.log(JSON.stringify(responses));
-  };
+var handleResponses = function (res, err, responses) {
+  console.log(JSON.stringify(responses));
+  // return function () {
+  // };
+  res.json({success:true});
 };
 
 /**
  * Gets all the responses for all the surveys that this user has created.
- * 
  */
 routes.getUsersSurveysResponses = function (req, res) {
-  var thisUsersSurveys = getUsersSurveys(req.user._id);
-  console.log('getting responses...');
-  for (var i=0; i<thisUsersSurveys.length; i++) {
-    Response.find({survey: thisUsersSurveys[i]}, handleResponses);
-  }
-  res.json({success:true});
+  // Find all the surveys that this user has created
+  Survey.find({author:req.user._id}, function (err, thisUsersSurveys) {
+    // Find the responses for each survey
+    var surveyIds = thisUsersSurveys.map(function (survey){
+      return survey._id;
+    });
+    console.log(surveyIds);
+
+    Response.find({_id:{$in:surveyIds}}, function(err, responses){
+      console.log('got all reponses: '+JSON.stringify(responses));
+      res.json(responses);
+    });
+    // for (var i=0; i<thisUsersSurveys.length; i++) {
+    //   console.log('finding responses for this survey: '+thisUsersSurveys[i].title);
+    //   // Response.find({survey: thisUsersSurveys[i]._id}, handleResponses);
+    //   Response.find({}, handleResponses);
+    // }
+  });
 };
 
 routes.submitSurvey = function (req, res) {
