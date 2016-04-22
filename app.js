@@ -61,12 +61,19 @@ app.post('/api/newuser', index.newUser); // new user details needing to be added
 app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
 
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/' }),
-  function (req, res) {
-    res.redirect('/');
-  }
-);
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) {
+      console.log('no user');
+      return res.json({ loggedIn:false });
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.json({ loggedIn:true });
+    });
+  })(req, res, next);
+});
 
 app.post('/register', function (req, res) {
   User.register(
@@ -85,11 +92,11 @@ app.post('/register', function (req, res) {
     function (err, account) {
       if (err) {
         // Probably username already exists
-        return res.status(500).send(err.message);
+        return res.json({success:false});
       }
 
       passport.authenticate('local')(req, res, function () {
-        res.redirect('/');
+        res.json({success:true});
       });
     }
   );

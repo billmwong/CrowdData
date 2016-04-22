@@ -103,28 +103,90 @@ app.service('anchorSmoothScroll', function () {
   };
 });
 
-app.controller('mainController', function ($scope, $http, $location, $route, $rootScope) {
+app.service('goToService', function ($location) {
+  return {
+    goTo: function (path) {
+      $location.path(path);
+    },
+  };
+});
+
+app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, goToService) {
   $rootScope.loggedIn = false;
   $rootScope.loading = false;
   $rootScope.loadingText = '';
+  $scope.invalidInputs = false;
+  $scope.loginForm = {
+    username: "",
+    password: ""
+  };
+  $scope.invalidUsername = false;
+  $scope.signupForm = {
+    username: "",
+    password: "",
+    age: "",
+    countryOfResidence: "",
+    DOB_year: "",
+    DOB_month: "",
+    DOB_day: ""
+  };
 
   $http.get('/api/getUser')
     .success(function (data) {
       $rootScope.user = data.user;
       if (data.user) {
         // The user is logged in
-        console.log('logged in');
         $rootScope.user = data.user;
         $rootScope.loggedIn = true;
         $http.get('/api/getSurvey')
           .success(function (data) {
-            console.log('Current survey: ');
-            console.log(data.survey);
             $scope.survey = data.survey;
           })
           .error(handleError);
       }
     });
+
+  $scope.goTo = function (path) {
+    goToService.goTo(path);
+  };
+
+  $scope.submitLoginForm = function () {
+    loginData = $scope.loginForm;
+    $rootScope.loading = true;
+    $rootScope.loadingText = 'Logging In';
+    $http.post('/login', loginData)
+      .success(function (resp) {
+        if (resp.loggedIn) {
+          // User is successfully logged in
+          $rootScope.loading = false;
+          $location.path('/');
+          $route.reload();
+        } else {
+          // There was an invalid username/password
+          $rootScope.loading = false;
+          $scope.invalidInputs = true;
+        }
+      });
+  };
+
+  $scope.submitSignupForm = function () {
+    signupData = $scope.signupForm;
+    $rootScope.loading = true;
+    $rootScope.loadingText = 'Signing Up';
+    $http.post('/register', signupData)
+      .success(function (resp) {
+        if (resp.success) {
+          // User successfully signed up
+          $rootScope.loading = false;
+          $location.path('/');
+          $route.reload();
+        } else {
+          // There was an invalid username
+          $rootScope.loading = false;
+          $scope.invalidUsername = true;
+        }
+      });
+  };
 
   $scope.submitAnswers = function () {
     var selectedResponses = $scope.survey.questions.map(function (question) {
@@ -151,7 +213,8 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 });
 
-app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, anchorSmoothScroll) {
+
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, goToService, anchorSmoothScroll) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
   $scope.surveyUploaded = false;
@@ -169,7 +232,7 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
 
   $scope.go = function (path) {
     $scope.surveyUploaded = false;
-    $location.path(path);
+    goToService.goTo(path);
   };
 
   $scope.goToElement = function (eID) {
@@ -183,11 +246,13 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
 
   $scope.qProgress = function () {
     if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
+      $scope.q.id = $rootScope.questionNumber;
       $rootScope.questionNumber += 1;
       $scope.allq.push($scope.q);
       $scope.q = {};
       $location.path('/newsurvey/creating_qs');
     } else {
+      $scope.q.id = $rootScope.questionNumber;
       $scope.allq.push($scope.q);
       $rootScope.newSurvey = {
         author: $rootScope.user._id,  // containing user _id
@@ -235,29 +300,12 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
       $scope.canRemoveQ = false;
     }
   };
-
-  $scope.logout = function () {
-    $scope.loading = true;
-    $scope.loadingText = 'Logging Out';
-    console.log('logging out...');
-    $http.get('/logout')
-    .success(function (data) {
-      $scope.loading = false;
-      $scope.loggedIn = false;
-      $location.path('/');
-      $route.reload();
-    });
-
-    // setTimeout(function() {
-    // }, 1000);
-  };
 });
 
-app.controller('headerController', function ($scope, $rootScope, $location, $http, $route) {
+app.controller('headerController', function ($scope, $rootScope, $location, $http, $route, goToService) {
   $scope.logout = function () {
     $rootScope.loading = true;
     $rootScope.loadingText = 'Logging Out';
-    console.log('logging out...');
     $http.get('/logout')
     .success(function (data) {
       $rootScope.loading = false;
@@ -265,28 +313,9 @@ app.controller('headerController', function ($scope, $rootScope, $location, $htt
       $location.path('/');
       $route.reload();
     });
-
-    // setTimeout(function() {
-    // }, 1000);
   };
 
-  $rootScope.gotoSignUp = function () {
-    $location.path('/signup');
-  };
-
-  $rootScope.gotoRoot = function () {
-    $location.path('/');
-  };
-
-  $scope.gotoLogIn = function () {
-    $location.path('/login');
-  };
-
-  $scope.gotoAbout = function () {
-    $location.path('/about');
-  };
-
-  $scope.gotoGettingStarted = function () {
-    $location.path('/newsurvey/getting_started');
+  $scope.goTo = function (path) {
+    goToService.goTo(path);
   };
 });

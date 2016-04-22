@@ -29,7 +29,6 @@ var surveySchema = mongoose.Schema({
   title: String,
   hypothesis: String,
   questions: Array,
-
   // questions: [{  // Short list of questions, max of 3 or 5
   //     id: Number,
   //     type: String,
@@ -38,7 +37,7 @@ var surveySchema = mongoose.Schema({
   //   }
   // ],
   options: Object,
-  usersTaken: [{ type: ObjectId, ref: 'User' }],  // of user _ids
+  usersTaken: [{type: ObjectId, ref: 'User'}],  // of user _ids
 });
 
 var responseSchema = mongoose.Schema({
