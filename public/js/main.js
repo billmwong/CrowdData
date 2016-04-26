@@ -141,6 +141,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
         $http.get('/api/getSurvey')
           .success(function (data) {
             $scope.survey = data.survey;
+            console.log('scope.survey', $scope.survey);
           })
           .error(handleError);
       }
