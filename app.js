@@ -20,8 +20,6 @@ var app = express();
 var MONGOURI = process.env.MONGOURI;
 var PORT = process.env.PORT || 3000;
 
-console.log("MONGOURI: ",MONGOURI);
-
 mongoose.connect(MONGOURI, function (err) { if (err) {console.log(err);}});
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -65,7 +63,6 @@ app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
 
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    console.log("user: ",user);
     if (err) { console.log("ERROR: ",err); return next(err); }
     if (!user) {
       console.log('no user');
