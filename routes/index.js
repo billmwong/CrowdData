@@ -42,9 +42,12 @@ routes.getUsersSurveysResponses = function (req, res) {
     });
     console.log(surveyIds);
 
-    Response.find({_id:{$in:surveyIds}}, function(err, responses){
+    Response.find({survey:{$in:surveyIds}}, function(err, responses){
       console.log('got all reponses: '+JSON.stringify(responses));
-      res.json(responses);
+      res.json({
+        thisUsersSurveys: thisUsersSurveys,
+        responses: responses
+      });
     });
     // for (var i=0; i<thisUsersSurveys.length; i++) {
     //   console.log('finding responses for this survey: '+thisUsersSurveys[i].title);
