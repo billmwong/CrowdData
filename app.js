@@ -20,6 +20,8 @@ var app = express();
 var MONGOURI = process.env.MONGOURI;
 var PORT = process.env.PORT || 3000;
 
+console.log("MONGOURI: ",MONGOURI);
+
 mongoose.connect(MONGOURI, function (err) { if (err) {console.log(err);}});
 
 app.use(express.static(path.join(__dirname, 'public')));
