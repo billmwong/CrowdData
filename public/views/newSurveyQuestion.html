@@ -7,11 +7,13 @@
     <br>
     <h3> What type of question is question {{questionNumber}}?
     <br>
+    <small class="text-danger" ng-show="missingType">*Oops. You still need to populate this question. Select a type to get started*</small>
+    <br>
     <form class="form-group">
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name = "questionType" type="radio" ng-model="q.type" value="MC" ng-click="goToElement('bottom')"><span class="radio-material"></span> MC</input>
+            <input name = "questionType" type="radio" ng-model="q.type" value="MC" ng-click="goToElement('bottom'); missingType=false"><span class="radio-material"></span> MC</input>
           </label>
         </div>
         <p class="help-block">Multiple Choice</p>
@@ -19,7 +21,7 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name="questionType" type="radio" ng-model="q.type" value="IO" ng-click="goToElement('bottom')"><span class="radio-material"></span> I/O</input>
+            <input name="questionType" type="radio" ng-model="q.type" value="IO" ng-click="goToElement('bottom'); missingType=false"><span class="radio-material"></span> I/O</input>
           </label>
         </div>
         <p class="help-block"> Boolean: it doesn't have to be true or false!</p>
@@ -27,7 +29,7 @@
       <div class="form-group">
         <div class="radio">
           <label>
-            <input name="questionType" type="radio" ng-model="q.type" value="FR" ng-click="goToElement('bottom')"><span class="radio-material"></span> FR</input>
+            <input name="questionType" type="radio" ng-model="q.type" value="FR" ng-click="goToElement('bottom'); missingType=false"><span class="radio-material"></span> FR</input>
           </label>
         </div>
         <p class="help-block"> Free response: short or long answer</p>
@@ -39,17 +41,23 @@
       <hr id="questionBreak">
       <hr>
       <br>
-      <div class="form-group label-floating">
-        <br>
-        <label class="control-label" for="surveyTitle">Question</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.content">
-          <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
+      <div class=".col-md-3">
+        <div class="form-group label-floating">
+          <br>
+          <label class="control-label" for="surveyTitle">Question</label>
+          <br>
+          <small class="text-danger" ng-show="missingContent">*What question do you want to ask the survey taker?*</small>
+          <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingContent=false; titleHelpText=true" ng-blur="typingTitle=false; titleHelpText=false" ng-model="q.content">
+          <small class="text-muted" ng-show="titleHelpText">Is your question leading? Ask ... instead of ...</small>
+        </div>
       </div>
 
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Option 1</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.1">
+        <br>
+        <small class="text-danger" ng-show="missingResponses">*You survey taker will need at least one possible response*</small>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.response.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
@@ -74,6 +82,8 @@
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
+
+
       <!-- <div class="btn-group">
         <button type="button" class="btn btn-secondary" id = "addOptionBtn"ng-click="addOption()">add option</button>
       </div>  -->
@@ -87,14 +97,17 @@
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.content">
+        <br>
+        <small class="text-danger" ng-show="missingContent">*What question do you want to ask the survey taker?*</small>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingContent=false" ng-blur="typingTitle=false" ng-model="q.content">
           <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
       </div>
 
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Option 1</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.response.1">
+        <small class="text-danger" ng-show="missingResponses">*You survey taker will need at least one possible response*</small>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.response.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
@@ -115,8 +128,11 @@
       <div class="form-group label-floating">
         <br>
         <label class="control-label" for="surveyTitle">Question</label>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.content">
+        <br>
+        <small class="text-danger" ng-show="missingContent">*What question do you want to ask the survey taker?*</small>
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingContent=false" ng-blur="typingTitle=false" ng-model="q.content">
           <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
+          <br>
       </div>
 
       <h3>Length of Response</h3>
@@ -124,7 +140,7 @@
         <div class="form-group">
           <div class="radio">
             <label>
-              <input name = "freeResponseType" type="radio" value="SA" ng-model="q.response.1"><span class="radio-material"></span> Short</input>
+              <input name = "freeResponseType" type="radio" value="SA" ng-model="q.response.1" ng-Checked=""><span class="radio-material"></span> Short</input>
             </label>
           </div>
           <p class="help-block">e.g. "Optometrist"</p>
@@ -137,12 +153,11 @@
             </label>
           </div>
           <p class="help-block">e.g. "I was cleaning my room after my mom told me
-            to five or six times. I was picking up clothes on my floor and found
-            this old dish that was making my room smell really bad."</p>
+            to five or six times. I was picking up clothes on my floor..."</p>
       </div>
       </div>
     </div>
-
+    <br>
     <div id="bottom">
       <a href="javascript:void(0)" class="btn btn-raised btn-secondary" ng-click = "go('/newsurvey/setting_up')"> Return to survey setup <div class="ripple-container"></div></a>
       <button type="submit" class="btn btn-raised btn-primary" ng-click = "qProgress()">Next<div class="ripple-container"></div></button>
