@@ -72,7 +72,7 @@ app.post('/login', function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.json({ loggedIn:true });
+      return res.json({ loggedIn:true, user:req.user });
     });
   })(req, res, next);
 });

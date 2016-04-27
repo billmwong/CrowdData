@@ -112,7 +112,6 @@ app.service('goToService', function ($location) {
 });
 
 app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, goToService) {
-  $rootScope.loggedIn = false;
   $rootScope.loading = false;
   $rootScope.loadingText = '';
   $scope.invalidInputs = false;
@@ -131,25 +130,51 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     DOB_day: '',
   };
 
-  $http.get('/api/getUser')
-    .success(function (data) {
-      $rootScope.user = data.user;
-      if (data.user) {
-        // The user is logged in
-        $rootScope.user = data.user;
-        $rootScope.loggedIn = true;
-        $http.get('/api/getSurvey')
-          .success(function (data) {
-            $scope.survey = data.survey;
-            $http.get('/api/getUsersSurveysResponses')
-              .success(function (data) {
-                console.log('successfully got userssruveys:');
-                console.log(data);
-              });
-          })
-          .error(handleError);
-      }
-    });
+  var getASurvey = function () {
+    $http.get('/api/getSurvey')
+      .success(function (data) {
+        $scope.survey = data.survey;
+      })
+      .error(handleError);
+  };
+
+  var getUsersSurveysResponses = function () {
+    // Only need to get a survey if we're on the page where it exists
+    if ($location.path() === '/') {
+      $http.get('/api/getUsersSurveysResponses')
+        .success(function (data) {
+          console.log('successfully got users surveys:');
+          console.log(data);
+        });
+    }
+  };
+
+  if ($rootScope.loggedIn) {
+    // We loaded this controller by clicking a header button
+    // Don't need to get the user again
+    getASurvey();
+  }
+
+  if ( !("loggedIn" in $rootScope) ) {
+    // User manually loaded page in browser
+    // We do need to get the user
+    // Show the loading screen until we've figured out if they're logged in
+    $rootScope.loading = true;
+    $http.get('/api/getUser')
+      .success(function (data) {
+        if (data.user) {
+          // The user is logged in
+          $rootScope.user = data.user;
+          $rootScope.loggedIn = true;
+          $rootScope.loading = false;
+          getASurvey();
+        } else {
+          // The user is not logged in
+          $rootScope.loggedIn = false;
+          $rootScope.loading = false;
+        }
+      });
+  }
 
   $scope.goTo = function (path) {
     goToService.goTo(path);
@@ -164,6 +189,8 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
         if (resp.loggedIn) {
           // User is successfully logged in
           $rootScope.loading = false;
+          $rootScope.loggedIn = true;
+          $rootScope.user = resp.user;
           $location.path('/');
           $route.reload();
         } else {
@@ -203,7 +230,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
     //create the response db entry
     var responseData = {
-      user_id:$scope.user._id,
+      user_id:$rootScope.user._id,
       survey_id:$scope.survey._id,
       response:{
         survey:$scope.survey._id,
