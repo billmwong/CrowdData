@@ -131,22 +131,22 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 
   var getASurvey = function () {
-    $http.get('/api/getSurvey')
-      .success(function (data) {
-        $scope.survey = data.survey;
-      })
-      .error(handleError);
+    // Only need to get a survey if we're on the page where it exists
+    if ($location.path() === '/') {
+      $http.get('/api/getSurvey')
+        .success(function (data) {
+          $scope.survey = data.survey;
+        })
+        .error(handleError);
+    }
   };
 
   var getUsersSurveysResponses = function () {
-    // Only need to get a survey if we're on the page where it exists
-    if ($location.path() === '/') {
-      $http.get('/api/getUsersSurveysResponses')
-        .success(function (data) {
-          console.log('successfully got users surveys:');
-          console.log(data);
-        });
-    }
+    $http.get('/api/getUsersSurveysResponses')
+      .success(function (data) {
+        console.log('successfully got users surveys:');
+        console.log(data);
+      });
   };
 
   if ($rootScope.loggedIn) {
