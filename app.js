@@ -63,7 +63,7 @@ app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
 
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
+    if (err) { console.log("ERROR: ",err); return next(err); }
     if (!user) {
       console.log('no user');
       return res.json({ loggedIn:false });
