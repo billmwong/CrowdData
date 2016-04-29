@@ -132,24 +132,40 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
   $scope.readyForSurvey = false;
 
-  $scope.getUser = function () {
-    console.log("getting user");
-    $http.get('/api/getUser')
-      .success(function (data) {
+  $http.get('/api/getUser')
+    .success(function (data) {
+      $rootScope.user = data.user;
+      if (data.user) {
+        // The user is logged in
         $rootScope.user = data.user;
-        if (data.user) {
-          // The user is logged in
-          $rootScope.user = data.user;
-          $rootScope.loggedIn = true;
-          $http.get('/api/getSurvey')
-            .success(function (data) {
-              $scope.survey = data.survey;
-              console.log('scope.survey', $scope.survey);
-            })
-            .error(handleError);
-        }
-      });
-  }();  //I'm calling the function immediately after creating it.
+        $rootScope.loggedIn = true;
+        $http.get('/api/getSurvey')
+          .success(function (data) {
+            $scope.survey = data.survey;
+            console.log('scope.survey', $scope.survey);
+          })
+          .error(handleError);
+      }
+    });
+
+  $scope.newSurvey = function () {
+  console.log("Requesting new survey");
+  $http.get('/api/getUser')
+    .success(function (data) {
+      $rootScope.user = data.user;
+      if (data.user) {
+        // The user is logged in
+        $rootScope.user = data.user;
+        $rootScope.loggedIn = true;
+        $http.get('/api/getSurvey')
+          .success(function (data) {
+            $scope.survey = data.survey;
+            console.log('scope.survey', $scope.survey);
+          })
+          .error(handleError);
+      }
+    });
+  };
 
   $scope.goTo = function (path) {
     goToService.goTo(path);
