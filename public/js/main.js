@@ -130,6 +130,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     DOB_month: "",
     DOB_day: ""
   };
+  $scope.readyForSurvey = false;
 
   $http.get('/api/getUser')
     .success(function (data) {
