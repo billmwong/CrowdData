@@ -5,38 +5,44 @@
     <div class="form-group label-floating">
       <br>
       <label class="control-label" for="surveyTitle">Title</label>
-      <input class="form-control" id="surveyTitle" ng-model="Setup.title" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false">
+      <br>
+      <p class="text-danger" ng-show="missingTitle">*You will want a title to reference this survey later*</p>
+      <input class="form-control" id="surveyTitle" ng-model="Setup.title" type="text" ng-focus="typingTitle=true; missingTitle=false" ng-blur="typingTitle=false">
         <small class="text-muted" ng-show="typingTitle">This won't be shown to users. It is for your reference only.</small>
     </div>
     <br>
     <div class="input-field form-group label-floating">
       <label class="control-label" for="surveyHypothesis">Hypothesis</label>
-      <textarea class="form-control" id="surveyHypothesis" ng-model="Setup.hypothesis" length="120" ng-focus="typingHypo=true" ng-blur="typingHypo=false"></textarea>
+      <br>
+      <br>
+      <p class="text-danger" ng-show="missingHypothesis">*The hypothesis is a note to your future self hinting at what to look for in the data*</p>
+      <textarea class="form-control" id="surveyHypothesis" ng-model="Setup.hypothesis" length="120" ng-focus="typingHypo=true; missingHypothesis=false" ng-blur="typingHypo=false"></textarea>
       <span class="character-counter" style="float: right; font-size: 12px; height: 1px;"></span>
       <small class="text-muted" ng-show="typingHypo">We will show you this along with your data to help you remember what you want to find out.</small>
     </div>
     <div class="form-group label-floating">
       <h3>What category do you think your survey falls into?</h3>
+      <p class="text-danger" ng-show="missingCategory">*A category helps us organize and present the survey to survey takers*</p>
       <form>
         <br>
         <div class="form-group">
           <div class="radio">
             <label>
-              <input name = "surveyType" class="with-gap" type="radio" value="Health" ng-model="Setup.category">
+              <input name = "surveyType" class="with-gap" type="radio" value="Health" ng-model="Setup.category" ng-click="missingCategory=false">
               Health
             </label>
           </div>
           <br>
           <div class="radio">
             <label>
-              <input name = "surveyType" class="with-gap" type="radio" value="Ethnography" ng-model="Setup.category">
+              <input name = "surveyType" class="with-gap" type="radio" value="Ethnography" ng-model="Setup.category" ng-click="missingCategory=false">
               Ethnography
             </label>
           </div>
           <br>
           <div class="radio">
             <label>
-              <input name = "surveyType" class="with-gap" type="radio" value="Opinion" ng-model="Setup.category">
+              <input name = "surveyType" class="with-gap" type="radio" value="Opinion" ng-model="Setup.category" ng-click="missingCategory=false">
               Opinion
             </label>
           </div>
@@ -44,7 +50,7 @@
       </form>
     </div>
 
-    <h3>What aspects of your user do you think are needed to test your hypothesis?</h3>
+    <h3>What aspects of your user do you think are needed to test your hypothesis? (none are required)</h3>
     <form>
       <br>
       <div class="form-group">
@@ -80,7 +86,7 @@
         <p class="help-block">For example: Egyptian, Cantonese</p>
       </div>
 
-    <h3 class="text-danger" ng-show="tooManyQ">*</h3><h3>How many questions will your survey have?</h3>
+    <h3>How many questions will your survey have?</h3>
     <span class="btn-group" role="group" aria-label="plusMinus">
       <h2>
         &emsp; <span> {{Setup.numOfQuestions}} </span> &emsp; &emsp;
@@ -91,9 +97,10 @@
       <small class="text-danger" ng-show="tooManyQ"> We recommend using five or less questions.
         If you feel like you need more, we suggest simplifying your hypothesis. </small>
     </p>
+    <p class="text-danger" ng-show="missingStuff">^It looks like one or more bits of info still need to be populated!</p>
     <div>
       <a href="javascript:void(0)" class="btn btn-raised btn-secondary" ng-click = "go('/newsurvey/getting_started')">cancel<div class="ripple-container"></div></a>
-      <button type="submit" class="btn btn-raised btn-primary" ng-click = "go('/newsurvey/creating_qs')">Submit<div class="ripple-container"></div></button>
+      <button type="submit" class="btn btn-raised btn-primary" ng-click = "sProgress()">Populate questions<div class="ripple-container"></div></button>
     </div>
   </div>
 </div>
