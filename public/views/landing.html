@@ -46,8 +46,10 @@
       </span>
       <br>
       <br>
-      <button ng-click="readyForSurvey=true">Sounds good! </button>
-
+      <form>
+        <button ng-click="readyForSurvey=true">Sounds good! </button>
+        <input type="submit" value="I'll pass on this one" ng-click="getUser()"/>
+      </form>
     </div>
 
     <div ng-show="readyForSurvey" class="card card-content">
