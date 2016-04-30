@@ -144,7 +144,6 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           }
 
           function drawPie(surveyNum, quesNum) {
-            console.log('drawing pie chart');
             var thisQuestion = $scope.DVquestions[quesNum];
             // Make a possible options array out of the object
             var optionsObj = thisQuestion['responses'];
@@ -152,12 +151,13 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
                 return optionsObj[key];
             });
 
-            // TODO this assumes there's only two options
-            var data = google.visualization.arrayToDataTable([
-              ['Reponse', 'Number'],
-              [possibleOptions[0],firstSurveyRespsParsed[quesNum][possibleOptions[0]]],
-              [possibleOptions[1],firstSurveyRespsParsed[quesNum][possibleOptions[1]]]
-            ]);
+            // Build chartData array
+            var chartData = [['Response', 'Number']];
+            for (var i=0;i<possibleOptions.length;i++) {
+              chartData.push([possibleOptions[i],firstSurveyRespsParsed[quesNum][possibleOptions[i]]]);
+            }
+
+            var data = google.visualization.arrayToDataTable(chartData);
 
             var chart = new google.visualization.PieChart(document.getElementById('datavis-'+(quesNum+1)));
 
