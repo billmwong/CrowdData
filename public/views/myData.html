@@ -1,4 +1,4 @@
-<div ng-show="!loading">
+<div ng-show="!loading && DVquestions">
   <h1>My Data</h1>
   <button class="btn btn-raised btn-lg btn-primary" ng-click="DVnextSurvey()">Next Survey</button>
   <h2>{{DVsurvey.title}}</h2>
@@ -8,6 +8,11 @@
     <div ng-attr-id="{{'datavis-' + question.id}}"></div>
   </div>
 </div>
+
+<div class="card" ng-show="!DVquestions">
+  <h3> Uh oh, it looks like we are having trouble retrieving your beautiful data. </h3>
+  <br>
+  <h4>Try reloading the page or go ahead and <a href="/newsurvey/getting_started">create a new survey!</a></h4>
 
 <div ng-show="loading">
   <h1>{{loadingText}}</h1>

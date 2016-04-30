@@ -29,6 +29,7 @@
       </form>
     </div>
 
+    <button ng-show="!surveyUploading" type="submit" class="btn btn-raised btn-primary" ng-click="qRegress(); go('/newsurvey/creating_qs');">On second thought...<div class="ripple-container"></div></button>
     <button ng-show="!surveyUploading" type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey(); surveyUploading=true">Looks great!<div class="ripple-container"></div></button>
     <div ng-show="surveyUploading" class="showbox">
       <div class="loader">
