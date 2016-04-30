@@ -1,0 +1,7 @@
+<h1>My Data</h1>
+<h2>{{DVsurvey.title}}</h2>
+<h3>Hypothesis: {{DVsurvey.hypothesis}}</h3>
+<div ng-repeat="question in DVquestions">
+  <h4>Question {{question.id}}: {{question.content}}</h4>
+  <div ng-attr-id="{{'datavis-' + question.id}}"></div>
+</div>
