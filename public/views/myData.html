@@ -1,5 +1,6 @@
 <div ng-show="!loading">
   <h1>My Data</h1>
+  <button class="btn btn-raised btn-lg btn-primary" ng-click="DVnextSurvey()">Next Survey</button>
   <h2>{{DVsurvey.title}}</h2>
   <h3>Hypothesis: {{DVsurvey.hypothesis}}</h3>
   <div ng-repeat="question in DVquestions">

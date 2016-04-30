@@ -1,5 +1,5 @@
 var app = angular.module('crowddata');
-app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, goToService) {
+app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, $window, goToService) {
   $rootScope.loading = false;
   $rootScope.loadingText = '';
   $scope.invalidInputs = false;
@@ -19,6 +19,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
   $scope.DVquestions = [];
   $scope.readyForSurvey = false;
+  $scope.DVSurveyIndex = 0;
 
   if (typeof chartsLoaded === 'undefined') {
     chartsLoaded = false;
@@ -39,18 +40,30 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     }
   };
 
+  $scope.DVnextSurvey = function() {
+
+    if (parseInt($scope.DVcurrentSurvey) === ($scope.thisUsersSurveys.length-1)) {
+      // Loop back to the first survey
+      var nextSurveyIndex = 0;
+    } else {
+      var nextSurveyIndex = parseInt($scope.DVcurrentSurvey) + 1;
+    }
+    $location.path('/myData').search({survey: nextSurveyIndex});
+    $window.location.reload();
+  };
+
   var getUsersSurveysResponses = function () {
     if ($location.path() === '/myData') {
+      $scope.DVcurrentSurvey = $location.search().survey;
       $rootScope.loadingText = "Getting Data";
       $rootScope.loading = true;
       $http.get('/api/getUsersSurveysResponses')
         .success(function (data) {
           $rootScope.loading = false;
-
-          // TODO: right now this assumes the user only created one survey
+          $scope.thisUsersSurveys = data['thisUsersSurveys'];
 
           // Parse through the responses
-          var firstSurvey = data['thisUsersSurveys'][0];
+          var firstSurvey = data['thisUsersSurveys'][$scope.DVcurrentSurvey];
           var rawResponses = data['responses'];
           $scope.DVsurvey = firstSurvey;
           $scope.DVquestions = firstSurvey['questions'];

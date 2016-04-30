@@ -60,7 +60,7 @@ app.service('goToService', function ($location, $window) {
   return {
     goTo: function (path) {
       if (path === 'myData') {
-        $location.path(path);
+        $location.path('/myData').search({survey: 0});
         // Google charts only works if we refresh the entire page
         $window.location.reload();
       } else {
