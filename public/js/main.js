@@ -152,37 +152,45 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
         .success(function (data) {
           console.log('users surveys: ',data);
 
-          // TODO: right now this assumes the user only created one response,
+          // TODO: right now this assumes the user only created one survey,
           // and they're all multiple choice questions
 
           // Parse through the responses
           var firstSurvey = data['thisUsersSurveys'][0];
-          var responses = data['responses'];
+          var rawResponses = data['responses'];
           $scope.DVquestions = firstSurvey['questions'];
           var firstQuestion = firstSurvey['questions'][0];
-          // var possibleResps = firstQuestion['responses'];
 
+          // Build the parsed responses array
           var firstSurveyRespsParsed = [];
-
+          // Loop through all the questions in this survey
           for (var i=0;i<$scope.DVquestions.length;i++) {
             var thisQuestion = $scope.DVquestions[i];
             var possibleResps = thisQuestion.responses;
+
+            // Build the object that represents this question
             var thisRespObj = {};
             for (var j=0;j<possibleResps.length;j++) {
+              // Initialize this answer with "zero people said this"
               thisRespObj[possibleResps[j]] = 0;
             }
+            // Add the object to the parsed responses array
             firstSurveyRespsParsed.push(thisRespObj);
           }
 
-          for (var i=0;i<responses.length;i++) {
-            var thisResponse = responses[i];
+          // Add the data to the parsed responses array
+          for (var i=0;i<rawResponses.length;i++) {
+            var thisResponse = rawResponses[i];
             if (thisResponse.survey === firstSurvey._id) {
               // This response is for the relevant survey
-              // for question in thisresponse.data
+
+              // Loop through the questions that were answered
               var questions = thisResponse['data'];
               for (var j=0;j<questions.length;j++) {
                 var thisQuestion = questions[j];
+                // Get the option that this user chose
                 var thisAnswer = thisQuestion.response;
+                // Add one person that said this option
                 firstSurveyRespsParsed[j][thisAnswer]++;
               }
             }
