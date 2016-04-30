@@ -53,46 +53,38 @@
 
     <div ng-show="readyForSurvey" class="card card-content">
       <h3 class="card-title"> Here's a survey!</h3>
-      	<form class="form-group card-body label-floating">
-        {{survey}}
-      		<div class="questions" ng-repeat="q in survey.questions">
-      	  	<h4>{{q.content}}</h4>
+    	<form class="form-group card-body label-floating">
+    		<div class="questions" ng-repeat="q in survey.questions">
+    	  	<h4>{{q.content}}</h4>
 
-            <div ng-if='q.type === "MC"'>
-              <div class="answers radio" ng-repeat="response in q.responses">
-                <div class="radio">
-                  <label for="q{{$index}}">
-                  {{response}}
-                  <input type="radio" ng-model="$parent.q.selectedResponse" name="{{$parent.q.id}}" class="with-gap" value="{{response}}" ng-value="{{response}}" id="q.id{{$index}}"/>
-                  </label>
-                </div>
+          <div ng-if='q.type === "MC"'>
+            <div class="answers" ng-repeat="response in q.responses">
+            <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+              <label for = "{{q.id}}{{$index}}">{{response}}</label>
+            </div>
+          </div>
+
+          <div ng-if='q.type === "IO"'>
+            <div class="answers" ng-repeat="response in q.responses">
+            <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+              <label for = "{{q.id}}{{$index}}">{{response}}</label>
+            </div>
+          </div>
+
+          <div ng-if='q.type === "FR"'>
+            <div class="answers">
+              <div class="form-group label-floating">
+                <input class="form-control" id="{{q.id}}" ng-model="$parent.q.selectedResponse" type="text" name="{{q.id}}" ng-value="{{q.id}}">
               </div>
             </div>
+      	  </div>
 
-            <div ng-if='q.type === "IO"'>
-              <div class="answers radio" ng-repeat="response in q.responses">
-                <div class="radio">
-                  <label for="q{{$index}}">
-                  {{response}}
-                  <input type="radio" ng-model="$parent.q.selectedResponse" name="{{$parent.q.id}}" class="with-gap" value="{{response}}" ng-value="{{response}}" id="q.id{{$index}}"/>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div ng-if='q.type === "FR"'>
-              <div class="answers">
-                <div class="form-group label-floating">
-                  <input class="form-control" id="{{q.id}}" ng-model="$parent.q.selectedResponse" type="text" name="{{q.id}}" ng-value="{{q.id}}">
-                </div>
-              </div>
-
-        	  </div>
-        	  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
-        	</form>
-      </div>
+        </div>
+      	<input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
+      </form>
     </div>
   </div>
+
   <div ng-show="!survey && loggedIn">
     <div class="card card-content">
     <h3 class="card-title"> No survey found...</h3>
