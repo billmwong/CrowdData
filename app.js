@@ -44,7 +44,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 // serialize and deserialize
 passport.serializeUser(function (user, done) {
-    console.log("USER:",user);
     done(null, user._id);
   }
 );
