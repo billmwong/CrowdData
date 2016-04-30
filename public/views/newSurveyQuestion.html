@@ -57,7 +57,7 @@
         <label class="control-label" for="surveyTitle">Option 1</label>
         <br>
         <small class="text-danger" ng-show="missingResponses">*You survey taker will need at least one possible response*</small>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.response.1">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.responses.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
@@ -107,7 +107,7 @@
         <br>
         <label class="control-label" for="surveyTitle">Option 1</label>
         <small class="text-danger" ng-show="missingResponses">*You survey taker will need at least one possible response*</small>
-        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.response.1">
+        <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.responses.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
 
@@ -140,7 +140,7 @@
         <div class="form-group">
           <div class="radio">
             <label>
-              <input name = "freeResponseType" type="radio" value="SA" ng-model="q.response.1" ng-Checked=""><span class="radio-material"></span> Short</input>
+              <input name = "freeResponseType" type="radio" value="SA" ng-model="q.responses.1" ng-Checked=""><span class="radio-material"></span> Short</input>
             </label>
           </div>
           <p class="help-block">e.g. "Optometrist"</p>

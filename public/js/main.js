@@ -191,12 +191,11 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
   $scope.submitAnswers = function () {
     var selectedResponses = $scope.survey.questions.map(function (question) {
-      return { questionid: question.id, response: question.response };
+      console.log(question.selectedResponse);
+      return { questionid: question.id, response: question.selectedResponse };
     });
 
-    console.log('selectedResponses:');
-    console.log(selectedResponses);
-
+    console.log('selectedResponses:', selectedResponses);
     //create the response db entry
     var responseData = {
       user_id:$scope.user._id,
@@ -290,7 +289,7 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
 
   $scope.qProgress = function () {  // progress from question population to next
     // question and eventually survey preview
-    if ($scope.q.type && $scope.q.content && $scope.q.response) {
+    if ($scope.q.type && $scope.q.content && $scope.q.responses) {
       $scope.missingType = false;
       $scope.missingContent = false;
       $scope.missingResponses = false;
