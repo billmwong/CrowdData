@@ -27,25 +27,28 @@
         <br>
         <div class="form-group">
           <div class="radio">
-            <label>
-              <input name = "surveyType" class="with-gap" type="radio" value="Health" ng-model="Setup.category" ng-click="missingCategory=false">
+            <label for="Health">
+              <input name = "surveyType" class="with-gap" type="radio" value="Health" ng-model="Setup.category" ng-click="missingCategory=false" id="Health">
               Health
             </label>
           </div>
-          <br>
+        </div>
+        <div class="form-group">
           <div class="radio">
-            <label>
-              <input name = "surveyType" class="with-gap" type="radio" value="Ethnography" ng-model="Setup.category" ng-click="missingCategory=false">
+            <label for="Ethnography">
+              <input name = "surveyType" class="with-gap" type="radio" value="Ethnography" ng-model="Setup.category" ng-click="missingCategory=false" id="Ethnography">
               Ethnography
             </label>
           </div>
-          <br>
+        </div>
+        <div class="form-group">
           <div class="radio">
-            <label>
-              <input name = "surveyType" class="with-gap" type="radio" value="Opinion" ng-model="Setup.category" ng-click="missingCategory=false">
+            <label for="Opinion">
+              <input name = "surveyType" class="with-gap" type="radio" value="Opinion" ng-model="Setup.category" ng-click="missingCategory=false" id="Opinion">
               Opinion
             </label>
           </div>
+        </div>
         </div>
       </form>
     </div>

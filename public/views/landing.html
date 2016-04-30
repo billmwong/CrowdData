@@ -23,7 +23,6 @@
   </div>
 
   <div ng-show="loggedIn">
-
     <div ng-show="!readyForSurvey" class="card card-content">
       <h3 class="card-title"> We found a survey for you!</h3>
       <h4> The survey topic is {{survey.category}}.<h4>
@@ -87,12 +86,18 @@
                   <input class="form-control" id="{{q.id}}" ng-model="$parent.q.selectedResponse" type="text" name="{{q.id}}" ng-value="{{q.id}}">
                 </div>
               </div>
-            </div>
 
-      	  </div>
-      	  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
-      	</form>
+        	  </div>
+        	  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
+        	</form>
+      </div>
     </div>
+  </div>
+  <div ng-show="!survey && loggedIn">
+    <div class="card card-content">
+    <h3 class="card-title"> No survey found...</h3>
+    Uh oh! Looks like we couldn't find you a survey. Try reloading the page or go ahead and <a href="/newsurvey/getting_started">create a new survey!</a>
+    </div>  
   </div>
 </div>
 

@@ -32,6 +32,7 @@ routes.submitSurvey = function (req, res) {
   // res contains response object.
 
   Survey.findOneAndUpdate({ _id:req.body.survey_id }, { $push: { 'usersTaken': req.body.user_id }}, function(err, survey){
+    console.log('a string');
     console.log("survey:", survey);
     if (err){
       console.log(err);
@@ -42,18 +43,16 @@ routes.submitSurvey = function (req, res) {
           if (err){
             console.log(err);
             res.status(500);
-          } else {
-            res.json(req.body.response);
           }
         }
       );
     }
   });
 
-  // Response.create(req.body.response, function (err, response) {
-  //   console.log('req.body.response:', req.body.response);
-  //   res.json(response);
-  // });
+  Response.create(req.body.response, function (err, response) {
+    console.log('req.body.response:', req.body.response);
+    res.json(response);
+  });
 };
 
 routes.newSurvey = function (req, res) {

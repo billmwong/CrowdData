@@ -1,7 +1,39 @@
 <div class="card form-horizontal">
   <div class="card-body" ng-hide="surveyUploaded">
     <h2 class="card-title"> Survey Preview</h2>
-		<div>
+    <div>
+      <form class="form-group card-body label-floating">    
+        <div ng-repeat="q in newSurvey.questions" >
+          <h4>{{q.content}}</h4>
+
+          <div ng-if='q.type === "MC"'>
+            <div ng-repeat="response in q.responses" class="answers">
+                <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+                <label for = "{{q.id}}{{$index}}">{{response}}</label> 
+            </div>            
+          </div>
+
+          <div ng-if='q.type === "IO"'>
+            <div ng-repeat="response in q.responses" class="answers"> 
+                <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+                <label for = "{{q.id}}{{$index}}">{{response}}</label> 
+            </div>            
+          </div>
+
+          <div ng-if='q.type === "FR"'>
+            <div class="form-group label-floating" class="answers">
+              <input class="form-control" id="{{q.id}}" ng-model="q.selectedResponse" type="text" name="Q{{q.id}}" ng-value="{{q.id}}">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+<!-- 		<div>
     	<form class="form-group card-body label-floating">
     		<div class="questions" ng-repeat="q in newSurvey.questions">
     	  	<h4>{{q.content}}</h4>
@@ -33,11 +65,11 @@
                 <input class="form-control" id="{{q.id}}" ng-model="question.response" type="text" name="{{q.id}}" value="{{q.id}}">
               </div>              
             </div>
-          </div>
-
+          </div> -->
+<!-- 
     	  </div>
     	  <input type="submit" value="Submit" class="btn btn-primary"/>
-    	</form>
+    	</form> -->
       <button type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey()">Looks great!<div class="ripple-container"></div></button>
     </div>
   </div>
