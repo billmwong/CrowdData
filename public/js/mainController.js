@@ -264,9 +264,9 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
       },
     };
     $http.post('/api/survey/submit', responseData)
-    .success(function (data) {
-      $location.path('/');
-      $route.reload();
-    });
+      .success(function (data) {
+        $location.path('/');
+        $route.reload();
+      });
   };
 });
