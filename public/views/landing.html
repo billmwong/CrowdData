@@ -23,36 +23,44 @@
   </div>
 
   <div ng-show="loggedIn">
-    <div class="card card-content">
-      <h3 class="card-title"> Here's a survey!</h3>
-      	<form class="form-group card-body label-floating">
-      		<div ng-repeat="q in survey.questions" >
-      	  	<h4>{{q.content}}</h4>
+    <div ng-show="survey">
+      <div class="card card-content">
+        <h3 class="card-title"> Here's a survey!</h3>
+        	<form class="form-group card-body label-floating">
+        		<div ng-repeat="q in survey.questions" >
+        	  	<h4>{{q.content}}</h4>
 
-            <div ng-if='q.type === "MC"'>
-              <div ng-repeat="response in q.responses" class="answers">
-                  <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
-                  <label for = "{{q.id}}{{$index}}">{{response}}</label> 
-              </div>            
-            </div>
-
-            <div ng-if='q.type === "IO"'>
-              <div ng-repeat="response in q.responses" class="answers"> 
-                  <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
-                  <label for = "{{q.id}}{{$index}}">{{response}}</label> 
-              </div>            
-            </div>
-
-            <div ng-if='q.type === "FR"'>
-                <div class="form-group label-floating" class="answers">
-                  <input class="form-control" id="{{q.id}}" ng-model="q.selectedResponse" type="text" name="Q{{q.id}}" ng-value="{{q.id}}">
+              <div ng-if='q.type === "MC"'>
+                <div ng-repeat="response in q.responses" class="answers">
+                    <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+                    <label for = "{{q.id}}{{$index}}">{{response}}</label> 
+                </div>            
               </div>
-            </div>
 
-      	  </div>
-      	  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
-      	</form>
+              <div ng-if='q.type === "IO"'>
+                <div ng-repeat="response in q.responses" class="answers"> 
+                    <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+                    <label for = "{{q.id}}{{$index}}">{{response}}</label> 
+                </div>            
+              </div>
+
+              <div ng-if='q.type === "FR"'>
+                  <div class="form-group label-floating" class="answers">
+                    <input class="form-control" id="{{q.id}}" ng-model="q.selectedResponse" type="text" name="Q{{q.id}}" ng-value="{{q.id}}">
+                </div>
+              </div>
+
+        	  </div>
+        	  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitAnswers()"/>
+        	</form>
+      </div>
     </div>
+  </div>
+  <div ng-show="!survey && loggedIn">
+    <div class="card card-content">
+    <h3 class="card-title"> No survey found...</h3>
+    Uh oh! Looks like we couldn't find you a survey. Try reloading the page or go ahead and <a href="/newsurvey/getting_started">create a new survey!</a>
+    </div>  
   </div>
 </div>
   

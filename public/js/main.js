@@ -105,9 +105,9 @@ app.service('anchorSmoothScroll', function () {
 
 app.service('goToService', function ($location) {
   return {
-    goTo: function(path) {
+    goTo: function (path) {
       $location.path(path);
-    }
+    },
   };
 });
 
@@ -117,18 +117,18 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   $rootScope.loadingText = '';
   $scope.invalidInputs = false;
   $scope.loginForm = {
-    username: "",
-    password: ""
+    username: '',
+    password: '',
   };
   $scope.invalidUsername = false;
   $scope.signupForm = {
-    username: "",
-    password: "",
-    age: "",
-    countryOfResidence: "",
-    DOB_year: "",
-    DOB_month: "",
-    DOB_day: ""
+    username: '',
+    password: '',
+    age: '',
+    countryOfResidence: '',
+    DOB_year: '',
+    DOB_month: '',
+    DOB_day: '',
   };
 
   $http.get('/api/getUser')
@@ -214,10 +214,11 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 });
 
-app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, anchorSmoothScroll,goToService) {
+app.controller('newSurveyController', function ($scope, $rootScope, $http, $location, goToService, anchorSmoothScroll) {
   $scope.canRemoveQ = false;
   $scope.tooManyQ = false;
   $scope.surveyUploaded = false;
+  $scope.q = {};
   $scope.allq = [];
   var numOfOptions = 2;
 
@@ -246,8 +247,8 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
   };
 
   $scope.go = function (path) {
-    goToService.goTo(path);
     $scope.surveyUploaded = false;
+    goToService.goTo(path);
   };
 
   $scope.goToElement = function (eID) {
@@ -257,38 +258,92 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
 
     // call $anchorScroll()
     anchorSmoothScroll.scrollTo(eID);
+    $location.hash('');
   };
 
-  $scope.qProgress = function () {
-    if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
-      $scope.q.id = $rootScope.questionNumber;
-      $rootScope.questionNumber += 1;
-      $scope.allq.push($scope.q);
-      $scope.q = {};
-      $location.path('/newsurvey/creating_qs');
-    } else {
-      $scope.q.id = $rootScope.questionNumber;
-      $scope.allq.push($scope.q);
-      $rootScope.newSurvey = {
-        author: $rootScope.user._id,  // containing user _id
-        timeCreated: Date(),
-        category: $scope.Setup.category,
-        demographics: $scope.Setup.demographics,
-        title: $scope.Setup.title,
-        hypothesis: $scope.Setup.hypothesis,
-        questions: $scope.allq,
+  $scope.sProgress = function () {  // progress from survey setup to question preview
+    if ($scope.Setup.title && $scope.Setup.hypothesis && $scope.Setup.category) {
+      $scope.missingTitle = false;
+      $scope.missingHypothesis = false;
+      $scope.missingCategory = false;
+      $scope.missingStuff = false;
+      $scope.go('/newsurvey/creating_qs');
+    } else {  // provide error messages if things are missing
+      $scope.missingStuff = true;
+      if (!$scope.Setup.title) {
+        $scope.missingTitle = true;
+      }
+      if (!$scope.Setup.hypothesis) {
+        $scope.missingHypothesis = true;
+      }
+      if (!$scope.Setup.category) {
+        $scope.missingCategory = true;
+      }
+    }
+  };
 
-        // questions: [{  // Short list of questions, max of 3 or 5
-        //     id: Number,
-        //     type: String,
-        //     content: String,
-        //     Answers: Array // of strings
-        //   }
-        // ],
-        options: {},
-        usersTaken: [],
+  $scope.qRegress = function () {
+    $scope.allq[$rootScope.questionNumber-1] = $scope.q;
+    $rootScope.questionNumber -= 1;
+    $scope.q = $scope.allq[$rootScope.questionNumber-1];
+  };
+
+  $scope.qProgress = function () {  // progress from question population to next
+    // question and eventually survey preview
+    if ($scope.q.type && $scope.q.content && $scope.q.response) {
+      $scope.missingType = false;
+      $scope.missingContent = false;
+      $scope.missingResponses = false;
+      $scope.missingStuff = false;
+      if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
+        
+
+        $scope.q.id = $rootScope.questionNumber;
+        $scope.allq[$rootScope.questionNumber-1] = $scope.q;
+        $rootScope.questionNumber += 1;
+        if ($scope.allq[$rootScope.questionNumber-1]) {
+          $scope.q = $scope.allq[$rootScope.questionNumber-1];
+        } else {
+        $scope.q = {};
+        }
+        $location.path('/newsurvey/creating_qs');
+      } else {
+        $scope.q.id = $rootScope.questionNumber;
+        $scope.allq[$rootScope.questionNumber-1] = $scope.q;
+        $rootScope.newSurvey = {
+          author: $rootScope.user._id,  // containing user _id
+          timeCreated: Date(),
+          category: $scope.Setup.category,
+          demographics: $scope.Setup.demographics,
+          title: $scope.Setup.title,
+          hypothesis: $scope.Setup.hypothesis,
+          questions: $scope.allq,
+
+          // questions: [{  // Short list of questions, max of 3 or 5
+          //     id: Number,
+          //     type: String,
+          //     content: String,
+          //     Answers: Array // of strings
+          //   }
+          // ],
+          options: {},
+          usersTaken: [],
+        };
+        $location.path('/newsurvey/preview');
+      }
+    } else {
+      $scope.missingStuff = true;
+      if (!$scope.q.type) {
+        $scope.missingType = true;
       };
-      $location.path('/newsurvey/preview');
+
+      if (!$scope.q.content) {
+        $scope.missingContent = true;
+      };
+
+      if (!$scope.q.response) {
+        $scope.missingResponses = true;
+      };
     }
   };
 
@@ -298,6 +353,7 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
       .success(function (data) {
         $scope.surveyUploaded = true;
         $rootScope.newSurvey = {};
+        $scope.allq = [];
       });
     }
   };
