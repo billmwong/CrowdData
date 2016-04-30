@@ -9,10 +9,13 @@
   </div>
 </div>
 
-<div class="card" ng-show="!DVquestions">
-  <h3> Uh oh, it looks like we are having trouble retrieving your beautiful data. </h3>
-  <br>
-  <h4>Try reloading the page or go ahead and <a href="/newsurvey/getting_started">create a new survey!</a></h4>
+<div class="card" ng-show="!DVsurvey && !loading">
+  <div class="card-body">
+    <h3> Uh oh, it looks like we are having trouble retrieving your beautiful data. </h3>
+    <br>
+    <h4>Try reloading the page or go ahead and <a href="/newsurvey/getting_started">start gathering some data!</a></h4>
+  </div>
+<div>
 
 <div ng-show="loading">
   <h1>{{loadingText}}</h1>
