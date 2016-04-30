@@ -4,12 +4,11 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-// Create a Schema
 var userSchema = mongoose.Schema({
   name: String,
   password: String,
   countryOfResidence: String,
-  dateOfBirth: {  //unsure about this one
+  dateOfBirth: {
     year: Number,
     month: Number,
     day: Number,
@@ -29,15 +28,16 @@ var surveySchema = mongoose.Schema({
   title: String,
   hypothesis: String,
   questions: Array,
-  // questions: [{  // Short list of questions, max of 3 or 5
+  //question format:
+  // questions: [{
   //     id: Number,
   //     type: String,
   //     content: String,
-  //     responses: []
+  //     responses: {}
   //   }
   // ],
   options: Object,
-  usersTaken: [{type: ObjectId, ref: 'User'}],  // of user _ids
+  usersTaken: [{type: ObjectId, ref: 'User'}],  // containing user _ids
 });
 
 var responseSchema = mongoose.Schema({
