@@ -149,8 +149,11 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
   var getUsersSurveysResponses = function () {
     if ($location.path() === '/myData') {
+      $scope.loadingText = "Getting Data";
+      $scope.loading = true;
       $http.get('/api/getUsersSurveysResponses')
         .success(function (data) {
+          $scope.loading = false;
           console.log('users surveys: ',data);
 
           // TODO: right now this assumes the user only created one survey,
@@ -168,20 +171,10 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
             var thisQuestion = $scope.DVquestions[i];
             var possibleResps = thisQuestion.responses;
 
-            // Build the object that represents this question
-            /*
-            [
-              {
-                "Yes":0,
-                "No":0
-              },
-              {
-                "True":0
-              }
-            ]
-            */
-
-
+            /**
+             * Build the object that represents this question according to the
+             * syntax: {"Yes":0, "No":0}
+             */
             var thisRespObj = {};
             for (var j=0;j<possibleResps.length;j++) {
               // Initialize this answer with "zero people said this"
@@ -190,7 +183,6 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
             // Add the object to the parsed responses array
             firstSurveyRespsParsed.push(thisRespObj);
           }
-          console.log('firstSurveyRespsParsed',firstSurveyRespsParsed);
 
           // Add the data to the parsed responses array
           for (var i=0;i<rawResponses.length;i++) {
@@ -214,6 +206,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           google.charts.load('current', {'packages':['corechart']});
           google.charts.setOnLoadCallback(startDrawing);
           function startDrawing() {
+            // Draw the chart for the first question of the first survey
             drawPie(0,0);
           }
 
