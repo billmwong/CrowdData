@@ -60,6 +60,7 @@ app.post('/api/survey/new', index.newSurvey); // new survey object needing to be
 app.post('/api/newuser', index.newUser); // new user details needing to be added to db.
 app.get('/api/getUser', index.getUser); //see who's logged in
 app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
+app.get('/api/getUsersSurveysResponses', index.getUsersSurveysResponses);
 
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
@@ -70,7 +71,7 @@ app.post('/login', function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.json({ loggedIn:true });
+      return res.json({ loggedIn:true, user:req.user });
     });
   })(req, res, next);
 });

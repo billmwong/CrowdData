@@ -42,6 +42,10 @@ app.config(function ($routeProvider, $locationProvider) {
   .when('/about', {
     templateUrl: '../views/about.html',
     controller: 'mainController',
+  })
+  .when('/myData', {
+    templateUrl: '../views/myData.html',
+    controller: 'mainController',
   });
   $locationProvider.html5Mode(true);
 });

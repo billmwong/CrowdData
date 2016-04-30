@@ -28,6 +28,7 @@
     <script type="text/javascript" src="dist/js/material.js"></script>
     <script type="text/javascript" src="dist/js/ripples.js"></script>
 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
     <script type="text/javascript" src="js/mainController.js"></script>
@@ -57,7 +58,7 @@
                     <li><a class="clickable" ng-click="goTo('/newsurvey/getting_started')" ng-show="loggedIn">Create a Survey</a></li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
-                    <li><a href="javascript:void(0)" ng-show="loggedIn">{{user.name}}</a></li>
+                    <li><a href="javascript:void(0)" ng-show="loggedIn" ng-click="goTo('myData')">{{user.name}}</a></li>
                     <li><a class="clickable" ng-show="loggedIn" ng-click="logout()">Logout</a></li>
                     <li><a class="clickable" ng-show="!loggedIn" ng-click="goTo('signup')">Sign Up</a></li>
                   </ul>
