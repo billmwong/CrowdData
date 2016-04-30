@@ -56,10 +56,16 @@ var app = angular.module('crowddata')
     };
   });
 
-app.service('goToService', function ($location) {
+app.service('goToService', function ($location, $window) {
   return {
     goTo: function (path) {
-      $location.path(path);
+      if (path === 'myData') {
+        $location.path(path);
+        // Google charts only works if we refresh the entire page
+        $window.location.reload();
+      } else {
+        $location.path(path);
+      }
     },
   };
 });

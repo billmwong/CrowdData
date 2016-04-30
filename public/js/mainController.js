@@ -20,6 +20,14 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   $scope.DVquestions = [];
   $scope.readyForSurvey = false;
 
+  if (typeof chartsLoaded === 'undefined') {
+    chartsLoaded = false;
+  }
+
+  // var chartsLoadedCallback = function () {
+  //   chartsLoaded = true;
+  // };
+
   var getASurvey = function () {
     // Only need to get a survey if we're on the page where it exists
     if ($location.path() === '/') {
@@ -108,11 +116,17 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           }
 
           // Make the pie chart
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(startDrawing);
+          // Load google charts if we haven't already
+          if (!chartsLoaded) {
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(startDrawing);
+            chartsLoaded = true;
+          } else {
+            google.charts.setOnLoadCallback(startDrawing);
+          }
+          // Draw the chart for the first question of the first survey
           function startDrawing() {
-            // Draw the chart for the first question of the first survey
-            drawPie(0,0);
+            makeDataVis(0,0);
           }
 
           function makeDataVis(surveyNum, quesNum) {
@@ -130,6 +144,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           }
 
           function drawPie(surveyNum, quesNum) {
+            console.log('drawing pie chart');
             var thisQuestion = $scope.DVquestions[quesNum];
             // Make a possible options array out of the object
             var optionsObj = thisQuestion['responses'];
@@ -166,9 +181,9 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
   if ( !("loggedIn" in $rootScope) ) {
     // User manually loaded page in browser
-    // We do need to get the user
-    // Show the loading screen until we've figured out if they're logged in
+    // Show the loading screen
     $rootScope.loading = true;
+    // We need to get the user
     $http.get('/api/getUser')
       .success(function (data) {
         if (data.user) {
