@@ -38,8 +38,7 @@ app.use(passport.session());
 
 app.get('/', index.home);
 
-//////////////// PASSPORT STUFF ////////////////
-
+// Passport
 passport.use(new LocalStrategy(User.authenticate()));
 
 // serialize and deserialize
@@ -54,14 +53,16 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-app.get('/', index.home); // homepage needing logged-in user and initial batch of surveys
-app.post('/api/survey/submit', index.submitSurvey); // new survey response needing to be added to db.
-app.post('/api/survey/new', index.newSurvey); // new survey object needing to be added to db.
-app.post('/api/newuser', index.newUser); // new user details needing to be added to db.
-app.get('/api/getUser', index.getUser); //see who's logged in
-app.get('/api/getSurvey', index.getSurvey); //get a survey the user hasn't taken
+// URL Routing
+app.get('/', index.home);
+app.post('/api/survey/submit', index.submitSurvey);
+app.post('/api/survey/new', index.newSurvey);
+app.post('/api/newuser', index.newUser);
+app.get('/api/getUser', index.getUser);
+app.get('/api/getSurvey', index.getSurvey);
 app.get('/api/getUsersSurveysResponses', index.getUsersSurveysResponses);
 
+// Login for returning user
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { console.log("ERROR: ",err); return next(err); }
@@ -76,6 +77,7 @@ app.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+// Creation of a new user
 app.post('/register', function (req, res) {
   User.register(
     new User({
@@ -115,5 +117,3 @@ app.get('*', function (req, res) {
 app.listen(PORT, function () {
   console.log('Application running on port:', PORT);
 });
-
-// module.exports = app;

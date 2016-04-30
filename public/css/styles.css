@@ -8,6 +8,17 @@
   cursor: pointer;
 }
 
+.card {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  min-width: 500px;
+}
+
+.card-content {
+  padding: 25px;
+}
+
 /* Below is taken from http://codepen.io/jczimm/pen/vEBpoL*/
 body {
   background-color: #eee;

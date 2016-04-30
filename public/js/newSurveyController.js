@@ -5,7 +5,6 @@ var app = angular.module('crowddata')
   $scope.surveyUploaded = false;
   $scope.q = {};
   $scope.allq = [];
-  var numOfOptions = 2;
 
   $http.get('/api/getUser')
     .success(function (data) {
@@ -22,6 +21,7 @@ var app = angular.module('crowddata')
       }
     });
 
+  // Increases the number of questions to populate, but not above 5. 
   $scope.addQ = function () {
     $rootScope.Setup.numOfQuestions += 1;
     $scope.canRemoveQ = true;
@@ -31,14 +31,23 @@ var app = angular.module('crowddata')
     }
   };
 
+  // Decreases the number of questions to populate, but not below 1
+  $scope.removeQ = function () {
+    if ($rootScope.Setup.numOfQuestions > 2) {$rootScope.Setup.numOfQuestions -= 1;
+    } else {
+      $rootScope.Setup.numOfQuestions -= 1;
+      $scope.canRemoveQ = false;
+    }
+  };
+
   $scope.go = function (path) {
     $scope.surveyUploaded = false;
     goToService.goTo(path);
   };
 
+  // Uses anchorSmoothScroll to transition to new locations
   $scope.goToElement = function (eID) {
-    // set the location.hash to the id of
-    // the element you wish to scroll to.
+    // set the location.hash to the id of the element you wish to scroll to.
     $location.hash(eID);
 
     // call $anchorScroll()
@@ -46,7 +55,8 @@ var app = angular.module('crowddata')
     $location.hash('');
   };
 
-  $scope.sProgress = function () {  // progress from survey setup to question preview
+  // progress from survey setup to question preview
+  $scope.sProgress = function () {  
     if ($scope.Setup.title && $scope.Setup.hypothesis && $scope.Setup.category) {
       $scope.missingTitle = false;
       $scope.missingHypothesis = false;
@@ -69,98 +79,81 @@ var app = angular.module('crowddata')
     }
   };
 
+  // regress to previous question, populate the fields
   $scope.qRegress = function () {
     $scope.allq[$rootScope.questionNumber - 1] = $scope.q;
     $rootScope.questionNumber -= 1;
     $scope.q = $scope.allq[$rootScope.questionNumber - 1];
   };
 
-  $scope.qProgress = function () {  // progress from question population to next
-    // question and eventually survey preview
+  // progress from question population to next question or survey preview
+  $scope.qProgress = function () {
     if ($scope.q.type && $scope.q.content && $scope.q.responses) {
+      // check if all fields are filled
       $scope.missingType = false;
       $scope.missingContent = false;
       $scope.missingResponses = false;
       $scope.missingStuff = false;
       if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
-
-
+        // check for next question and progress
         $scope.q.id = $rootScope.questionNumber;
         $scope.allq[$rootScope.questionNumber-1] = $scope.q;
         $rootScope.questionNumber += 1;
         if ($scope.allq[$rootScope.questionNumber-1]) {
+          // check if question has been populated, fill in fields
           $scope.q = $scope.allq[$rootScope.questionNumber-1];
         } else {
-        $scope.q = {};
+          // leave fields empty
+          $scope.q = {};
         }
         $location.path('/newsurvey/creating_qs');
       } else {
+        // progress to suvey preview
         $scope.q.id = $rootScope.questionNumber;
         $scope.allq[$rootScope.questionNumber-1] = $scope.q;
         $rootScope.newSurvey = {
-          author: $rootScope.user._id,  // containing user _id
+          author: $rootScope.user._id,
           timeCreated: Date(),
           category: $scope.Setup.category,
           demographics: $scope.Setup.demographics,
           title: $scope.Setup.title,
           hypothesis: $scope.Setup.hypothesis,
           questions: $scope.allq,
-
-          // questions: [{  // Short list of questions, max of 3 or 5
-          //     id: Number,
-          //     type: String,
-          //     content: String,
-          //     Answers: Array // of strings
-          //   }
-          // ],
           options: {},
           usersTaken: [],
         };
         $location.path('/newsurvey/preview');
       }
     } else {
+      // display error message if empty field/s
       $scope.missingStuff = true;
       if (!$scope.q.type) {
         $scope.missingType = true;
-      };
+      }
 
       if (!$scope.q.content) {
         $scope.missingContent = true;
-      };
+      }
 
       if (!$scope.q.response) {
         $scope.missingResponses = true;
-      };
+      }
     }
   };
 
   $scope.postNewSurvey = function () {
+    // upload newly-created survey to database
     if ($rootScope.newSurvey) {
       $http.post('/api/survey/new', $rootScope.newSurvey)
       .success(function (data) {
         $scope.surveyUploaded = true;
         $scope.surveyUploading = false;
-
         $scope.Setup.title = false;
         $scope.Setup.hypothesis = false;
         $scope.Setup.category = false;
         $rootScope.newSurvey = {};
         $scope.allq = [];
       });
-    }
-  };
-
-  // $scope.addOption = function () {
-  //   numOfOptions += 1;
-  //   $('#addOptionBtn').before("<div class='form-group label-floating'><br><label class='control-label' for='surveyTitle'>Option " + numOfOptions + "</label><input class='form-control' id='surveyTitle' type='text' ng-focus='typingTitle=true' ng-blur='typingTitle=false' ng-model='q.questionNumber.response." + numOfOptions + "'><small class='text-muted' ng-show='typingTitle'> </small></div>");
-  //
-  // };
-
-  $scope.removeQ = function () {
-    if ($rootScope.Setup.numOfQuestions > 2) {$rootScope.Setup.numOfQuestions -= 1;
-    } else {
-      $rootScope.Setup.numOfQuestions -= 1;
-      $scope.canRemoveQ = false;
     }
   };
 });

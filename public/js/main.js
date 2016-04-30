@@ -1,18 +1,22 @@
 var app = angular.module('crowddata', ['ngRoute'])
-  .run(function ($rootScope) {
-    $rootScope.Setup = {};
-    $rootScope.Setup.numOfQuestions = 1;
-    $rootScope.questionNumber = 1;
-  });
+
+// $rootScope variable initialization
+app.run(function ($rootScope) {
+  $rootScope.Setup = {};
+  $rootScope.Setup.numOfQuestions = 1;
+  $rootScope.questionNumber = 1;
+});
 
 // Material Design initializations
 $.material.init();
 $(function () { $("[data-toggle='tooltip']").tooltip(); });
 
+// Global error-handling function
 var handleError = function (err) {
   console.log('Error: ' + err);
 };
 
+// Angular views router
 app.config(function ($routeProvider, $locationProvider) {
   $routeProvider
   .when('/', {
