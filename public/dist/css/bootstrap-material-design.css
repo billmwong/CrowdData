@@ -1343,7 +1343,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   color: rgba(0,0,0, 0.26);
 }
 .form-group.is-focused .radio label {
-  color: rgba(0,0,0, 0.26);
+  color: rgba(0,0,0, 0.75);
 }
 .form-group.is-focused .radio label:hover,
 .form-group.is-focused .radio label:focus {

@@ -134,6 +134,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     DOB_day: '',
   };
   $scope.DVquestions = [];
+  $scope.readyForSurvey = false;
 
   var getASurvey = function () {
     // Only need to get a survey if we're on the page where it exists
@@ -257,6 +258,25 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
       });
   }
 
+  $scope.newSurvey = function () {
+  console.log("Requesting new survey");
+  $http.get('/api/getUser')
+    .success(function (data) {
+      $rootScope.user = data.user;
+      if (data.user) {
+        // The user is logged in
+        $rootScope.user = data.user;
+        $rootScope.loggedIn = true;
+        $http.get('/api/getSurvey')
+          .success(function (data) {
+            $scope.survey = data.survey;
+            console.log('scope.survey', $scope.survey);
+          })
+          .error(handleError);
+      }
+    });
+  };
+
   $scope.goTo = function (path) {
     goToService.goTo(path);
   };
@@ -303,12 +323,11 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
   $scope.submitAnswers = function () {
     var selectedResponses = $scope.survey.questions.map(function (question) {
-      return { questionid: question.id, response: question.response };
+      console.log(question.selectedResponse);
+      return { questionid: question.id, response: question.selectedResponse };
     });
 
-    console.log('selectedResponses:');
-    console.log(selectedResponses);
-
+    console.log('selectedResponses:', selectedResponses);
     //create the response db entry
     var responseData = {
       user_id:$rootScope.user._id,
@@ -384,34 +403,44 @@ app.controller('newSurveyController', function ($scope, $rootScope, $http, $loca
       $scope.missingStuff = true;
       if (!$scope.Setup.title) {
         $scope.missingTitle = true;
-      };
-
+      }
       if (!$scope.Setup.hypothesis) {
         $scope.missingHypothesis = true;
-      };
-
+      }
       if (!$scope.Setup.category) {
         $scope.missingCategory = true;
-      };
+      }
     }
+  };
+
+  $scope.qRegress = function () {
+    $scope.allq[$rootScope.questionNumber-1] = $scope.q;
+    $rootScope.questionNumber -= 1;
+    $scope.q = $scope.allq[$rootScope.questionNumber-1];
   };
 
   $scope.qProgress = function () {  // progress from question population to next
     // question and eventually survey preview
-    if ($scope.q.type && $scope.q.content && $scope.q.response) {
+    if ($scope.q.type && $scope.q.content && $scope.q.responses) {
       $scope.missingType = false;
       $scope.missingContent = false;
       $scope.missingResponses = false;
       $scope.missingStuff = false;
       if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
+        
+
         $scope.q.id = $rootScope.questionNumber;
+        $scope.allq[$rootScope.questionNumber-1] = $scope.q;
         $rootScope.questionNumber += 1;
-        $scope.allq.push($scope.q);
+        if ($scope.allq[$rootScope.questionNumber-1]) {
+          $scope.q = $scope.allq[$rootScope.questionNumber-1];
+        } else {
         $scope.q = {};
+        }
         $location.path('/newsurvey/creating_qs');
       } else {
         $scope.q.id = $rootScope.questionNumber;
-        $scope.allq.push($scope.q);
+        $scope.allq[$rootScope.questionNumber-1] = $scope.q;
         $rootScope.newSurvey = {
           author: $rootScope.user._id,  // containing user _id
           timeCreated: Date(),
