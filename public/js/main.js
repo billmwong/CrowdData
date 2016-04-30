@@ -160,8 +160,9 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           // and they're all multiple choice questions
 
           // Parse through the responses
-          var firstSurvey = data['thisUsersSurveys'][0];
+          var firstSurvey = data['thisUsersSurveys'][1];
           var rawResponses = data['responses'];
+          $scope.DVsurvey = firstSurvey;
           $scope.DVquestions = firstSurvey['questions'];
 
           // Build the parsed responses array
@@ -169,16 +170,30 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           // Loop through all the questions in this survey
           for (var i=0;i<$scope.DVquestions.length;i++) {
             var thisQuestion = $scope.DVquestions[i];
-            var possibleResps = thisQuestion.responses;
+
+            // Make a possible options array out of the object
+            var optionsObj = thisQuestion['responses'];
+            var possibleOptions = Object.keys(optionsObj).map(function (key) {
+                return optionsObj[key];
+            });
 
             /**
              * Build the object that represents this question according to the
-             * syntax: {"Yes":0, "No":0}
+             * syntax:
+             * MC/IO: {"Yes":0, "No":0, "Maybe":0}
+             * FR: {"answers":[]}
              */
             var thisRespObj = {};
-            for (var j=0;j<possibleResps.length;j++) {
-              // Initialize this answer with "zero people said this"
-              thisRespObj[possibleResps[j]] = 0;
+            if (thisQuestion['type'] === "FR") {
+              // This is a FR question
+              thisRespObj['_answers'] = [];
+            } else {
+              // This is a MC or IO question (both formatted the same)
+              // Loop through all the possible options
+              for (var j=0;j<possibleOptions.length;j++) {
+                // Initialize this option with "zero people said this"
+                thisRespObj[possibleOptions[j]] = 0;
+              }
             }
             // Add the object to the parsed responses array
             firstSurveyRespsParsed.push(thisRespObj);
@@ -196,11 +211,20 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
                 var thisQuestion = questions[j];
                 // Get the option that this user chose
                 var thisAnswer = thisQuestion.response;
-                // Add one person that said this option
-                firstSurveyRespsParsed[j][thisAnswer]++;
+
+                // Check the question type
+                if ('_answers' in firstSurveyRespsParsed[j]) {
+                  // This is a FR question
+                  firstSurveyRespsParsed[j]['_answers'].push(thisAnswer);
+                } else {
+                  // This is MR/IO question
+                  // Add one person that said this option
+                  firstSurveyRespsParsed[j][thisAnswer]++;
+                }
               }
             }
           }
+          console.log('firstSurveyRespsParsed after',firstSurveyRespsParsed);
 
           // Make the pie chart
           google.charts.load('current', {'packages':['corechart']});
@@ -210,27 +234,45 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
             drawPie(0,0);
           }
 
+          function makeDataVis(surveyNum, quesNum) {
+            // Check the type of question
+            if ($scope.DVquestions[quesNum]['type'] === 'FR') {
+              // This is a FR question
+              // Display all answers
+              var answersText = firstSurveyRespsParsed[quesNum]['_answers'];
+              $('#datavis-'+(quesNum+1)).text(answersText);
+            } else {
+              // This is a MC/IO question
+              drawPie(surveyNum, quesNum);
+            }
+          }
+
           function drawPie(surveyNum, quesNum) {
             var thisQuestion = $scope.DVquestions[quesNum];
-            var quesResps = thisQuestion['responses'];
+            // Make a possible options array out of the object
+            var optionsObj = thisQuestion['responses'];
+            var possibleOptions = Object.keys(optionsObj).map(function (key) {
+                return optionsObj[key];
+            });
 
+            // TODO this assumes there's only two options
             var data = google.visualization.arrayToDataTable([
               ['Reponse', 'Number'],
-              [quesResps[0],firstSurveyRespsParsed[quesNum][quesResps[0]]],
-              [quesResps[1],firstSurveyRespsParsed[quesNum][quesResps[1]]]
+              [possibleOptions[0],firstSurveyRespsParsed[quesNum][possibleOptions[0]]],
+              [possibleOptions[1],firstSurveyRespsParsed[quesNum][possibleOptions[1]]]
             ]);
 
-            var options = {
-              title: thisQuestion['content']
-            };
+            // var options = {
+            //   title: thisQuestion['content']
+            // };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart-'+(quesNum+1)));
+            var chart = new google.visualization.PieChart(document.getElementById('datavis-'+(quesNum+1)));
 
-            chart.draw(data, options);
+            chart.draw(data);
 
             // Recursively draw another pie chart for the next question
             if (quesNum < $scope.DVquestions.length-1) {
-              drawPie(0,quesNum+1);
+              makeDataVis(0,quesNum+1);
             }
           }
         });
