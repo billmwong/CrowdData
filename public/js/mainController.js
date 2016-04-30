@@ -33,11 +33,11 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
   var getUsersSurveysResponses = function () {
     if ($location.path() === '/myData') {
-      $scope.loadingText = "Getting Data";
-      $scope.loading = true;
+      $rootScope.loadingText = "Getting Data";
+      $rootScope.loading = true;
       $http.get('/api/getUsersSurveysResponses')
         .success(function (data) {
-          $scope.loading = false;
+          $rootScope.loading = false;
 
           // TODO: right now this assumes the user only created one survey
 
