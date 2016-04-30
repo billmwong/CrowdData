@@ -47,7 +47,7 @@
           <label class="control-label" for="surveyTitle">Question</label>
           <br>
           <small class="text-danger" ng-show="missingContent">*What question do you want to ask the survey taker?*</small>
-          <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingContent=false; titleHelpText=true" ng-blur="typingTitle=false; titleHelpText=false" ng-model="q.content">
+          <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingContent=false; titleHelpText=true" ng-blur="typingTitle=false; titleHelpText=false" ng-model="q.content" maxlength="50">
           <small class="text-muted" ng-show="titleHelpText">Is your question leading? Ask ... instead of ...</small>
         </div>
       </div>
@@ -56,7 +56,7 @@
         <br>
         <label class="control-label" for="surveyTitle">Option 1</label>
         <br>
-        <small class="text-danger" ng-show="missingResponses">*You survey taker will need at least one possible response*</small>
+        <small class="text-danger" ng-show="missingResponses">*Your survey taker will need at least one possible response*</small>
         <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingResponses=false" ng-blur="typingTitle=false" ng-model="q.responses.1">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
