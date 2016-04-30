@@ -156,11 +156,10 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           $scope.loading = false;
           console.log('users surveys: ',data);
 
-          // TODO: right now this assumes the user only created one survey,
-          // and they're all multiple choice questions
+          // TODO: right now this assumes the user only created one survey
 
           // Parse through the responses
-          var firstSurvey = data['thisUsersSurveys'][1];
+          var firstSurvey = data['thisUsersSurveys'][0];
           var rawResponses = data['responses'];
           $scope.DVsurvey = firstSurvey;
           $scope.DVquestions = firstSurvey['questions'];
@@ -239,6 +238,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
             if ($scope.DVquestions[quesNum]['type'] === 'FR') {
               // This is a FR question
               // Display all answers
+              // TODO make this prettier
               var answersText = firstSurveyRespsParsed[quesNum]['_answers'];
               $('#datavis-'+(quesNum+1)).text(answersText);
             } else {
@@ -261,10 +261,6 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
               [possibleOptions[0],firstSurveyRespsParsed[quesNum][possibleOptions[0]]],
               [possibleOptions[1],firstSurveyRespsParsed[quesNum][possibleOptions[1]]]
             ]);
-
-            // var options = {
-            //   title: thisQuestion['content']
-            // };
 
             var chart = new google.visualization.PieChart(document.getElementById('datavis-'+(quesNum+1)));
 
