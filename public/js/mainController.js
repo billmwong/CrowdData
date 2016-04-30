@@ -63,7 +63,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
              * Build the object that represents this question according to the
              * syntax:
              * MC/IO: {"Yes":0, "No":0, "Maybe":0}
-             * FR: {"answers":[]}
+             * FR: {"_answers":[]}
              */
             var thisRespObj = {};
             if (thisQuestion['type'] === "FR") {
