@@ -169,6 +169,19 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
             var possibleResps = thisQuestion.responses;
 
             // Build the object that represents this question
+            /*
+            [
+              {
+                "Yes":0,
+                "No":0
+              },
+              {
+                "True":0
+              }
+            ]
+            */
+
+
             var thisRespObj = {};
             for (var j=0;j<possibleResps.length;j++) {
               // Initialize this answer with "zero people said this"
@@ -177,6 +190,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
             // Add the object to the parsed responses array
             firstSurveyRespsParsed.push(thisRespObj);
           }
+          console.log('firstSurveyRespsParsed',firstSurveyRespsParsed);
 
           // Add the data to the parsed responses array
           for (var i=0;i<rawResponses.length;i++) {
@@ -204,22 +218,24 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           }
 
           function drawPie(surveyNum, quesNum) {
-            var quesOptions = firstSurvey['questions'][quesNum]['responses'];
+            var thisQuestion = $scope.DVquestions[quesNum];
+            var quesResps = thisQuestion['responses'];
 
             var data = google.visualization.arrayToDataTable([
               ['Reponse', 'Number'],
-              [quesOptions[0],firstSurveyRespsParsed[quesNum][quesOptions[0]]],
-              [quesOptions[1],firstSurveyRespsParsed[quesNum][quesOptions[1]]]
+              [quesResps[0],firstSurveyRespsParsed[quesNum][quesResps[0]]],
+              [quesResps[1],firstSurveyRespsParsed[quesNum][quesResps[1]]]
             ]);
 
             var options = {
-              title: $scope.DVquestions[quesNum]['content']
+              title: thisQuestion['content']
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart-'+(quesNum+1)));
 
             chart.draw(data, options);
 
+            // Recursively draw another pie chart for the next question
             if (quesNum < $scope.DVquestions.length-1) {
               drawPie(0,quesNum+1);
             }
