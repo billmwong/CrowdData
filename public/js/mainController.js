@@ -1,3 +1,4 @@
+var app = angular.module('crowddata');
 app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, goToService) {
   $rootScope.loading = false;
   $rootScope.loadingText = '';
