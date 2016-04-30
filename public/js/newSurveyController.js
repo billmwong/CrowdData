@@ -21,7 +21,7 @@ var app = angular.module('crowddata')
       }
     });
 
-  // Increases the number of questions to populate, but not above 5. 
+  // Increases the number of questions to populate, but not above 5.
   $scope.addQ = function () {
     $rootScope.Setup.numOfQuestions += 1;
     $scope.canRemoveQ = true;
@@ -56,7 +56,7 @@ var app = angular.module('crowddata')
   };
 
   // progress from survey setup to question preview
-  $scope.sProgress = function () {  
+  $scope.sProgress = function () {
     if ($scope.Setup.title && $scope.Setup.hypothesis && $scope.Setup.category) {
       $scope.missingTitle = false;
       $scope.missingHypothesis = false;
@@ -81,7 +81,10 @@ var app = angular.module('crowddata')
 
   // regress to previous question, populate the fields
   $scope.qRegress = function () {
-    $scope.allq[$rootScope.questionNumber - 1] = $scope.q;
+    if ($rootScope.Setup.numOfQuestions >= $rootScope.questionNumber) {
+      $scope.allq[$rootScope.questionNumber - 1] = $scope.q;
+    }
+
     $rootScope.questionNumber -= 1;
     $scope.q = $scope.allq[$rootScope.questionNumber - 1];
   };
@@ -97,20 +100,21 @@ var app = angular.module('crowddata')
       if ($rootScope.Setup.numOfQuestions > $rootScope.questionNumber) {
         // check for next question and progress
         $scope.q.id = $rootScope.questionNumber;
-        $scope.allq[$rootScope.questionNumber-1] = $scope.q;
+        $scope.allq[$rootScope.questionNumber - 1] = $scope.q;
         $rootScope.questionNumber += 1;
-        if ($scope.allq[$rootScope.questionNumber-1]) {
+        if ($scope.allq[$rootScope.questionNumber - 1]) {
           // check if question has been populated, fill in fields
-          $scope.q = $scope.allq[$rootScope.questionNumber-1];
+          $scope.q = $scope.allq[$rootScope.questionNumber - 1];
         } else {
           // leave fields empty
           $scope.q = {};
         }
         $location.path('/newsurvey/creating_qs');
       } else {
-        // progress to suvey preview
+        // progress to survey preview
         $scope.q.id = $rootScope.questionNumber;
-        $scope.allq[$rootScope.questionNumber-1] = $scope.q;
+        $scope.allq[$rootScope.questionNumber - 1] = $scope.q;
+        $rootScope.questionNumber += 1;
         $rootScope.newSurvey = {
           author: $rootScope.user._id,
           timeCreated: Date(),
