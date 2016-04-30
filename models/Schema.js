@@ -33,7 +33,7 @@ var surveySchema = mongoose.Schema({
   //     id: Number,
   //     type: String,
   //     content: String,
-  //     Answers: Array // of strings
+  //     responses: []
   //   }
   // ],
   options: Object,

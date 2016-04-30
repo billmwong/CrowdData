@@ -23,38 +23,69 @@
   </div>
 
   <div ng-show="loggedIn">
-    <div class="card card-content">
+
+    <div ng-show="!readyForSurvey" class="card card-content">
+      <h3 class="card-title"> We found a survey for you!</h3>
+      <h4> The survey topic is {{survey.category}}.<h4>
+      <br>
+      <h4 ng-show="!survey.demographics.0"> This survey does not request any demographic information. </h4>
+      <h4 ng-show="survey.demographics.0"> It requests this demographic information:<h4>
+      <span>
+
+        <span ng-show="survey.demographics.0.gender">
+          <img src="../../media/genderIcon.png" alt="Gender" style="width:50px;height:50px;"> <!--  -->
+        </span>
+        <span ng-show="survey.demographics.0.age">
+          <img src="../../media/ageIcon.png" alt="Age" style="width:50px;height:50px;">
+        </span>
+        <span ng-show="survey.demographics.0.area">
+          <img src="../../media/areaIcon.png" alt="Area" style="width:50px;height:50px;">
+        </span>
+        <span ng-show="survey.demographics.0.nationality">
+          <img src="../../media/nationalityIcon.png" alt="Nationality" style="width:50px;height:50px;">
+      </span>
+      <br>
+      <br>
+      <form>
+        <button ng-click="readyForSurvey=true">Sounds good! </button>
+        <button ng-click="newSurvey()"> I'll pass on this one </button>
+      </form>
+    </div>
+
+    <div ng-show="readyForSurvey" class="card card-content">
       <h3 class="card-title"> Here's a survey!</h3>
       	<form class="form-group card-body label-floating">
+        {{survey}}
       		<div class="questions" ng-repeat="q in survey.questions">
       	  	<h4>{{q.content}}</h4>
-            <div ng-if='q.type == "MC"'>
-              <div class="answers radio" ng-repeat="(key, value) in q.response">
-                <div class="radio">
-                  <label for="{{value}}">
-                  {{value}}
-                  <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
-                  </label>
-                </div>  
-              </div>            
-            </div>
 
-            <div ng-if='q.type == "IO"'>
-              <div class="answers radio" ng-repeat="(key, value) in q.response"> 
+            <div ng-if='q.type === "MC"'>
+              <div class="answers radio" ng-repeat="response in q.responses">
                 <div class="radio">
-                  <label for="{{value}}"> 
-                  {{value}}
-                  <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
+                  <label for="q{{$index}}">
+                  {{response}}
+                  <input type="radio" ng-model="$parent.q.selectedResponse" name="{{$parent.q.id}}" class="with-gap" value="{{response}}" ng-value="{{response}}" id="q.id{{$index}}"/>
                   </label>
                 </div>
-              </div>            
+              </div>
             </div>
 
-            <div ng-if='q.type == "FR"'>
+            <div ng-if='q.type === "IO"'>
+              <div class="answers radio" ng-repeat="response in q.responses">
+                <div class="radio">
+                  <label for="q{{$index}}">
+                  {{response}}
+                  <input type="radio" ng-model="$parent.q.selectedResponse" name="{{$parent.q.id}}" class="with-gap" value="{{response}}" ng-value="{{response}}" id="q.id{{$index}}"/>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div ng-if='q.type === "FR"'>
               <div class="answers">
                 <div class="form-group label-floating">
-                  <input class="form-control" id="{{q.id}}" ng-model="question.response" type="text" name="{{q.id}}" value="{{q.id}}">
-                </div>              
+                  <input class="form-control" id="{{q.id}}" ng-model="$parent.q.selectedResponse" type="text" name="{{q.id}}" ng-value="{{q.id}}">
+                </div>
               </div>
             </div>
 
@@ -64,7 +95,7 @@
     </div>
   </div>
 </div>
-  
+
 <div ng-show="loading">
   <h1>{{loadingText}}</h1>
   <div class="showbox">
