@@ -133,6 +133,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     DOB_month: '',
     DOB_day: '',
   };
+  $scope.DVquestions = [];
 
   var getASurvey = function () {
     // Only need to get a survey if we're on the page where it exists
@@ -146,17 +147,84 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
 
   var getUsersSurveysResponses = function () {
-    $http.get('/api/getUsersSurveysResponses')
-      .success(function (data) {
-        console.log('successfully got users surveys:');
-        console.log(data);
-      });
+    if ($location.path() === '/myData') {
+      $http.get('/api/getUsersSurveysResponses')
+        .success(function (data) {
+          console.log('users surveys: ',data);
+
+          // TODO: right now this assumes the user only created one response,
+          // and they're all multiple choice questions
+
+          // Parse through the responses
+          var firstSurvey = data['thisUsersSurveys'][0];
+          var responses = data['responses'];
+          $scope.DVquestions = firstSurvey['questions'];
+          var firstQuestion = firstSurvey['questions'][0];
+          // var possibleResps = firstQuestion['responses'];
+
+          var firstSurveyRespsParsed = [];
+
+          for (var i=0;i<$scope.DVquestions.length;i++) {
+            var thisQuestion = $scope.DVquestions[i];
+            var possibleResps = thisQuestion.responses;
+            var thisRespObj = {};
+            for (var j=0;j<possibleResps.length;j++) {
+              thisRespObj[possibleResps[j]] = 0;
+            }
+            firstSurveyRespsParsed.push(thisRespObj);
+          }
+
+          for (var i=0;i<responses.length;i++) {
+            var thisResponse = responses[i];
+            if (thisResponse.survey === firstSurvey._id) {
+              // This response is for the relevant survey
+              // for question in thisresponse.data
+              var questions = thisResponse['data'];
+              for (var j=0;j<questions.length;j++) {
+                var thisQuestion = questions[j];
+                var thisAnswer = thisQuestion.response;
+                firstSurveyRespsParsed[j][thisAnswer]++;
+              }
+            }
+          }
+
+          // Make the pie chart
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(startDrawing);
+          function startDrawing() {
+            drawPie(0,0);
+          }
+
+          function drawPie(surveyNum, quesNum) {
+            var quesOptions = firstSurvey['questions'][quesNum]['responses'];
+
+            var data = google.visualization.arrayToDataTable([
+              ['Reponse', 'Number'],
+              [quesOptions[0],firstSurveyRespsParsed[quesNum][quesOptions[0]]],
+              [quesOptions[1],firstSurveyRespsParsed[quesNum][quesOptions[1]]]
+            ]);
+
+            var options = {
+              title: $scope.DVquestions[quesNum]['content']
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart-'+(quesNum+1)));
+
+            chart.draw(data, options);
+
+            if (quesNum < $scope.DVquestions.length-1) {
+              drawPie(0,quesNum+1);
+            }
+          }
+        });
+    }
   };
 
   if ($rootScope.loggedIn) {
     // We loaded this controller by clicking a header button
     // Don't need to get the user again
     getASurvey();
+    getUsersSurveysResponses();
   }
 
   if ( !("loggedIn" in $rootScope) ) {
@@ -172,6 +240,7 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           $rootScope.loggedIn = true;
           $rootScope.loading = false;
           getASurvey();
+          getUsersSurveysResponses();
         } else {
           // The user is not logged in
           $rootScope.loggedIn = false;

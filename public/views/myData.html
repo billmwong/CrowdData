@@ -1,1 +1,8 @@
 <h1>My Data</h1>
+
+
+<div ng-repeat="question in DVquestions">
+  <h2>Question {{question.id}}</h2>
+  <!-- <div ng-attr-id="{{'piechart-' + question.id}}" style="width: 900px; height: 500px;"></div> -->
+  <div ng-attr-id="{{'piechart-' + question.id}}"></div>
+</div>
