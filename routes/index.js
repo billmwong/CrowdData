@@ -40,20 +40,13 @@ routes.getUsersSurveysResponses = function (req, res) {
     var surveyIds = thisUsersSurveys.map(function (survey){
       return survey._id;
     });
-    console.log(surveyIds);
 
     Response.find({survey:{$in:surveyIds}}, function(err, responses){
-      console.log('got all reponses: '+JSON.stringify(responses));
       res.json({
         thisUsersSurveys: thisUsersSurveys,
         responses: responses
       });
     });
-    // for (var i=0; i<thisUsersSurveys.length; i++) {
-    //   console.log('finding responses for this survey: '+thisUsersSurveys[i].title);
-    //   // Response.find({survey: thisUsersSurveys[i]._id}, handleResponses);
-    //   Response.find({}, handleResponses);
-    // }
   });
 };
 
