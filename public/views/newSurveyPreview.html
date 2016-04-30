@@ -8,15 +8,15 @@
 
           <div ng-if='q.type === "MC"'>
             <div ng-repeat="response in q.responses" class="answers">
-                <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
-                <label for = "{{q.id}}{{$index}}">{{response}}</label>
+              <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+              <label for = "{{q.id}}{{$index}}">{{response}}</label>
             </div>
           </div>
 
           <div ng-if='q.type === "IO"'>
             <div ng-repeat="response in q.responses" class="answers">
-                <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
-                <label for = "{{q.id}}{{$index}}">{{response}}</label>
+              <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
+              <label for = "{{q.id}}{{$index}}">{{response}}</label>
             </div>
           </div>
 
@@ -31,18 +31,18 @@
 
     <button ng-show="!surveyUploading" type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey(); surveyUploading=true">Looks great!<div class="ripple-container"></div></button>
     <div ng-show="surveyUploading" class="showbox">
-        <div class="loader">
-            <svg class="circular" viewBox="25 25 50 50">
-                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-            </svg>
-        </div>
+      <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+      </div>
     </div>
   </div>
   <div class="card-body" ng-show="surveyUploaded">
     <h2 class="card-title"> Survey Created!</h2>
 	<div>
-      <h3> Your survey was successfully created! You should have some awesome data in no time! </h3>
-      <button type="submit" class="btn btn-raised btn-primary" ng-click="go('/')">Take me home<div class="ripple-container"></div></button>
-    </div>
+    <h3> Your survey was successfully created! You should have some awesome data in no time! </h3>
+    <button type="submit" class="btn btn-raised btn-primary" ng-click="go('/')">Take me home<div class="ripple-container"></div></button>
+  </div>
   </div>
 </div>

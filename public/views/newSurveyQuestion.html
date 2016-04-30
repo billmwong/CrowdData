@@ -81,12 +81,6 @@
         <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.responses.4">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
-
-
-
-      <!-- <div class="btn-group">
-        <button type="button" class="btn btn-secondary" id = "addOptionBtn"ng-click="addOption()">add option</button>
-      </div>  -->
     </div>
 
     <div class="form-group" ng-show="q.type === 'IO'">
@@ -117,7 +111,6 @@
         <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true" ng-blur="typingTitle=false" ng-model="q.responses.2">
           <small class="text-muted" ng-show="typingTitle"> </small>
       </div>
-
     </div>
 
     <div class="form-group" ng-show="q.type === 'FR'">
@@ -131,7 +124,7 @@
         <br>
         <small class="text-danger" ng-show="missingContent">*What question do you want to ask the survey taker?*</small>
         <input class="form-control" id="surveyTitle" type="text" ng-focus="typingTitle=true; missingContent=false" ng-blur="typingTitle=false" ng-model="q.content">
-          <small class="text-muted" ng-show="typingTitle">Is your question leading? Ask ... instead of ...</small>
+          <small class="text-muted" ng-show="typingTitle">Is your question leading? For example, ask "What adjective would you use to describe puppies?" instead of "Would you describe puppies as cute or adorable?"</small>
           <br>
       </div>
 
@@ -154,7 +147,7 @@
           </div>
           <p class="help-block">e.g. "I was cleaning my room after my mom told me
             to five or six times. I was picking up clothes on my floor..."</p>
-      </div>
+        </div>
       </div>
     </div>
     <br>
