@@ -1,17 +1,17 @@
 <div ng-show="!loading">
   <div ng-show="!loggedIn">
-    <h1 style="text-align: center">CrowdData lets you access the knowledge of everyone in the world</h1>
+    <h1 style="text-align: center">CrowData lets you access the knowledge of everyone in the world</h1>
     <br>
     <div class="center">
-      <h3>Log In To CrowdData</h3>
+      <h3>Log In To CrowData</h3>
       <form role="form" ng-submit="submitLoginForm()">
         <div class="form-group label-floating">
           <label class="control-label" for="username-input">Username</label>
-          <input type="text" ng-model="loginForm.username" id="username-input" class="form-control"/>
+          <input type="text" ng-model="loginForm.username" id="username-input" class="form-control" maxlength="20" />
         </div>
         <div class="form-group label-floating">
           <label class="control-label" for="password-input">Password</label>
-          <input type="password" ng-model="loginForm.password" id="password-input" class="form-control"/>
+          <input type="password" ng-model="loginForm.password" id="password-input" class="form-control" maxlength="20"/>
         </div>
         <div class="form-group has-error" ng-show="invalidInputs">
           <label class="control-label">Invalid Username or Password</label>
@@ -74,7 +74,7 @@
             <div ng-if='q.type === "FR"'>
               <div class="answers">
                 <div class="form-group label-floating">
-                  <input class="form-control" id="{{q.id}}" ng-model="$parent.q.selectedResponse" type="text" name="{{q.id}}" ng-value="{{q.id}}">
+                  <input class="form-control" id="{{q.id}}" ng-model="$parent.q.selectedResponse" type="text" name="{{q.id}}" ng-value="{{q.id}}" maxlength="100">
                 </div>
               </div>
         	  </div>
