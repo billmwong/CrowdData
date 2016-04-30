@@ -1,23 +1,23 @@
-<div class="card form-horizontal">
-  <div class="card-body" ng-hide="surveyUploaded">
+<div class="card form-horizontal" >
+  <div class="card-body" ng-show="!surveyUploaded">
     <h2 class="card-title"> Survey Preview</h2>
     <div>
-      <form class="form-group card-body label-floating">    
+      <form class="form-group card-body label-floating">
         <div ng-repeat="q in newSurvey.questions" >
           <h4>{{q.content}}</h4>
 
           <div ng-if='q.type === "MC"'>
             <div ng-repeat="response in q.responses" class="answers">
                 <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
-                <label for = "{{q.id}}{{$index}}">{{response}}</label> 
-            </div>            
+                <label for = "{{q.id}}{{$index}}">{{response}}</label>
+            </div>
           </div>
 
           <div ng-if='q.type === "IO"'>
-            <div ng-repeat="response in q.responses" class="answers"> 
+            <div ng-repeat="response in q.responses" class="answers">
                 <input type="radio" ng-model="q.selectedResponse" name="Q{{q.id}}" value="{{response}}" id="{{q.id}}{{$index}}"/>
-                <label for = "{{q.id}}{{$index}}">{{response}}</label> 
-            </div>            
+                <label for = "{{q.id}}{{$index}}">{{response}}</label>
+            </div>
           </div>
 
           <div ng-if='q.type === "FR"'>
@@ -28,49 +28,14 @@
         </div>
       </form>
     </div>
-  </div>
 
-
-
-
-<!-- 		<div>
-    	<form class="form-group card-body label-floating">
-    		<div class="questions" ng-repeat="q in newSurvey.questions">
-    	  	<h4>{{q.content}}</h4>
-          <div ng-if='q.type == "MC"'>
-            <div class="answers radio" ng-repeat="(key, value) in q.response">
-              <div class="radio">
-                <label for="{{value}}">
-                {{value}}
-                <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
-                </label>
-              </div>  
-            </div>            
-          </div>
-
-          <div ng-if='q.type == "IO"'>
-            <div class="answers radio" ng-repeat="(key, value) in q.response"> 
-              <div class="radio">
-                <label for="{{value}}"> 
-                {{value}}
-                <input type="radio" ng-model="question.response" name="{{q.id}}" class="with-gap" value="{{value}}" id="{{value}}"/>
-                </label>
-              </div>
-            </div>            
-          </div>
-
-          <div ng-if='q.type == "FR"'>
-            <div class="answers">
-              <div class="form-group label-floating">
-                <input class="form-control" id="{{q.id}}" ng-model="question.response" type="text" name="{{q.id}}" value="{{q.id}}">
-              </div>              
-            </div>
-          </div> -->
-<!-- 
-    	  </div>
-    	  <input type="submit" value="Submit" class="btn btn-primary"/>
-    	</form> -->
-      <button type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey()">Looks great!<div class="ripple-container"></div></button>
+    <button ng-show="!surveyUploading" type="submit" class="btn btn-raised btn-primary" ng-click="postNewSurvey(); surveyUploading=true">Looks great!<div class="ripple-container"></div></button>
+    <div ng-show="surveyUploading" class="showbox">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+        </div>
     </div>
   </div>
   <div class="card-body" ng-show="surveyUploaded">
