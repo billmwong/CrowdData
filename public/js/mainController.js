@@ -1,5 +1,5 @@
 var app = angular.module('crowddata');
-app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, goToService) {
+app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, $window, goToService) {
   $rootScope.loading = false;
   $rootScope.loadingText = '';
   $scope.invalidInputs = false;
@@ -19,6 +19,15 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
   };
   $scope.DVquestions = [];
   $scope.readyForSurvey = false;
+  $scope.DVSurveyIndex = 0;
+
+  if (typeof chartsLoaded === 'undefined') {
+    chartsLoaded = false;
+  }
+
+  // var chartsLoadedCallback = function () {
+  //   chartsLoaded = true;
+  // };
 
   var getASurvey = function () {
     // Only need to get a survey if we're on the page where it exists
@@ -31,18 +40,30 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     }
   };
 
+  $scope.DVnextSurvey = function() {
+
+    if (parseInt($scope.DVcurrentSurvey) === ($scope.thisUsersSurveys.length-1)) {
+      // Loop back to the first survey
+      var nextSurveyIndex = 0;
+    } else {
+      var nextSurveyIndex = parseInt($scope.DVcurrentSurvey) + 1;
+    }
+    $location.path('/myData').search({survey: nextSurveyIndex});
+    $window.location.reload();
+  };
+
   var getUsersSurveysResponses = function () {
     if ($location.path() === '/myData') {
-      $scope.loadingText = "Getting Data";
-      $scope.loading = true;
+      $scope.DVcurrentSurvey = $location.search().survey;
+      $rootScope.loadingText = "Getting Data";
+      $rootScope.loading = true;
       $http.get('/api/getUsersSurveysResponses')
         .success(function (data) {
-          $scope.loading = false;
-
-          // TODO: right now this assumes the user only created one survey
+          $rootScope.loading = false;
+          $scope.thisUsersSurveys = data['thisUsersSurveys'];
 
           // Parse through the responses
-          var firstSurvey = data['thisUsersSurveys'][0];
+          var firstSurvey = data['thisUsersSurveys'][$scope.DVcurrentSurvey];
           var rawResponses = data['responses'];
           $scope.DVsurvey = firstSurvey;
           $scope.DVquestions = firstSurvey['questions'];
@@ -108,11 +129,17 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           }
 
           // Make the pie chart
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(startDrawing);
+          // Load google charts if we haven't already
+          if (!chartsLoaded) {
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(startDrawing);
+            chartsLoaded = true;
+          } else {
+            google.charts.setOnLoadCallback(startDrawing);
+          }
+          // Draw the chart for the first question of the first survey
           function startDrawing() {
-            // Draw the chart for the first question of the first survey
-            drawPie(0,0);
+            makeDataVis(0,0);
           }
 
           function makeDataVis(surveyNum, quesNum) {
@@ -137,12 +164,13 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
                 return optionsObj[key];
             });
 
-            // TODO this assumes there's only two options
-            var data = google.visualization.arrayToDataTable([
-              ['Reponse', 'Number'],
-              [possibleOptions[0],firstSurveyRespsParsed[quesNum][possibleOptions[0]]],
-              [possibleOptions[1],firstSurveyRespsParsed[quesNum][possibleOptions[1]]]
-            ]);
+            // Build chartData array
+            var chartData = [['Response', 'Number']];
+            for (var i=0;i<possibleOptions.length;i++) {
+              chartData.push([possibleOptions[i],firstSurveyRespsParsed[quesNum][possibleOptions[i]]]);
+            }
+
+            var data = google.visualization.arrayToDataTable(chartData);
 
             var chart = new google.visualization.PieChart(document.getElementById('datavis-'+(quesNum+1)));
 
@@ -166,9 +194,9 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
 
   if ( !("loggedIn" in $rootScope) ) {
     // User manually loaded page in browser
-    // We do need to get the user
-    // Show the loading screen until we've figured out if they're logged in
+    // Show the loading screen
     $rootScope.loading = true;
+    // We need to get the user
     $http.get('/api/getUser')
       .success(function (data) {
         if (data.user) {
