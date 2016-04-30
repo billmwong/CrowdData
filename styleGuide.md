@@ -12,7 +12,7 @@ rgb (96,125,165)
 
 
 ## logo
-/media/crowdataLogoSmoothed.png
+/media/crowdataLogo.png
 
 
 ### Language

@@ -31,19 +31,17 @@
         <br>
         <h4 ng-show="!survey.demographics.0"> This survey does not request any demographic information. </h4>
         <h4 ng-show="survey.demographics.0"> It requests this demographic information:<h4>
-        <span>
-
-          <span ng-show="survey.demographics.0.gender">
-            <img src="../../media/genderIcon.png" alt="Gender" style="width:50px;height:50px;"> <!--  -->
-          </span>
-          <span ng-show="survey.demographics.0.age">
-            <img src="../../media/ageIcon.png" alt="Age" style="width:50px;height:50px;">
-          </span>
-          <span ng-show="survey.demographics.0.area">
-            <img src="../../media/areaIcon.png" alt="Area" style="width:50px;height:50px;">
-          </span>
-          <span ng-show="survey.demographics.0.nationality">
-            <img src="../../media/nationalityIcon.png" alt="Nationality" style="width:50px;height:50px;">
+        <span ng-show="survey.demographics.0.gender">
+          <img src="../../media/genderIcon.png" alt="Gender" style="width:50px;height:50px;"> <!--  -->
+        </span>
+        <span ng-show="survey.demographics.0.age">
+          <img src="../../media/ageIcon.png" alt="Age" style="width:50px;height:50px;">
+        </span>
+        <span ng-show="survey.demographics.0.area">
+          <img src="../../media/areaIcon.png" alt="Area" style="width:50px;height:50px;">
+        </span>
+        <span ng-show="survey.demographics.0.nationality">
+          <img src="../../media/nationalityIcon.png" alt="Nationality" style="width:50px;height:50px;">
         </span>
         <br>
         <br>
@@ -86,6 +84,7 @@
         </form>
       </div>
     </div>
+  </div>
 
   <div ng-show="!survey && loggedIn">
     <div class="card card-content">
@@ -98,10 +97,10 @@
 <div ng-show="loading">
   <h1>{{loadingText}}</h1>
   <div class="showbox">
-      <div class="loader">
-          <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-          </svg>
-      </div>
+    <div class="loader">
+      <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
+    </div>
   </div>
 </div>

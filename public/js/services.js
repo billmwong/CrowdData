@@ -2,10 +2,10 @@ var app = angular.module('crowddata')
   .service('anchorSmoothScroll', function () {
 
     this.scrollTo = function (eID) {
-
-      // This scrolling function
-      // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
-
+      /** 
+       * This scrolling function is from 
+       * http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript 
+       */
       var startY = currentYPosition();
       var stopY = elmYPosition(eID);
       var distance = stopY > startY ? stopY - startY : startY - stopY;
@@ -23,7 +23,7 @@ var app = angular.module('crowddata')
           setTimeout('window.scrollTo(0, ' + leapY + ')', timer * speed);
           leapY += step; if (leapY > stopY) leapY = stopY; timer++;
         } return;
-      };
+      }
 
       for (var i = startY; i > stopY; i -= step) {
         setTimeout('window.scrollTo(0, ' + leapY + ')', timer * speed);
@@ -42,7 +42,7 @@ var app = angular.module('crowddata')
         // Internet Explorer 6, 7 and 8
         if (document.body.scrollTop) return document.body.scrollTop;
         return 0;
-      };
+      }
 
       function elmYPosition(eID) {
         var elm = document.getElementById(eID);
@@ -52,7 +52,7 @@ var app = angular.module('crowddata')
           node = node.offsetParent;
           y += node.offsetTop;
         } return y;
-      };
+      }
     };
   });
 
