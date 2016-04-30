@@ -1,7 +1,21 @@
-<h1>My Data</h1>
-<h2>{{DVsurvey.title}}</h2>
-<h3>Hypothesis: {{DVsurvey.hypothesis}}</h3>
-<div ng-repeat="question in DVquestions">
-  <h4>Question {{question.id}}: {{question.content}}</h4>
-  <div ng-attr-id="{{'datavis-' + question.id}}"></div>
+<div ng-show="!loading">
+  <h1>My Data</h1>
+  <button class="btn btn-raised btn-lg btn-primary" ng-click="DVnextSurvey()">Next Survey</button>
+  <h2>{{DVsurvey.title}}</h2>
+  <h3>Hypothesis: {{DVsurvey.hypothesis}}</h3>
+  <div ng-repeat="question in DVquestions">
+    <h4>Question {{question.id}}: {{question.content}}</h4>
+    <div ng-attr-id="{{'datavis-' + question.id}}"></div>
+  </div>
+</div>
+
+<div ng-show="loading">
+  <h1>{{loadingText}}</h1>
+  <div class="showbox">
+      <div class="loader">
+          <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+          </svg>
+      </div>
+  </div>
 </div>
