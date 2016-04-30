@@ -160,7 +160,6 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
           var firstSurvey = data['thisUsersSurveys'][0];
           var rawResponses = data['responses'];
           $scope.DVquestions = firstSurvey['questions'];
-          var firstQuestion = firstSurvey['questions'][0];
 
           // Build the parsed responses array
           var firstSurveyRespsParsed = [];
