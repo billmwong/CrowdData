@@ -7,7 +7,7 @@
       <label class="control-label" for="surveyTitle">Title</label>
       <br>
       <p class="text-danger" ng-show="missingTitle">*You will want a title to reference this survey later*</p>
-      <input class="form-control" id="surveyTitle" ng-model="Setup.title" type="text" ng-focus="typingTitle=true; missingTitle=false" ng-blur="typingTitle=false">
+      <input class="form-control" id="surveyTitle" ng-model="Setup.title" type="text" ng-focus="typingTitle=true; missingTitle=false" ng-blur="typingTitle=false" maxlength="75">
         <small class="text-muted" ng-show="typingTitle">This won't be shown to users. It is for your reference only.</small>
     </div>
     <br>
@@ -16,7 +16,7 @@
       <br>
       <br>
       <p class="text-danger" ng-show="missingHypothesis">*The hypothesis is a note to your future self hinting at what to look for in the data*</p>
-      <textarea class="form-control" id="surveyHypothesis" ng-model="Setup.hypothesis" length="120" ng-focus="typingHypo=true; missingHypothesis=false" ng-blur="typingHypo=false"></textarea>
+      <textarea class="form-control" id="surveyHypothesis" ng-model="Setup.hypothesis" length="120" ng-focus="typingHypo=true; missingHypothesis=false" ng-blur="typingHypo=false" maxlength="150"></textarea>
       <span class="character-counter" style="float: right; font-size: 12px; height: 1px;"></span>
       <small class="text-muted" ng-show="typingHypo">We will show you this along with your data to help you remember what you want to find out.</small>
     </div>

@@ -22,7 +22,7 @@
 
           <div ng-if='q.type === "FR"'>
             <div class="form-group label-floating" class="answers">
-              <input class="form-control" id="{{q.id}}" ng-model="q.selectedResponse" type="text" name="Q{{q.id}}" ng-value="{{q.id}}">
+              <input class="form-control" id="{{q.id}}" ng-model="q.selectedResponse" type="text" name="Q{{q.id}}" ng-value="{{q.id}}" maxlength="100">
             </div>
           </div>
         </div>
