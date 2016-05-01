@@ -1,5 +1,10 @@
 var app = angular.module('crowddata');
 app.controller('mainController', function ($scope, $http, $location, $route, $rootScope, $window, goToService) {
+  // don't allow typing in number inputs
+  $("[type='number']").keypress(function (evt) {
+    evt.preventDefault();
+  });
+
   $rootScope.loading = false;
   $rootScope.loadingText = '';
   $scope.invalidInputs = false;
@@ -12,7 +17,8 @@ app.controller('mainController', function ($scope, $http, $location, $route, $ro
     username: '',
     password: '',
     age: '',
-    countryOfResidence: '',
+    country: '',
+    nationality: '',
     DOB_year: '',
     DOB_month: '',
     DOB_day: '',

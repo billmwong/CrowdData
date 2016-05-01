@@ -27,27 +27,27 @@
       <div ng-show="!readyForSurvey" class="card card-content">
         <h3 class="card-title"> We found a survey for you!</h3>
         <br>
-        <h4> The survey topic is <strong>{{survey.category}}. </strong> <h4>
+        <h4> The survey category is <strong>{{survey.category}}. </strong> <h4>
         <br>
         <h4 ng-show="!survey.demographics.0"> This survey does not request any demographic information. </h4>
         <h4 ng-show="survey.demographics.0"> It requests this demographic information:<h4>
         <span ng-show="survey.demographics.0.gender">
-          <img src="../../media/genderIcon.png" alt="Gender" style="width:50px;height:50px;"> <!--  -->
+          <img src="../../media/genderIcon.png" alt="Gender" title="Gender" style="width:50px;height:50px;"> <!--  -->
         </span>
         <span ng-show="survey.demographics.0.age">
-          <img src="../../media/ageIcon.png" alt="Age" style="width:50px;height:50px;">
+          <img src="../../media/ageIcon.png" alt="Age" title="Age" style="width:50px;height:50px;">
         </span>
         <span ng-show="survey.demographics.0.area">
-          <img src="../../media/areaIcon.png" alt="Area" style="width:50px;height:50px;">
+          <img src="../../media/areaIcon.png" alt="Area" title="Area of residence" style="width:50px;height:50px;">
         </span>
         <span ng-show="survey.demographics.0.nationality">
-          <img src="../../media/nationalityIcon.png" alt="Nationality" style="width:50px;height:50px;">
+          <img src="../../media/nationalityIcon.png" alt="Nationality" title="Nationality" style="width:50px;height:50px;">
         </span>
         <br>
         <br>
         <form>
-          <button ng-click="readyForSurvey=true">Sounds good! </button>
-          <button ng-click="getDiffSurvey()"> I'll pass on this one </button>
+          <button ng-click="readyForSurvey=true" class=" btn btn-primary">Sounds good! </button>
+          <button ng-click="getDiffSurvey()" class="btn"> I'll pass on this one </button>
         </form>
       </div>
 
